@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Administration Portal | Ojaswi Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ecom.css">
+    <!-- Universal Storage & Navigation Sandbox Polyfill -->
+    <script>
+    (function() {
+        const mem = { local: {}, session: {} };
+        function makeMockStorage(type) {
+            const store = mem[type];
+            return {
+                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                setItem: function(k, v) { store[k] = String(v); },
+                removeItem: function(k) { delete store[k]; },
+                clear: function() { for (let k in store) delete store[k]; },
+                key: function(i) { return Object.keys(store)[i] || null; },
+                get length() { return Object.keys(store).length; }
+            };
+        }
+        let ls, ss;
+        try {
+            window.localStorage.setItem("__test__", "1");
+            window.localStorage.removeItem("__test__");
+            ls = window.localStorage;
+        } catch(e) {
+            ls = makeMockStorage("local");
+            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
+        }
+        try {
+            window.sessionStorage.setItem("__test__", "1");
+            window.sessionStorage.removeItem("__test__");
+            ss = window.sessionStorage;
+        } catch(e) {
+            ss = makeMockStorage("session");
+            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
+        }
+        window.safeLocalStorage = ls;
+        window.safeSessionStorage = ss;
+        window.safeNavigate = function(url, fallbackHash) {
+            if (!url || typeof url !== "string" || !url.trim()) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                return;
+            }
+            try {
+                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                if (isAbout) {
+                    if (window.top && window.top !== window) {
+                        try { window.top.location.href = url; return; } catch(_) {}
+                    }
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                    return;
+                }
+                window.location.href = url;
+            } catch(e) {
+                console.warn("[Admin safeNavigate fallback]", e);
+                try { if (fallbackHash) window.location.hash = fallbackHash; } catch(_) {}
+            }
+        };
+    })();
+    </script>
+</head>
+<body style="background: #080808; color: #fff; min-height: 100vh;">
+
+    <!-- ADMIN LOGIN VIEW -->
+    <div id="adminLoginSection" class="auth-page" style="display: none;">
+        <div class="auth-card" style="max-width: 420px;">
+            <div style="text-align: center; margin-bottom: 25px;">
+                <div style="font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Owner Security Gate</div>
+                <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--gold-light); margin: 6px 0;">Ojaswi Admin</h1>
+                <p style="font-size: 13px; color: #888;">Authorized management access for Ojaswi Foods, Malegaon.</p>
+            </div>
+
+            <form id="adminLoginForm">
+                <div class="order-field">
+                    <label>Username or Owner Mobile</label>
+                    <input type="text" id="adminUser" value="admin" placeholder="admin or 7620098478" required autofocus>
+                </div>
+                <div class="order-field">
+                    <label>Password</label>
+                    <input type="password" id="adminPass" value="OjaswiAdmin@2026" placeholder="OjaswiAdmin@2026" required>
+                </div>
+                <button type="submit" id="btnAdminLogin" class="primary-button" style="width: 100%; padding: 13px; font-weight: 700; margin-top: 10px;">
+                    ENTER ADMIN PORTAL
+                </button>
+            </form>
+            <div style="background: rgba(217,164,65,0.08); border: 1px dashed rgba(217,164,65,0.3); border-radius: 6px; padding: 12px; margin-top: 16px; text-align: center; font-size: 12px;">
+                <span style="color: var(--gold-light); font-weight: 600;">👑 Store Owner Access:</span><br>
+                <span style="color: #aaa;">User: <strong>admin</strong> | Pass: <strong>OjaswiAdmin@2026</strong></span>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="/" style="font-size: 12px; color: #777; text-decoration: underline;">← Return to Storefront</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN DASHBOARD VIEW -->
+    <div id="adminDashboardSection" style="display: none;">
+        <!-- Top Admin Header -->
+        <header style="position: relative; background: #0c0c0c; border-bottom: 1px solid rgba(217,164,65,0.25);">
+            <div class="container navbar">
+                <div class="brand">
+                    <div class="brand-name" style="font-size: 32px;">Ojaswi</div>
+                    <div class="brand-subtitle" style="letter-spacing: 4px; color: var(--gold);">ADMIN CONSOLE</div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <span id="adminGreeting" style="font-size: 13px; color: #aaa;">👑 Admin</span>
+                    <a href="/" target="_blank" class="secondary-button" style="padding: 7px 14px; font-size: 12px;">View Store ↗</a>
+                    <button id="btnAdminLogout" class="secondary-button" style="padding: 7px 14px; font-size: 12px; color: #ff5252; border-color: rgba(255,82,82,0.3);">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="container" style="padding: 35px 0 80px;">
+            <!-- Admin Navigation Tabs -->
+            <div style="display: flex; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 30px; overflow-x: auto; padding-bottom: 2px;">
+                <button class="auth-tab active" id="tabNavOverview" onclick="switchAdminTab('overview')">📊 Overview KPIs</button>
+                <button class="auth-tab" id="tabNavOrders" onclick="switchAdminTab('orders')">📦 Orders Management</button>
+                <button class="auth-tab" id="tabNavProducts" onclick="switchAdminTab('products')">🌶️ Spice Inventory</button>
+                <button class="auth-tab" id="tabNavCustomers" onclick="switchAdminTab('customers')">👥 Customers</button>
+                <button class="auth-tab" id="tabNavReviews" onclick="switchAdminTab('reviews')">⭐ Customer Reviews &amp; Photos</button>
+            </div>
+
+            <!-- TAB 1: OVERVIEW & KPIS -->
+            <div id="panelOverview">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 35px;">
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: #888;">Total Orders</span>
+                        <div id="kpiTotalOrders" style="font-size: 32px; font-weight: 700; color: #fff; margin-top: 6px;">0</div>
+                    </div>
+                    <div style="background: #121212; border: 1px solid rgba(241,196,15,0.3); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: #f1c40f;">Pending Orders</span>
+                        <div id="kpiPendingOrders" style="font-size: 32px; font-weight: 700; color: #f1c40f; margin-top: 6px;">0</div>
+                    </div>
+                    <div style="background: #121212; border: 1px solid rgba(46,204,113,0.3); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: #2ecc71;">Total Revenue</span>
+                        <div id="kpiRevenue" style="font-size: 32px; font-weight: 700; color: #2ecc71; margin-top: 6px;">₹0</div>
+                    </div>
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: var(--gold-light);">Today's Orders</span>
+                        <div id="kpiTodayOrders" style="font-size: 32px; font-weight: 700; color: var(--gold-light); margin-top: 6px;">0</div>
+                    </div>
+                    <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: #888;">COD vs Online</span>
+                        <div id="kpiPaymentSplit" style="font-size: 22px; font-weight: 700; color: #ddd; margin-top: 6px;">0 / 0</div>
+                    </div>
+                    <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 22px;">
+                        <span style="font-size: 11px; text-transform: uppercase; color: #888;">Registered Customers</span>
+                        <div id="kpiCustomers" style="font-size: 32px; font-weight: 700; color: #fff; margin-top: 6px;">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ORDERS MANAGEMENT -->
+            <div id="panelOrders" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">Order Fulfilment Console</h2>
+                    <div>
+                        <select id="filterOrderStatus" onchange="filterOrders()" style="background: #161616; color: #fff; border: 1px solid rgba(217,164,65,0.3); padding: 8px 14px; border-radius: 4px; font-size: 13px;">
+                            <option value="all">All Orders</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Packed">Packed</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Out for Delivery">Out for Delivery</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                        <thead>
+                            <tr style="background: #181818; color: var(--gold-light); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding: 14px;">Order ID</th>
+                                <th style="padding: 14px;">Date</th>
+                                <th style="padding: 14px;">Customer</th>
+                                <th style="padding: 14px;">Items</th>
+                                <th style="padding: 14px;">Total</th>
+                                <th style="padding: 14px;">Payment</th>
+                                <th style="padding: 14px;">Status Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminOrdersTableBody">
+                            <tr><td colspan="7" style="padding: 30px; text-align: center; color: #888;">Loading orders...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 3: SPICE INVENTORY -->
+            <div id="panelProducts" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">Product Inventory</h2>
+                    <button class="primary-button" style="padding: 8px 16px; font-size: 12px;" onclick="openAddProductModal()">+ Add New Spice Blend</button>
+                </div>
+
+                <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                        <thead>
+                            <tr style="background: #181818; color: var(--gold-light); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding: 14px;">Image</th>
+                                <th style="padding: 14px;">Product &amp; SKU</th>
+                                <th style="padding: 14px;">Weight</th>
+                                <th style="padding: 14px;">Selling Price</th>
+                                <th style="padding: 14px;">MRP</th>
+                                <th style="padding: 14px;">Stock</th>
+                                <th style="padding: 14px;">Status</th>
+                                <th style="padding: 14px; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminProductsTableBody">
+                            <tr><td colspan="8" style="padding: 30px; text-align: center; color: #888;">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 4: CUSTOMERS -->
+            <div id="panelCustomers" style="display: none;">
+                <div style="margin-bottom: 20px;">
+                    <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">Customer Directory</h2>
+                </div>
+
+                <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                        <thead>
+                            <tr style="background: #181818; color: var(--gold-light); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding: 14px;">Customer Name</th>
+                                <th style="padding: 14px;">Mobile Phone</th>
+                                <th style="padding: 14px;">Email</th>
+                                <th style="padding: 14px;">Joined</th>
+                                <th style="padding: 14px; text-align: center;">Total Orders</th>
+                                <th style="padding: 14px; text-align: right;">Total Spent</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminCustomersTableBody">
+                            <tr><td colspan="6" style="padding: 30px; text-align: center; color: #888;">Loading customers...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB 5: CUSTOMER REVIEWS & PHOTOS -->
+            <div id="panelReviews" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">Customer Reviews &amp; Photos</h2>
+                        <p style="font-size: 13px; color: #888; margin: 4px 0 0 0;">Browse real customer cooking reviews, spice photos, and approve or moderate submissions.</p>
+                    </div>
+                    <button class="secondary-button" style="padding: 8px 14px; font-size: 12px;" onclick="loadReviews()">🔄 Refresh Reviews</button>
+                </div>
+
+                <div style="background: #121212; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 13px; text-align: left;">
+                        <thead>
+                            <tr style="background: #181818; color: var(--gold-light); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding: 14px;">Photo</th>
+                                <th style="padding: 14px;">Spice Blend</th>
+                                <th style="padding: 14px;">Customer &amp; Rating</th>
+                                <th style="padding: 14px;">Review Title &amp; Text</th>
+                                <th style="padding: 14px;">Date</th>
+                                <th style="padding: 14px;">Status</th>
+                                <th style="padding: 14px; text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminReviewsTableBody">
+                            <tr><td colspan="7" style="padding: 30px; text-align: center; color: #888;">Loading reviews...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- EDIT PRODUCT MODAL -->
+    <div id="editProductModal" class="modal" style="display: none;">
+        <div class="order-box" style="max-width: 500px;">
+            <div class="order-header">
+                <div>
+                    <span class="order-small-title">INVENTORY</span>
+                    <h2 id="editProdTitle">Edit Product</h2>
+                </div>
+                <button type="button" class="close-order" onclick="closeEditProductModal()">&times;</button>
+            </div>
+            <form id="editProductForm">
+                <input type="hidden" id="editProdId">
+                <div class="order-field">
+                    <label>Product Name</label>
+                    <input type="text" id="editProdName" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="order-field">
+                        <label>Selling Price (₹)</label>
+                        <input type="number" id="editProdPrice" required>
+                    </div>
+                    <div class="order-field">
+                        <label>MRP (₹)</label>
+                        <input type="number" id="editProdMrp">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="order-field">
+                        <label>Stock Count</label>
+                        <input type="number" id="editProdStock" required>
+                    </div>
+                    <div class="order-field">
+                        <label>Net Weight</label>
+                        <input type="text" id="editProdWeight" value="NET WEIGHT 500g">
+                    </div>
+                </div>
+                <div class="order-field">
+                    <label>Description</label>
+                    <textarea id="editProdDesc"></textarea>
+                </div>
+                <button type="submit" class="primary-button" style="width: 100%; padding: 13px;">
+                    SAVE PRODUCT CHANGES
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADD PRODUCT MODAL -->
+    <div id="addProductModal" class="modal" style="display: none;">
+        <div class="order-box" style="max-width: 520px;">
+            <div class="order-header">
+                <div>
+                    <span class="order-small-title">NEW SPICE</span>
+                    <h2>Add New Spice Blend</h2>
+                </div>
+                <button type="button" class="close-order" onclick="closeAddProductModal()">&times;</button>
+            </div>
+            <form id="addProductForm">
+                <div class="order-field">
+                    <label>Spice Blend Name *</label>
+                    <input type="text" id="addProdName" placeholder="e.g. Royal Shahi Paneer Masala" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="order-field">
+                        <label>Selling Price (₹) *</label>
+                        <input type="number" id="addProdPrice" value="199" required>
+                    </div>
+                    <div class="order-field">
+                        <label>MRP (₹)</label>
+                        <input type="number" id="addProdMrp" value="249">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="order-field">
+                        <label>SKU</label>
+                        <input type="text" id="addProdSku" placeholder="OJ-SP-12">
+                    </div>
+                    <div class="order-field">
+                        <label>Initial Stock</label>
+                        <input type="number" id="addProdStock" value="100">
+                    </div>
+                </div>
+                <div class="order-field">
+                    <label>Upload Packaging Image (.jpg, .jpeg, .png) *</label>
+                    <input type="file" id="addProdFile" accept="image/*" required style="background: #1c1c1c; padding: 10px; border-radius: 4px; width: 100%;">
+                </div>
+                <div class="order-field">
+                    <label>Description</label>
+                    <textarea id="addProdDesc" placeholder="Stone ground authentic spice details..."></textarea>
+                </div>
+                <button type="submit" class="primary-button" style="width: 100%; padding: 13px;">
+                    CREATE &amp; PUBLISH SPICE
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- UPDATE TRACKING SPOT & LIVE NOTE MODAL -->
+    <div id="trackingModal" class="modal" style="display: none;">
+        <div class="order-box" style="max-width: 520px;">
+            <div class="order-header">
+                <div>
+                    <span class="order-small-title">DISPATCH &amp; DELIVERY</span>
+                    <h2 id="trackingModalTitle">Update Delivery Spot</h2>
+                </div>
+                <button type="button" class="close-order" onclick="closeTrackingModal()">&times;</button>
+            </div>
+            <form id="trackingUpdateForm" onsubmit="handleSaveTrackingNote(event)">
+                <input type="hidden" id="trackOrderId">
+                <div class="order-field">
+                    <label>Current Lifecycle Stage</label>
+                    <select id="trackOrderStatus" style="width: 100%; background: #1c1c1c; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px;">
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Processing">Processing (Stone Grounding)</option>
+                        <option value="Packed">Packed &amp; Sealed</option>
+                        <option value="Shipped">Dispatched from Malegaon (Shipped)</option>
+                        <option value="Out for Delivery">Reached Delivery Spot / Out for Delivery</option>
+                        <option value="Delivered">Delivered &amp; Received</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="order-field">
+                    <label>Delivery Spot / Hub Location</label>
+                    <input type="text" id="trackDeliverySpot" placeholder="e.g. Nashik City Hub / Camp Malegaon Delivery Point" style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px;">
+                </div>
+                <div class="order-field">
+                    <label>Live Dispatch Note / Update for Customer Tracking</label>
+                    <textarea id="trackCustomNote" rows="3" placeholder="e.g. Dispatched from 52/2 Malegaon via DTDC Express. Delivery agent on the way." style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px; resize: vertical;"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" id="btnSaveTracking" class="primary-button" style="flex: 1; padding: 12px;">Save &amp; Update Customer</button>
+                    <button type="button" class="secondary-button" onclick="closeTrackingModal()" style="padding: 12px 18px;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- REVIEW PHOTO LIGHTBOX MODAL -->
+    <div id="reviewPhotoModal" class="modal" style="display: none;" onclick="closeReviewPhotoModal()">
+        <div style="margin: auto; max-width: 90vw; max-height: 90vh; text-align: center; position: relative;">
+            <button type="button" class="close-order" onclick="closeReviewPhotoModal()" style="position: absolute; top: -35px; right: 0; font-size: 32px; color: #fff; background: none; border: none; cursor: pointer;">&times;</button>
+            <img id="reviewModalImg" src="" alt="Customer Spice Photo" style="max-width: 100%; max-height: 80vh; border-radius: 8px; border: 2px solid var(--gold); box-shadow: 0 10px 40px rgba(0,0,0,0.9);">
+            <div id="reviewModalCaption" style="margin-top: 12px; font-size: 14px; color: #ddd;"></div>
+        </div>
+    </div>
+
+    <script src="js/ojaswi.js"></script>
+    <script>
+        let allProductsCache = [];
+
+        async function checkAdminAuth() {
+            try {
+                const res = await apiRequest("/api/auth/me");
+                if (res.isAuthenticated && res.user && res.user.role === "admin") {
+                    document.getElementById("adminLoginSection").style.display = "none";
+                    document.getElementById("adminDashboardSection").style.display = "block";
+                    document.getElementById("adminGreeting").textContent = `👑 ${res.user.full_name || res.user.username}`;
+                    loadDashboard();
+                } else {
+                    document.getElementById("adminLoginSection").style.display = "flex";
+                    document.getElementById("adminDashboardSection").style.display = "none";
+                }
+            } catch {
+                document.getElementById("adminLoginSection").style.display = "flex";
+                document.getElementById("adminDashboardSection").style.display = "none";
+            }
+        }
+
+        // Admin Login Form
+        document.getElementById("adminLoginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const username = document.getElementById("adminUser").value.trim();
+            const password = document.getElementById("adminPass").value;
+            const btn = document.getElementById("btnAdminLogin");
+
+            try {
+                btn.disabled = true;
+                btn.textContent = "AUTHENTICATING...";
+                const res = await apiRequest("/api/auth/admin-login", {
+                    method: "POST",
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (res.token) {
+                    localStorage.setItem("ojaswi_token", res.token);
+                }
+                if (res.admin) {
+                    localStorage.setItem("ojaswi_user", JSON.stringify(res.admin));
+                }
+
+                showToast("Welcome to Ojaswi Admin Portal.", "success");
+                checkAdminAuth();
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "ENTER ADMIN PORTAL";
+            }
+        });
+
+        // Admin Logout
+        document.getElementById("btnAdminLogout").addEventListener("click", async () => {
+            try {
+                await apiRequest("/api/auth/logout", { method: "POST" });
+            } catch (e) {}
+            localStorage.removeItem("ojaswi_token");
+            localStorage.removeItem("ojaswi_user");
+            window.location.reload();
+        });
+
+        window.switchAdminTab = function(tab) {
+            document.querySelectorAll("#tabNavOverview, #tabNavOrders, #tabNavProducts, #tabNavCustomers, #tabNavReviews").forEach(b => b.classList.remove("active"));
+            document.getElementById("panelOverview").style.display = tab === "overview" ? "block" : "none";
+            document.getElementById("panelOrders").style.display = tab === "orders" ? "block" : "none";
+            document.getElementById("panelProducts").style.display = tab === "products" ? "block" : "none";
+            document.getElementById("panelCustomers").style.display = tab === "customers" ? "block" : "none";
+            document.getElementById("panelReviews").style.display = tab === "reviews" ? "block" : "none";
+
+            if (tab === "overview") document.getElementById("tabNavOverview").classList.add("active");
+            if (tab === "orders") { document.getElementById("tabNavOrders").classList.add("active"); loadOrders(); }
+            if (tab === "products") { document.getElementById("tabNavProducts").classList.add("active"); loadProducts(); }
+            if (tab === "customers") { document.getElementById("tabNavCustomers").classList.add("active"); loadCustomers(); }
+            if (tab === "reviews") { document.getElementById("tabNavReviews").classList.add("active"); loadReviews(); }
+        };
+
+        async function loadDashboard() {
+            try {
+                const res = await apiRequest("/api/admin/dashboard");
+                const s = res.stats;
+                document.getElementById("kpiTotalOrders").textContent = s.totalOrders;
+                document.getElementById("kpiPendingOrders").textContent = s.pendingOrders;
+                document.getElementById("kpiRevenue").textContent = `₹${s.totalRevenue.toLocaleString("en-IN")}`;
+                document.getElementById("kpiTodayOrders").textContent = s.todayOrders;
+                document.getElementById("kpiPaymentSplit").textContent = `COD: ${s.codOrders} | Online: ${s.onlineOrders}`;
+                document.getElementById("kpiCustomers").textContent = s.totalCustomers;
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        async function loadOrders(status = "all") {
+            const tbody = document.getElementById("adminOrdersTableBody");
+            try {
+                const url = status === "all" ? "/api/admin/orders" : `/api/admin/orders?status=${status}`;
+                const res = await apiRequest(url);
+                const orders = res.orders || [];
+
+                if (orders.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="padding: 25px; text-align: center; color: #888;">No orders found.</td></tr>`;
+                    return;
+                }
+
+                const allStatuses = ["Pending", "Confirmed", "Processing", "Packed", "Shipped", "Out for Delivery", "Delivered", "Cancelled"];
+
+                tbody.innerHTML = orders.map(o => {
+                    const itemsDesc = o.items.map(i => `${i.product_name} (x${i.quantity})`).join(", ");
+                    const addr = o.delivery_address || {};
+                    const currentStatus = o.order_status || "Confirmed";
+                    const isDispatched = currentStatus === "Shipped" || currentStatus === "Out for Delivery" || currentStatus === "Delivered";
+                    const isReachedSpot = currentStatus === "Out for Delivery" || currentStatus === "Delivered";
+                    const isDelivered = currentStatus === "Delivered";
+
+                    const safeSpot = (o.delivery_spot || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                    const safeNote = (o.tracking_note || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                    return `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <td style="padding: 14px;">
+                                <strong style="color: var(--gold-light); font-size: 14px;">${o.id}</strong>
+                                <div style="margin-top: 4px;">
+                                    <span class="status-badge ${currentStatus.toLowerCase().replace(/\s+/g, '-')}">${currentStatus}</span>
+                                </div>
+                            </td>
+                            <td style="padding: 14px; color: #888; font-size: 12px; white-space: nowrap;">
+                                ${new Date(o.created_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                            </td>
+                            <td style="padding: 14px;">
+                                <strong style="color: #fff;">${o.customer_name}</strong>
+                                <div style="font-size: 11px; color: var(--gold-light);">📞 +91 ${o.customer_phone}</div>
+                                <div style="font-size: 11px; color: #777;">${addr.city || ""}, ${addr.pincode || ""}</div>
+                                ${o.delivery_spot ? `<div style="font-size: 11px; color: #3498db; margin-top: 4px;">📍 Spot: ${o.delivery_spot}</div>` : ""}
+                                ${o.tracking_note ? `<div style="font-size: 11px; color: #aaa; margin-top: 2px; font-style: italic;">"${o.tracking_note}"</div>` : ""}
+                            </td>
+                            <td style="padding: 14px; max-width: 220px; font-size: 12px; color: #bbb;">
+                                ${itemsDesc}
+                            </td>
+                            <td style="padding: 14px; font-weight: 700; color: #fff; font-size: 14px; white-space: nowrap;">
+                                ₹${o.total_amount}
+                            </td>
+                            <td style="padding: 14px; white-space: nowrap;">
+                                <div style="font-size: 12px; font-weight: 600; color: #ddd;">${o.payment_method}</div>
+                                <span style="font-size: 11px; color: ${o.payment_status === 'Paid' ? '#2ecc71' : '#f1c40f'};">${o.payment_status}</span>
+                            </td>
+                            <td style="padding: 14px;">
+                                <div style="display: flex; flex-direction: column; gap: 5px; min-width: 170px;">
+                                    <!-- 1-Click Quick Actions -->
+                                    <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                                        ${!isDispatched ? `
+                                            <button class="secondary-button" style="padding: 4px 8px; font-size: 11px; color: var(--gold-light); border-color: rgba(217,164,65,0.4);" onclick="quickUpdateStatus('${o.id}', 'Shipped')" title="Mark as Dispatched from Malegaon">
+                                                🚚 Dispatched
+                                            </button>
+                                        ` : ""}
+                                        ${(!isReachedSpot) ? `
+                                            <button class="secondary-button" style="padding: 4px 8px; font-size: 11px; color: #3498db; border-color: rgba(52,152,219,0.4);" onclick="quickUpdateStatus('${o.id}', 'Out for Delivery')" title="Mark as Reached Delivery Spot / Out for Delivery">
+                                                🛵 Reached Spot
+                                            </button>
+                                        ` : ""}
+                                        ${!isDelivered ? `
+                                            <button class="primary-button" style="padding: 4px 8px; font-size: 11px;" onclick="quickUpdateStatus('${o.id}', 'Delivered')" title="Mark as Safely Delivered to Customer">
+                                                ✅ Delivered
+                                            </button>
+                                        ` : `
+                                            <span style="font-size: 11px; color: #2ecc71; font-weight: 700;">✓ Delivered &amp; Received</span>
+                                        `}
+                                    </div>
+                                    <div style="display: flex; gap: 4px; align-items: center; margin-top: 4px;">
+                                        <select onchange="updateOrderStatus('${o.id}', this.value)" style="flex: 1; background: #1a1a1a; color: #fff; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 4px 6px; font-size: 11px;">
+                                            ${allStatuses.map(st => `<option value="${st}" ${st === currentStatus ? "selected" : ""}>${st}</option>`).join("")}
+                                        </select>
+                                        <button class="secondary-button" style="padding: 4px 8px; font-size: 11px; white-space: nowrap;" onclick="openTrackingModal('${o.id}', '${currentStatus}', '${safeSpot}', '${safeNote}')" title="Edit delivery spot & custom tracking note">
+                                            ✏️ Spot/Note
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        window.filterOrders = function() {
+            const status = document.getElementById("filterOrderStatus").value;
+            loadOrders(status);
+        };
+
+        window.updateOrderStatus = async function(orderId, status) {
+            try {
+                const res = await apiRequest(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+                    method: "PUT",
+                    body: JSON.stringify({ status })
+                });
+                showToast(res.message, "success");
+                loadOrders();
+                loadDashboard();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        window.quickUpdateStatus = async function(orderId, status) {
+            try {
+                const res = await apiRequest(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+                    method: "PUT",
+                    body: JSON.stringify({ status })
+                });
+                showToast(res.message || `Order updated to ${status}.`, "success");
+                loadOrders();
+                loadDashboard();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        // Tracking Modal Functions
+        window.openTrackingModal = function(orderId, currentStatus, currentSpot, currentNote) {
+            document.getElementById("trackOrderId").value = orderId;
+            document.getElementById("trackingModalTitle").textContent = `Update Tracking for ${orderId}`;
+            document.getElementById("trackOrderStatus").value = currentStatus || "Confirmed";
+            document.getElementById("trackDeliverySpot").value = currentSpot || "";
+            document.getElementById("trackCustomNote").value = currentNote || "";
+            const modal = document.getElementById("trackingModal");
+            modal.style.display = "flex";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+
+        window.closeTrackingModal = function() {
+            const modal = document.getElementById("trackingModal");
+            modal.style.display = "none";
+            modal.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+
+        window.handleSaveTrackingNote = async function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById("trackOrderId").value;
+            const status = document.getElementById("trackOrderStatus").value;
+            const deliverySpot = document.getElementById("trackDeliverySpot").value.trim();
+            const trackingNote = document.getElementById("trackCustomNote").value.trim();
+            const btn = document.getElementById("btnSaveTracking");
+
+            try {
+                btn.disabled = true;
+                btn.textContent = "SAVING...";
+                const res = await apiRequest(`/api/admin/orders/${encodeURIComponent(orderId)}/status`, {
+                    method: "PUT",
+                    body: JSON.stringify({ status, delivery_spot: deliverySpot, tracking_note: trackingNote })
+                });
+                showToast(res.message || "Tracking updated successfully!", "success");
+                closeTrackingModal();
+                loadOrders();
+                loadDashboard();
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Save & Update Customer";
+            }
+        };
+
+        // Reviews Management Functions
+        async function loadReviews() {
+            const tbody = document.getElementById("adminReviewsTableBody");
+            if (!tbody) return;
+            try {
+                const res = await apiRequest("/api/admin/reviews");
+                const reviews = res.reviews || [];
+
+                if (reviews.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="7" style="padding: 25px; text-align: center; color: #888;">No customer reviews submitted yet.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = reviews.map(r => {
+                    const stars = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+                    const photoHtml = r.image_url
+                        ? `<img src="${r.image_url}" alt="Customer Photo" onclick="openReviewPhotoModal('${r.image_url}', '${(r.review_title || '').replace(/'/g, "\\'")}')" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 1px solid var(--gold);">`
+                        : `<span style="font-size: 11px; color: #666;">No photo</span>`;
+
+                    return `
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                            <td style="padding: 12px 14px;">${photoHtml}</td>
+                            <td style="padding: 14px;">
+                                <strong style="color: #fff;">${r.product_name || "Spice Blend"}</strong>
+                                ${r.order_id ? `<div style="font-size: 11px; color: var(--gold-light);">Order: ${r.order_id}</div>` : ""}
+                            </td>
+                            <td style="padding: 14px;">
+                                <div style="font-weight: 600; color: #fff;">${r.customer_name}</div>
+                                <div style="color: var(--gold); font-size: 13px; margin-top: 2px;">${stars}</div>
+                                ${r.customer_phone ? `<div style="font-size: 11px; color: #777;">📞 +91 ${r.customer_phone}</div>` : ""}
+                            </td>
+                            <td style="padding: 14px; max-width: 280px;">
+                                <strong style="color: var(--gold-light); font-size: 13px;">${r.review_title || ""}</strong>
+                                <p style="font-size: 12px; color: #ccc; margin: 4px 0 0 0; line-height: 1.4;">${r.review_text}</p>
+                            </td>
+                            <td style="padding: 14px; color: #888; font-size: 12px; white-space: nowrap;">
+                                ${new Date(r.created_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+                            </td>
+                            <td style="padding: 14px;">
+                                <span class="status-badge ${r.is_approved ? 'confirmed' : 'cancelled'}">
+                                    ${r.is_approved ? 'Approved' : 'Hidden'}
+                                </span>
+                            </td>
+                            <td style="padding: 14px; text-align: right; white-space: nowrap;">
+                                <button class="secondary-button" style="padding: 5px 10px; font-size: 11px; margin-right: 6px;" onclick="toggleReviewApproval(${r.id})">
+                                    ${r.is_approved ? 'Hide' : 'Approve'}
+                                </button>
+                                <button class="secondary-button" style="padding: 5px 10px; font-size: 11px; color: #ff5252; border-color: rgba(255,82,82,0.3);" onclick="deleteReview(${r.id})">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        window.toggleReviewApproval = async function(reviewId) {
+            try {
+                const res = await apiRequest(`/api/admin/reviews/${reviewId}/toggle`, { method: "PUT" });
+                showToast(res.message, "success");
+                loadReviews();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        window.deleteReview = async function(reviewId) {
+            if (!confirm("Are you sure you want to delete this customer review?")) return;
+            try {
+                const res = await apiRequest(`/api/admin/reviews/${reviewId}`, { method: "DELETE" });
+                showToast(res.message, "success");
+                loadReviews();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        window.openReviewPhotoModal = function(src, caption) {
+            const modal = document.getElementById("reviewPhotoModal");
+            const img = document.getElementById("reviewModalImg");
+            const cap = document.getElementById("reviewModalCaption");
+            if (img) img.src = src;
+            if (cap) cap.textContent = caption || "Customer Spice Photo";
+            modal.style.display = "flex";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+
+        window.closeReviewPhotoModal = function() {
+            const modal = document.getElementById("reviewPhotoModal");
+            modal.style.display = "none";
+            modal.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+
+        async function loadProducts() {
+            const tbody = document.getElementById("adminProductsTableBody");
+            try {
+                const res = await apiRequest("/api/admin/products");
+                allProductsCache = res.products || [];
+
+                tbody.innerHTML = allProductsCache.map(p => `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <td style="padding: 10px 14px;">
+                            <img src="${p.image || 'images/garam-masala.jpeg'}" alt="${p.name}" onerror="this.src='images/garam-masala.jpeg'" style="width: 44px; height: 44px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(217,164,65,0.2);">
+                        </td>
+                        <td style="padding: 14px;">
+                            <strong style="color: #fff; font-size: 14px;">${p.name}</strong>
+                            <div style="font-size: 11px; color: #777;">SKU: ${p.sku || "OJASWI"} | Category: ${p.category || "Authentic"}</div>
+                        </td>
+                        <td style="padding: 14px; color: #888; font-size: 12px;">${p.weight || "500g"}</td>
+                        <td style="padding: 14px; font-weight: 700; color: var(--gold-light);">₹${p.selling_price || p.price}</td>
+                        <td style="padding: 14px; color: #666; text-decoration: line-through;">₹${p.mrp || p.price}</td>
+                        <td style="padding: 14px;">
+                            <span style="font-weight: 600; color: ${p.stock < 15 ? '#ff5252' : '#2ecc71'};">${p.stock} packs</span>
+                        </td>
+                        <td style="padding: 14px;">
+                            <span class="status-badge ${p.is_active === 1 ? 'confirmed' : 'cancelled'}">
+                                ${p.is_active === 1 ? 'Active' : 'Inactive'}
+                            </span>
+                        </td>
+                        <td style="padding: 14px; text-align: right;">
+                            <button class="secondary-button" style="padding: 5px 10px; font-size: 11px; margin-right: 6px;" onclick="openEditProductModal(${p.id})">Edit</button>
+                            <button class="secondary-button" style="padding: 5px 10px; font-size: 11px; color: ${p.is_active === 1 ? '#ff5252' : '#2ecc71'};" onclick="toggleProductActive(${p.id})">
+                                ${p.is_active === 1 ? 'Deactivate' : 'Activate'}
+                            </button>
+                        </td>
+                    </tr>
+                `).join("");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        window.openEditProductModal = function(id) {
+            const p = allProductsCache.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById("editProdId").value = p.id;
+            document.getElementById("editProdTitle").textContent = `Edit ${p.name}`;
+            document.getElementById("editProdName").value = p.name;
+            document.getElementById("editProdPrice").value = p.selling_price || p.price;
+            document.getElementById("editProdMrp").value = p.mrp || p.price;
+            document.getElementById("editProdStock").value = p.stock;
+            document.getElementById("editProdWeight").value = p.weight || "NET WEIGHT 500g";
+            document.getElementById("editProdDesc").value = p.description || "";
+
+            document.getElementById("editProductModal").style.display = "flex";
+            document.getElementById("editProductModal").classList.add("active");
+        };
+
+        window.closeEditProductModal = function() {
+            document.getElementById("editProductModal").style.display = "none";
+            document.getElementById("editProductModal").classList.remove("active");
+        };
+
+        document.getElementById("editProductForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const id = document.getElementById("editProdId").value;
+            const payload = {
+                name: document.getElementById("editProdName").value.trim(),
+                price: parseFloat(document.getElementById("editProdPrice").value),
+                selling_price: parseFloat(document.getElementById("editProdPrice").value),
+                mrp: parseFloat(document.getElementById("editProdMrp").value),
+                stock: parseInt(document.getElementById("editProdStock").value, 10),
+                weight: document.getElementById("editProdWeight").value.trim(),
+                description: document.getElementById("editProdDesc").value.trim()
+            };
+
+            try {
+                const res = await apiRequest(`/api/admin/products/${id}`, {
+                    method: "PUT",
+                    body: JSON.stringify(payload)
+                });
+                showToast(res.message, "success");
+                closeEditProductModal();
+                loadProducts();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        });
+
+        window.toggleProductActive = async function(id) {
+            try {
+                const res = await apiRequest(`/api/admin/products/${id}`, { method: "DELETE" });
+                showToast(res.message, "success");
+                loadProducts();
+                loadDashboard();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        // Add Product Modal
+        window.openAddProductModal = function() {
+            document.getElementById("addProductForm").reset();
+            document.getElementById("addProductModal").style.display = "flex";
+            document.getElementById("addProductModal").classList.add("active");
+        };
+
+        window.closeAddProductModal = function() {
+            document.getElementById("addProductModal").style.display = "none";
+            document.getElementById("addProductModal").classList.remove("active");
+        };
+
+        document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const fileInput = document.getElementById("addProdFile");
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showToast("Please choose an image file for the spice packaging.", "error");
+                return;
+            }
+
+            try {
+                // 1. Upload Image
+                const formData = new FormData();
+                formData.append("image", fileInput.files[0]);
+
+                const uploadRes = await fetch("/api/admin/products/upload-image", {
+                    method: "POST",
+                    body: formData,
+                    credentials: "include"
+                });
+                const uploadData = await uploadRes.json();
+                if (!uploadRes.ok) throw new Error(uploadData.error || "Image upload failed");
+
+                // 2. Create Product
+                const payload = {
+                    name: document.getElementById("addProdName").value.trim(),
+                    sku: document.getElementById("addProdSku").value.trim(),
+                    price: parseFloat(document.getElementById("addProdPrice").value),
+                    selling_price: parseFloat(document.getElementById("addProdPrice").value),
+                    mrp: parseFloat(document.getElementById("addProdMrp").value),
+                    stock: parseInt(document.getElementById("addProdStock").value, 10),
+                    image: uploadData.filePath,
+                    description: document.getElementById("addProdDesc").value.trim()
+                };
+
+                const createRes = await apiRequest("/api/admin/products", {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+
+                showToast(createRes.message, "success");
+                closeAddProductModal();
+                loadProducts();
+                loadDashboard();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        });
+
+        async function loadCustomers() {
+            const tbody = document.getElementById("adminCustomersTableBody");
+            try {
+                const res = await apiRequest("/api/admin/customers");
+                const customers = res.customers || [];
+
+                if (customers.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" style="padding: 25px; text-align: center; color: #888;">No registered customers yet.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = customers.map(c => `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                        <td style="padding: 14px;">
+                            <strong style="color: #fff;">${c.name || "Customer"}</strong>
+                        </td>
+                        <td style="padding: 14px; color: var(--gold-light);">
+                            ${c.phone ? `+91 ${c.phone}` : "N/A"}
+                        </td>
+                        <td style="padding: 14px; color: #aaa;">
+                            ${c.email || "N/A"}
+                        </td>
+                        <td style="padding: 14px; color: #777; font-size: 12px;">
+                            ${new Date(c.created_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}
+                        </td>
+                        <td style="padding: 14px; text-align: center; font-weight: 600;">
+                            ${c.total_orders}
+                        </td>
+                        <td style="padding: 14px; text-align: right; font-weight: 700; color: #2ecc71;">
+                            ₹${c.total_spent}
+                        </td>
+                    </tr>
+                `).join("");
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        }
+
+        checkAdminAuth();
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Allow: /#products
+Allow: /#about
+Allow: /#why
+Allow: /#contact
+Allow: /login
+Allow: /contact-us
+Allow: /privacy-policy
+Allow: /terms-and-conditions
+Allow: /refund-policy
+Allow: /shipping-policy
+Allow: /cancellation-policy
+
+# Protect Admin and internal APIs from web indexing
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://ojaswifoods.com/sitemap.xml

@@ -1,0 +1,3523 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Ojaswi Premium - Authentic Indian Spices">
+
+    <meta name="theme-color"
+          content="#080808">
+
+    <title>Ojaswi Premium | Authentic Indian Spices</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+<style>
+
+:root {
+    --black: #080808;
+    --dark: #101010;
+    --dark2: #171717;
+    --gold: #d9a441;
+    --gold-light: #f0c86b;
+    --white: #ffffff;
+    --muted: #999999;
+    --border: rgba(217,164,65,0.25);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Inter", sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.container {
+    width: min(1200px, 92%);
+    margin: auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+
+    background: rgba(8,8,8,0.90);
+    backdrop-filter: blur(15px);
+
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.navbar {
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    line-height: .85;
+}
+
+.brand-name {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--gold-light);
+}
+
+.brand-subtitle {
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-align: center;
+    color: #ddd;
+    margin-top: 7px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+nav a {
+    font-size: 13px;
+    color: #ddd;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: var(--gold-light);
+}
+
+.nav-order {
+    padding: 11px 20px;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+}
+
+.nav-order:hover {
+    background: var(--gold);
+    color: #111;
+}
+
+.menu-button {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 75% 50%,
+            rgba(217,164,65,.14),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #050505,
+            #121212,
+            #070707
+        );
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.018) 1px,
+            transparent 1px
+        );
+
+    background-size: 70px 70px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 52%;
+    padding-top: 80px;
+}
+
+.eyebrow {
+    color: var(--gold-light);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(60px, 7vw, 100px);
+    line-height: .88;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.hero h1 span {
+    color: var(--gold-light);
+}
+
+.hero-description {
+    max-width: 560px;
+    color: #aaa;
+    font-size: 16px;
+    line-height: 1.9;
+    margin-bottom: 35px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px 27px;
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    transition: .3s;
+}
+
+.primary-button {
+    background: var(--gold);
+    color: #111;
+    border: 1px solid var(--gold);
+}
+
+.primary-button:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    border: 1px solid rgba(255,255,255,.25);
+}
+
+.secondary-button:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+}
+
+.hero-product {
+    position: absolute;
+    right: 4%;
+    bottom: 0;
+
+    width: min(520px,45vw);
+
+    z-index: 2;
+
+    filter:
+        drop-shadow(
+            0 35px 50px rgba(0,0,0,.8)
+        );
+
+    animation: floating 5s ease-in-out infinite;
+}
+
+.hero-product img {
+    width: 100%;
+    object-fit: contain;
+}
+
+@keyframes floating {
+
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+
+}
+
+/* =========================================================
+   COMMON SECTIONS
+========================================================= */
+
+section {
+    padding: 110px 0;
+}
+
+.section-heading {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.section-label {
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.section-heading h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(44px,5vw,68px);
+    line-height: 1;
+    margin-bottom: 20px;
+}
+
+.section-heading p {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+#products {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(217,164,65,.06),
+            transparent 35%
+        ),
+        #0b0b0b;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+}
+
+.product-card {
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #0b0b0b
+        );
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    overflow: hidden;
+
+    transition: .4s;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(217,164,65,.45);
+    box-shadow: 0 25px 50px rgba(0,0,0,.5);
+}
+
+.product-image {
+    position: relative;
+
+    width: 100%;
+    aspect-ratio: 1 / 1.22;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle,
+            #252525,
+            #111 65%,
+            #080808
+        );
+
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 15px;
+    transition: .5s;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.04);
+}
+
+.product-info {
+    padding: 23px 25px 28px;
+}
+
+.product-number {
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 3px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.product-name {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    margin-bottom: 7px;
+}
+
+.product-description {
+    color: #888;
+    font-size: 12px;
+    line-height: 1.7;
+    min-height: 42px;
+    margin-bottom: 17px;
+}
+
+.product-price {
+    color: var(--gold-light);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.product-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding-top: 16px;
+
+    border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.weight {
+    color: #bbb;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.order-link {
+    border: none;
+    background: transparent;
+    color: var(--gold-light);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+
+    transition: .3s;
+}
+
+.order-link:hover {
+    letter-spacing: 2px;
+}
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+.story {
+    background: #080808;
+}
+
+.story-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.story-image {
+    position: relative;
+}
+
+.story-image::before {
+    content: "";
+
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    width: 100%;
+    height: 100%;
+
+    border: 1px solid var(--border);
+}
+
+.story-image img {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-height: 650px;
+    object-fit: contain;
+
+    background: #101010;
+}
+
+.story-content h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(44px,5vw,68px);
+    line-height: .95;
+    margin-bottom: 25px;
+}
+
+.story-content h2 span {
+    color: var(--gold);
+}
+
+.story-content p {
+    color: #999;
+    font-size: 14px;
+    line-height: 2;
+    margin-bottom: 18px;
+}
+
+.feature-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.feature {
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.07);
+}
+
+.feature strong {
+    display: block;
+    color: var(--gold-light);
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.feature span {
+    color: #777;
+    font-size: 11px;
+}
+
+/* =========================================================
+   WHY
+========================================================= */
+
+.why {
+    background: #101010;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
+}
+
+.why-card {
+    padding: 35px 25px;
+    text-align: center;
+
+    border: 1px solid rgba(255,255,255,.07);
+
+    transition: .3s;
+}
+
+.why-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--border);
+}
+
+.why-icon {
+    width: 60px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: auto auto 20px;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    color: var(--gold-light);
+
+    font-size: 25px;
+}
+
+.why-card h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.why-card p {
+    color: #858585;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta {
+    text-align: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(217,164,65,.14),
+            transparent 45%
+        ),
+        #080808;
+}
+
+.cta h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(45px,6vw,78px);
+    line-height: .95;
+    margin-bottom: 20px;
+}
+
+.cta h2 span {
+    color: var(--gold);
+}
+
+.cta p {
+    color: #999;
+    max-width: 550px;
+    margin: 0 auto 30px;
+    line-height: 1.8;
+}
+
+/* =========================================================
+   CONTACT
+========================================================= */
+
+.contact {
+    background: #0d0d0d;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+}
+
+.contact h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 55px;
+    margin-bottom: 20px;
+}
+
+.contact-text {
+    color: #888;
+    font-size: 13px;
+    line-height: 1.9;
+    margin-bottom: 30px;
+}
+
+.contact-items {
+    display: flex;
+    flex-direction: column;
+    gap: 17px;
+}
+
+.contact-item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.contact-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+
+    color: var(--gold-light);
+}
+
+.contact-item span {
+    display: block;
+
+    color: #666;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.contact-item strong {
+    color: #ddd;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.contact-item a:hover {
+    color: var(--gold-light);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+
+    width: 100%;
+
+    background: #141414;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    color: white;
+
+    padding: 16px;
+
+    outline: none;
+
+    font-size: 12px;
+}
+
+.contact-form textarea {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--gold);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    padding: 30px 0;
+
+    border-top: 1px solid rgba(255,255,255,.07);
+
+    background: #050505;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.footer-brand {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 28px;
+    color: var(--gold-light);
+}
+
+.copyright {
+    color: #555;
+    font-size: 10px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: #777;
+    font-size: 10px;
+}
+
+.footer-links a:hover {
+    color: var(--gold);
+}
+
+/* =========================================================
+   ORDER MODAL
+========================================================= */
+
+.order-modal {
+
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 5000;
+
+    background: rgba(0,0,0,.82);
+
+    backdrop-filter: blur(8px);
+
+    padding: 25px;
+
+    overflow-y: auto;
+}
+
+.order-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-box {
+
+    width: min(600px,100%);
+
+    background:
+        linear-gradient(
+            145deg,
+            #1a1a1a,
+            #0c0c0c
+        );
+
+    border: 1px solid var(--border);
+
+    box-shadow: 0 30px 80px rgba(0,0,0,.8);
+
+    padding: 30px;
+
+    position: relative;
+}
+
+.order-header {
+
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding-bottom: 22px;
+
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.order-small-title {
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 3px;
+}
+
+.order-header h2 {
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 38px;
+
+    margin-top: 5px;
+}
+
+.close-order {
+
+    background: transparent;
+
+    border: none;
+
+    color: #aaa;
+
+    font-size: 30px;
+
+    line-height: 1;
+}
+
+.close-order:hover {
+    color: var(--gold-light);
+}
+
+.order-field {
+    margin-bottom: 17px;
+}
+
+.order-field label {
+
+    display: block;
+
+    color: #aaa;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 7px;
+}
+
+.order-field input,
+.order-field textarea,
+.order-field select {
+
+    width: 100%;
+
+    padding: 13px;
+
+    background: #111;
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    color: white;
+
+    outline: none;
+}
+
+.order-field textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+.order-field input:focus,
+.order-field textarea:focus,
+.order-field select:focus {
+    border-color: var(--gold);
+}
+
+.quantity-control {
+
+    display: flex;
+
+    width: 150px;
+
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.quantity-control button {
+
+    width: 45px;
+
+    border: none;
+
+    background: #181818;
+
+    color: var(--gold-light);
+
+    font-size: 20px;
+}
+
+.quantity-control input {
+
+    width: 60px;
+
+    text-align: center;
+
+    border: none;
+
+    border-left: 1px solid rgba(255,255,255,.08);
+
+    border-right: 1px solid rgba(255,255,255,.08);
+}
+
+.order-summary {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 18px;
+
+    margin: 20px 0;
+
+    background: rgba(217,164,65,.06);
+
+    border: 1px solid var(--border);
+}
+
+.order-summary span {
+    color: #aaa;
+    font-size: 12px;
+}
+
+.order-summary strong {
+    color: var(--gold-light);
+    font-size: 22px;
+}
+
+.contact-title {
+
+    text-align: center;
+
+    color: #aaa;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 15px;
+}
+
+.order-contact-buttons {
+
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 10px;
+}
+
+.contact-option {
+
+    padding: 15px 8px;
+
+    border: 1px solid rgba(255,255,255,.1);
+
+    background: #151515;
+
+    color: white;
+
+    transition: .3s;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.contact-option:hover {
+    transform: translateY(-3px);
+}
+
+.contact-option.whatsapp:hover {
+    border-color: #25D366;
+    color: #25D366;
+}
+
+.contact-option.email:hover {
+    border-color: #ea4335;
+    color: #ea4335;
+}
+
+.contact-option.call:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+}
+
+.contact-option.sms:hover {
+    border-color: #4285f4;
+    color: #4285f4;
+}
+
+.contact-icon {
+    font-size: 20px;
+}
+
+.order-note {
+
+    color: #666;
+
+    font-size: 10px;
+
+    line-height: 1.6;
+
+    text-align: center;
+
+    margin-top: 18px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+
+    position: fixed;
+
+    bottom: 25px;
+    left: 50%;
+
+    transform:
+        translate(-50%,120px);
+
+    background: #1b1b1b;
+
+    border: 1px solid var(--border);
+
+    color: white;
+
+    padding: 14px 22px;
+
+    z-index: 9000;
+
+    font-size: 12px;
+
+    transition: .4s;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.5);
+}
+
+.toast.show {
+    transform: translate(-50%,0);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px) {
+
+    .hero-content {
+        width: 55%;
+    }
+
+    .hero-product {
+        width: 47vw;
+        right: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .why-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:760px) {
+
+    .navbar {
+        height: 72px;
+    }
+
+    .brand-name {
+        font-size: 32px;
+    }
+
+    nav {
+
+        position: absolute;
+
+        top: 72px;
+        left: 0;
+
+        width: 100%;
+
+        display: none;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 25px;
+
+        background: rgba(8,8,8,.98);
+
+        gap: 22px;
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    .menu-button {
+        display: block;
+    }
+
+    .hero {
+
+        min-height: auto;
+
+        padding: 145px 0 70px;
+    }
+
+    .hero-content {
+
+        width: 100%;
+
+        text-align: center;
+
+        padding-top: 0;
+    }
+
+    .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-product {
+
+        position: relative;
+
+        width: min(420px,90%);
+
+        right: auto;
+        bottom: auto;
+
+        margin: 45px auto -70px;
+
+        animation: none;
+    }
+
+    section {
+        padding: 80px 0;
+    }
+
+    .product-grid,
+    .why-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .story-grid,
+    .contact-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .story-image {
+        order: 2;
+    }
+
+    .story-content {
+        order: 1;
+    }
+
+    .footer-content {
+
+        flex-direction: column;
+
+        gap: 15px;
+
+        text-align: center;
+    }
+
+    .order-contact-buttons {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:500px) {
+
+    .container {
+        width: 90%;
+    }
+
+    .hero h1 {
+        font-size: 55px;
+    }
+
+    .feature-list,
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .order-box {
+        padding: 22px;
+    }
+
+    .order-header h2 {
+        font-size: 32px;
+    }
+
+}
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+.image-error {
+
+    display: none;
+
+    position: absolute;
+
+    inset: 20px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    border: 1px dashed rgba(217,164,65,.3);
+
+    color: #888;
+}
+
+.image-error strong {
+    color: var(--gold);
+    margin-bottom: 8px;
+}
+
+.image-error small {
+    max-width: 240px;
+    line-height: 1.5;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="container navbar">
+
+        <a href="#home" class="brand">
+
+            <div class="brand-name">
+                Ojaswi
+            </div>
+
+            <div class="brand-subtitle">
+                PREMIUM
+            </div>
+
+        </a>
+
+        <nav id="mainNav">
+
+            <a href="#home">Home</a>
+
+            <a href="#products">Products</a>
+
+            <a href="#about">About</a>
+
+            <a href="#why">Why Ojaswi</a>
+
+            <a href="#contact" class="nav-order">
+                Contact
+            </a>
+
+        </nav>
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open menu">
+
+            ☰
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     ORDER MODAL
+========================================================= -->
+
+<div
+    class="order-modal"
+    id="orderModal">
+
+    <div class="order-box">
+
+        <div class="order-header">
+
+            <div>
+
+                <span class="order-small-title">
+                    OJASWI PREMIUM
+                </span>
+
+                <h2>
+                    Place Your Order
+                </h2>
+
+            </div>
+
+            <button
+                type="button"
+                class="close-order"
+                onclick="closeOrderModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+        <form id="orderForm">
+
+            <div class="order-field">
+
+                <label for="orderName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="orderName"
+                    placeholder="Enter your full name"
+                    required>
+
+            </div>
+
+            <div class="order-field">
+
+                <label for="orderPhone">
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="orderPhone"
+                    placeholder="10 digit mobile number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required>
+
+            </div>
+
+            <div class="order-field">
+
+                <label for="orderAddress">
+                    Delivery Address
+                </label>
+
+                <textarea
+                    id="orderAddress"
+                    placeholder="Enter your complete delivery address"
+                    required></textarea>
+
+            </div>
+
+            <div class="order-field">
+
+                <label for="orderProduct">
+                    Product
+                </label>
+
+                <select
+                    id="orderProduct"
+                    onchange="updateOrderTotal()"
+                    required>
+
+                    <option value="">
+                        Select a product
+                    </option>
+
+                    <option value="Garam Masala">
+                        Garam Masala - ₹199
+                    </option>
+
+                    <option value="Kitchen King Masala">
+                        Kitchen King Masala - ₹199
+                    </option>
+
+                    <option value="Sabji Masala">
+                        Sabji Masala - ₹199
+                    </option>
+
+                    <option value="Chaat Masala">
+                        Chaat Masala - ₹199
+                    </option>
+
+                    <option value="Biryani Masala">
+                        Biryani Masala - ₹199
+                    </option>
+
+                    <option value="Pav Bhaji Masala">
+                        Pav Bhaji Masala - ₹199
+                    </option>
+
+                    <option value="Misal Masala">
+                        Misal Masala - ₹199
+                    </option>
+
+                    <!-- NEW PRODUCT 8 -->
+
+                    <option value="Premium Spice 08">
+                        Premium Spice 08 - ₹199
+                    </option>
+
+                    <!-- NEW PRODUCT 9 -->
+
+                    <option value="Premium Spice 09">
+                        Premium Spice 09 - ₹199
+                    </option>
+
+                    <!-- NEW PRODUCT 10 -->
+
+                    <option value="Premium Spice 10">
+                        Premium Spice 10 - ₹199
+                    </option>
+
+                    <!-- NEW PRODUCT 11 -->
+
+                    <option value="Premium Spice 11">
+                        Premium Spice 11 - ₹199
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="order-field">
+
+                <label>
+                    Quantity
+                </label>
+
+                <div class="quantity-control">
+
+                    <button
+                        type="button"
+                        onclick="changeQuantity(-1)">
+
+                        −
+
+                    </button>
+
+                    <input
+                        type="number"
+                        id="orderQuantity"
+                        value="1"
+                        min="1"
+                        max="50"
+                        readonly>
+
+                    <button
+                        type="button"
+                        onclick="changeQuantity(1)">
+
+                        +
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="order-summary">
+
+                <span>
+                    Estimated Total
+                </span>
+
+                <strong id="orderTotal">
+                    ₹0
+                </strong>
+
+            </div>
+
+            <div class="contact-title">
+
+                Choose how you want to order
+
+            </div>
+
+            <div class="order-contact-buttons">
+
+                <button
+                    type="button"
+                    class="contact-option whatsapp"
+                    onclick="orderThroughWhatsApp()">
+
+                    <span class="contact-icon">
+                        💬
+                    </span>
+
+                    WhatsApp
+
+                </button>
+
+                <button
+                    type="button"
+                    class="contact-option email"
+                    onclick="orderThroughEmail()">
+
+                    <span class="contact-icon">
+                        ✉
+                    </span>
+
+                    Gmail
+
+                </button>
+
+                <button
+                    type="button"
+                    class="contact-option call"
+                    onclick="orderThroughCall()">
+
+                    <span class="contact-icon">
+                        📞
+                    </span>
+
+                    Call
+
+                </button>
+
+                <button
+                    type="button"
+                    class="contact-option sms"
+                    onclick="orderThroughSMS()">
+
+                    <span class="contact-icon">
+                        💬
+                    </span>
+
+                    Message
+
+                </button>
+
+            </div>
+
+            <p class="order-note">
+
+                Your order details will be prepared automatically
+                for the contact method you select.
+
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="toast"
+    id="toast">
+
+    Order information prepared successfully.
+
+</div>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section
+    class="hero"
+    id="home">
+
+    <div class="container">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                Premium Indian Spices
+            </div>
+
+            <h1>
+                The Taste<br>
+                of <span>Tradition.</span>
+            </h1>
+
+            <p class="hero-description">
+
+                Discover Ojaswi Premium — carefully crafted
+                spice blends made to bring authentic Indian
+                flavour, aroma and richness to every meal.
+
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#products"
+                    class="primary-button">
+
+                    Explore Collection
+
+                </a>
+
+                <a
+                    href="#products"
+                    class="secondary-button">
+
+                    Place an Order
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-product">
+
+            <img
+                src="./images/WhatsApp Image 2026-09-10 at 10.11.33 PM.jpeg"
+                alt="Ojaswi Premium Spice"
+                onerror="showImageError(this)">
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRODUCTS
+========================================================= -->
+
+<section id="products">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Our Collection
+            </div>
+
+            <h2>
+                Crafted for Every Kitchen
+            </h2>
+
+            <p>
+
+                Premium spice blends created to make
+                everyday cooking richer, more aromatic
+                and unforgettable.
+
+            </p>
+
+        </div>
+
+        <div class="product-grid">
+
+
+            <!-- PRODUCT 1 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.11.33 PM.jpeg"
+                        alt="Ojaswi Premium Garam Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        01 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Garam Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        A rich aromatic blend of traditional
+                        whole spices for deeply flavourful
+                        Indian dishes.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Garam Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 2 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.01.48 PM.jpeg"
+                        alt="Ojaswi Premium Kitchen King Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        02 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Kitchen King
+                    </h3>
+
+                    <p class="product-description">
+
+                        A versatile masala blend designed
+                        to add colour, warmth and character
+                        to everyday vegetables and gravies.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Kitchen King Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 3 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.02.02 PM.jpeg"
+                        alt="Ojaswi Premium Sabji Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        03 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Sabji Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        A balanced spice blend for delicious
+                        everyday vegetable preparations.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Sabji Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 4 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.04.46 PM.jpeg"
+                        alt="Ojaswi Premium Chaat Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        04 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Chaat Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        A tangy, aromatic blend that gives
+                        snacks, fruits and chaats an
+                        irresistible finishing touch.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Chaat Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 5 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.06.18 PM.jpeg"
+                        alt="Ojaswi Premium Biryani Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        05 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Biryani Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        An aromatic combination of spices
+                        crafted for rich, fragrant biryani.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Biryani Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 6 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.07.44 PM.jpeg"
+                        alt="Ojaswi Premium Pav Bhaji Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        06 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Pav Bhaji Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        A bold Maharashtrian-inspired blend
+                        made for rich, buttery pav bhaji.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Pav Bhaji Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- PRODUCT 7 -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-10 at 10.08.50 PM.jpeg"
+                        alt="Ojaswi Premium Misal Masala"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        07 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Misal Masala
+                    </h3>
+
+                    <p class="product-description">
+
+                        A vibrant spice blend for authentic,
+                        flavour-packed Maharashtrian misal.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Misal Masala')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =====================================================
+                 NEW PRODUCT 8
+            ====================================================== -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-25 at 5.23.33 PM.jpeg"
+                        alt="Ojaswi Premium Spice 08"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        08 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Premium Spice 08
+                    </h3>
+
+                    <p class="product-description">
+
+                        Premium Ojaswi spice product made
+                        to add rich aroma, flavour and
+                        authentic taste to every meal.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Premium Spice 08')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =====================================================
+                 NEW PRODUCT 9
+            ====================================================== -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-25 at 5.23.30 PM.jpeg"
+                        alt="Ojaswi Premium Spice 09"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        09 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Premium Spice 09
+                    </h3>
+
+                    <p class="product-description">
+
+                        Premium Ojaswi spice product made
+                        to add rich aroma, flavour and
+                        authentic taste to every meal.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Premium Spice 09')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =====================================================
+                 NEW PRODUCT 10
+            ====================================================== -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-25 at 5.23.31 PM.jpeg"
+                        alt="Ojaswi Premium Spice 10"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        10 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Premium Spice 10
+                    </h3>
+
+                    <p class="product-description">
+
+                        Premium Ojaswi spice product made
+                        to add rich aroma, flavour and
+                        authentic taste to every meal.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Premium Spice 10')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =====================================================
+                 NEW PRODUCT 11
+            ====================================================== -->
+
+            <article class="product-card">
+
+                <div class="product-image">
+
+                    <img
+                        src="./images/WhatsApp Image 2026-09-25 at 5.23.32 PM.jpeg"
+                        alt="Ojaswi Premium Spice 11"
+                        loading="lazy"
+                        onerror="showImageError(this)">
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-number">
+                        11 / PREMIUM
+                    </div>
+
+                    <h3 class="product-name">
+                        Premium Spice 11
+                    </h3>
+
+                    <p class="product-description">
+
+                        Premium Ojaswi spice product made
+                        to add rich aroma, flavour and
+                        authentic taste to every meal.
+
+                    </p>
+
+                    <div class="product-price">
+                        ₹199
+                    </div>
+
+                    <div class="product-bottom">
+
+                        <span class="weight">
+                            NET WEIGHT 500g
+                        </span>
+
+                        <button
+                            class="order-link"
+                            onclick="openOrderModal('Premium Spice 11')">
+
+                            ORDER →
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
+
+<section
+    class="story"
+    id="about">
+
+    <div class="container">
+
+        <div class="story-grid">
+
+            <div class="story-image">
+
+                <img
+                    src="./images/WhatsApp Image 2026-09-10 at 10.11.33 PM.jpeg"
+                    alt="Ojaswi Premium Packaging"
+                    loading="lazy"
+                    onerror="showImageError(this)">
+
+            </div>
+
+            <div class="story-content">
+
+                <div class="section-label">
+                    The Ojaswi Story
+                </div>
+
+                <h2>
+                    Tradition in
+                    <span>Every Blend.</span>
+                </h2>
+
+                <p>
+
+                    Ojaswi Premium is built around a simple
+                    idea — great food begins with great
+                    spices.
+
+                </p>
+
+                <p>
+
+                    Our carefully selected spice blends are
+                    designed to deliver the familiar aroma,
+                    warmth and depth of authentic Indian
+                    cooking.
+
+                </p>
+
+                <p>
+
+                    From everyday sabjis to festive biryanis,
+                    every Ojaswi blend is created to make
+                    cooking easier and every meal more
+                    memorable.
+
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature">
+
+                        <strong>
+                            Carefully Crafted
+                        </strong>
+
+                        <span>
+                            Balanced spice combinations
+                        </span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <strong>
+                            Rich Aroma
+                        </strong>
+
+                        <span>
+                            Designed for deep flavour
+                        </span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <strong>
+                            Everyday Versatility
+                        </strong>
+
+                        <span>
+                            Made for Indian kitchens
+                        </span>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <strong>
+                            Premium Range
+                        </strong>
+
+                        <span>
+                            Signature Ojaswi quality
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     WHY OJASWI
+========================================================= -->
+
+<section
+    class="why"
+    id="why">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="section-label">
+                Why Ojaswi
+            </div>
+
+            <h2>
+                Made for Better Cooking
+            </h2>
+
+            <p>
+
+                A premium spice experience without making
+                everyday cooking complicated.
+
+            </p>
+
+        </div>
+
+        <div class="why-grid">
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Authentic
+                </h3>
+
+                <p>
+                    Inspired by traditional Indian
+                    flavours and cooking styles.
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ◈
+                </div>
+
+                <h3>
+                    Aromatic
+                </h3>
+
+                <p>
+                    Carefully balanced blends created
+                    for rich aroma and flavour.
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ◆
+                </div>
+
+                <h3>
+                    Versatile
+                </h3>
+
+                <p>
+                    Perfect for everyday meals,
+                    snacks and special occasions.
+                </p>
+
+            </div>
+
+            <div class="why-card">
+
+                <div class="why-icon">
+                    ♢
+                </div>
+
+                <h3>
+                    Premium
+                </h3>
+
+                <p>
+                    Elegant packaging with a premium
+                    product experience.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CTA
+========================================================= -->
+
+<section class="cta">
+
+    <div class="container">
+
+        <div class="section-label">
+            Bring Ojaswi Home
+        </div>
+
+        <h2>
+
+            Make Every Meal<br>
+
+            <span>
+                Extraordinary.
+            </span>
+
+        </h2>
+
+        <p>
+
+            Looking for premium spice blends for your
+            home, shop or business? Get in touch with us
+            and place your order.
+
+        </p>
+
+        <a
+            href="#products"
+            class="primary-button">
+
+            Order Now
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<section
+    class="contact"
+    id="contact">
+
+    <div class="container">
+
+        <div class="contact-grid">
+
+            <div>
+
+                <div class="section-label">
+                    Get In Touch
+                </div>
+
+                <h2>
+                    Let's Talk
+                </h2>
+
+                <p class="contact-text">
+
+                    Interested in Ojaswi Premium spices?
+                    Send us your details and enquiry.
+                    You can also order directly through
+                    WhatsApp, phone, SMS or email.
+
+                </p>
+
+                <div class="contact-items">
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            ☎
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Phone
+                            </span>
+
+                            <strong>
+
+                                <a href="tel:+917620098478">
+                                    +91 7620098478
+                                </a>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            @
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Email
+                            </span>
+
+                            <strong>
+
+                                <a href="mailto:ojaswifoods@gamil.com">
+                                    ojaswifoods@gamil.com
+                                </a>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="contact-item">
+
+                        <div class="contact-icon">
+                            ◉
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Location
+                            </span>
+
+                            <strong>
+                                Maharashtra, India
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <form
+                class="contact-form"
+                id="contactForm">
+
+                <div class="form-row">
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Your Name"
+                        required>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="Phone Number"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        required>
+
+                </div>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address">
+
+                <input
+                    type="text"
+                    id="subject"
+                    placeholder="Product / Enquiry">
+
+                <textarea
+                    id="message"
+                    placeholder="Tell us what you are looking for..."
+                    required></textarea>
+
+                <button
+                    type="submit"
+                    class="primary-button">
+
+                    Send Enquiry
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="container footer-content">
+
+        <div class="footer-brand">
+            Ojaswi
+        </div>
+
+        <div class="copyright">
+
+            © 2026 Ojaswi Premium.
+            All Rights Reserved.
+
+        </div>
+
+        <div class="footer-links">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#products">
+                Products
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   CONTACT DETAILS
+========================================================= */
+
+const OJASWI_PHONE = "917620098478";
+
+const OJASWI_DISPLAY_PHONE = "+91 7620098478";
+
+const OJASWI_EMAIL = "ojaswifoods@gamil.com";
+
+
+/* =========================================================
+   PRODUCT PRICES
+========================================================= */
+
+const productPrices = {
+
+    "Garam Masala": 199,
+
+    "Kitchen King Masala": 199,
+
+    "Sabji Masala": 199,
+
+    "Chaat Masala": 199,
+
+    "Biryani Masala": 199,
+
+    "Pav Bhaji Masala": 199,
+
+    "Misal Masala": 199,
+
+    "Premium Spice 08": 199,
+
+    "Premium Spice 09": 199,
+
+    "Premium Spice 10": 199,
+
+    "Premium Spice 11": 199
+
+};
+
+
+/* =========================================================
+   MOBILE MENU
+========================================================= */
+
+const menuButton =
+    document.getElementById("menuButton");
+
+const mainNav =
+    document.getElementById("mainNav");
+
+
+menuButton.addEventListener(
+    "click",
+    function() {
+
+        mainNav.classList.toggle("active");
+
+    }
+);
+
+
+document
+    .querySelectorAll("nav a")
+    .forEach(function(link) {
+
+        link.addEventListener(
+            "click",
+            function() {
+
+                mainNav.classList.remove("active");
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+function showImageError(image) {
+
+    image.style.display = "none";
+
+    const errorBox =
+        image.parentElement.querySelector(
+            ".image-error"
+        );
+
+    if (errorBox) {
+
+        errorBox.style.display = "flex";
+
+    }
+
+}
+
+
+/* =========================================================
+   ORDER MODAL
+========================================================= */
+
+const orderModal =
+    document.getElementById("orderModal");
+
+
+function openOrderModal(productName = "") {
+
+    orderModal.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+    const productSelect =
+        document.getElementById("orderProduct");
+
+    if (productName) {
+
+        productSelect.value = productName;
+
+    }
+
+    document.getElementById("orderQuantity").value = 1;
+
+    updateOrderTotal();
+
+}
+
+
+function closeOrderModal() {
+
+    orderModal.classList.remove("active");
+
+    document.body.style.overflow = "";
+
+}
+
+
+orderModal.addEventListener(
+    "click",
+    function(event) {
+
+        if (event.target === orderModal) {
+
+            closeOrderModal();
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            closeOrderModal();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   QUANTITY
+========================================================= */
+
+function changeQuantity(change) {
+
+    const quantityInput =
+        document.getElementById("orderQuantity");
+
+    let quantity =
+        parseInt(quantityInput.value) || 1;
+
+    quantity += change;
+
+    if (quantity < 1) {
+        quantity = 1;
+    }
+
+    if (quantity > 50) {
+        quantity = 50;
+    }
+
+    quantityInput.value = quantity;
+
+    updateOrderTotal();
+
+}
+
+
+/* =========================================================
+   UPDATE TOTAL
+========================================================= */
+
+function updateOrderTotal() {
+
+    const product =
+        document.getElementById("orderProduct").value;
+
+    const quantity =
+        parseInt(
+            document.getElementById("orderQuantity").value
+        ) || 1;
+
+    const price =
+        productPrices[product] || 0;
+
+    const total =
+        price * quantity;
+
+    document.getElementById("orderTotal")
+        .textContent =
+        "₹" + total;
+
+}
+
+
+/* =========================================================
+   GET ORDER DATA
+========================================================= */
+
+function getOrderData() {
+
+    const name =
+        document.getElementById("orderName").value.trim();
+
+    const phone =
+        document.getElementById("orderPhone").value.trim();
+
+    const address =
+        document.getElementById("orderAddress").value.trim();
+
+    const product =
+        document.getElementById("orderProduct").value;
+
+    const quantity =
+        parseInt(
+            document.getElementById("orderQuantity").value
+        ) || 1;
+
+    const price =
+        productPrices[product] || 0;
+
+    const total =
+        price * quantity;
+
+
+    if (!name) {
+
+        alert("Please enter your full name.");
+
+        return null;
+
+    }
+
+
+    if (!/^[0-9]{10}$/.test(phone)) {
+
+        alert(
+            "Please enter a valid 10-digit phone number."
+        );
+
+        return null;
+
+    }
+
+
+    if (!address) {
+
+        alert("Please enter your delivery address.");
+
+        return null;
+
+    }
+
+
+    if (!product) {
+
+        alert("Please select a product.");
+
+        return null;
+
+    }
+
+
+    return {
+
+        name,
+        phone,
+        address,
+        product,
+        quantity,
+        price,
+        total
+
+    };
+
+}
+
+
+/* =========================================================
+   ORDER MESSAGE
+========================================================= */
+
+function createOrderMessage(order) {
+
+    return `
+Hello Ojaswi Premium,
+
+I would like to place an order.
+
+*Customer Details*
+Name: ${order.name}
+Phone: ${order.phone}
+
+*Product Details*
+Product: ${order.product}
+Quantity: ${order.quantity}
+Price per pack: ₹${order.price}
+Total: ₹${order.total}
+
+*Delivery Address*
+${order.address}
+
+Please confirm my order.
+
+Thank you.
+`;
+
+}
+
+
+/* =========================================================
+   WHATSAPP ORDER
+========================================================= */
+
+function orderThroughWhatsApp() {
+
+    const order =
+        getOrderData();
+
+    if (!order) {
+        return;
+    }
+
+    const message =
+        createOrderMessage(order);
+
+    const whatsappURL =
+        "https://wa.me/" +
+        OJASWI_PHONE +
+        "?text=" +
+        encodeURIComponent(message);
+
+    showToast(
+        "Opening WhatsApp..."
+    );
+
+    window.open(
+        whatsappURL,
+        "_blank"
+    );
+
+}
+
+
+/* =========================================================
+   EMAIL ORDER
+========================================================= */
+
+function orderThroughEmail() {
+
+    const order =
+        getOrderData();
+
+    if (!order) {
+        return;
+    }
+
+    const subject =
+        "New Ojaswi Order - " +
+        order.product;
+
+    const body =
+        createOrderMessage(order);
+
+    const emailURL =
+        "mailto:" +
+        OJASWI_EMAIL +
+        "?subject=" +
+        encodeURIComponent(subject) +
+        "&body=" +
+        encodeURIComponent(body);
+
+    showToast(
+        "Opening email..."
+    );
+
+    window.location.href =
+        emailURL;
+
+}
+
+
+/* =========================================================
+   CALL
+========================================================= */
+
+function orderThroughCall() {
+
+    const order =
+        getOrderData();
+
+    if (!order) {
+        return;
+    }
+
+    showToast(
+        "Opening phone dialer..."
+    );
+
+    window.location.href =
+        "tel:+" +
+        OJASWI_PHONE;
+
+}
+
+
+/* =========================================================
+   SMS
+========================================================= */
+
+function orderThroughSMS() {
+
+    const order =
+        getOrderData();
+
+    if (!order) {
+        return;
+    }
+
+    const message =
+        createOrderMessage(order);
+
+    const smsURL =
+        "sms:+" +
+        OJASWI_PHONE +
+        "?body=" +
+        encodeURIComponent(message);
+
+    showToast(
+        "Opening messages..."
+    );
+
+    window.location.href =
+        smsURL;
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.textContent =
+        message;
+
+    toast.classList.add("show");
+
+    setTimeout(
+        function() {
+
+            toast.classList.remove("show");
+
+        },
+        2500
+    );
+
+}
+
+
+/* =========================================================
+   CONTACT FORM
+========================================================= */
+
+document
+    .getElementById("contactForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
+
+            const phone =
+                document
+                    .getElementById("phone")
+                    .value
+                    .trim();
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+            const subject =
+                document
+                    .getElementById("subject")
+                    .value
+                    .trim();
+
+            const message =
+                document
+                    .getElementById("message")
+                    .value
+                    .trim();
+
+            if (
+                !/^[0-9]{10}$/.test(phone)
+            ) {
+
+                alert(
+                    "Please enter a valid 10-digit phone number."
+                );
+
+                return;
+
+            }
+
+            const emailSubject =
+                subject ||
+                "Ojaswi Website Enquiry";
+
+            const emailBody = `
+
+Hello Ojaswi Premium,
+
+I have an enquiry.
+
+Name: ${name}
+
+Phone: ${phone}
+
+Email: ${email}
+
+Product / Enquiry:
+${subject}
+
+Message:
+${message}
+
+Thank you.
+`;
+
+            const mailto =
+                "mailto:" +
+                OJASWI_EMAIL +
+                "?subject=" +
+                encodeURIComponent(
+                    emailSubject
+                ) +
+                "&body=" +
+                encodeURIComponent(
+                    emailBody
+                );
+
+            showToast(
+                "Opening your email application..."
+            );
+
+            window.location.href =
+                mailto;
+
+        }
+    );
+
+
+/* =========================================================
+   INITIAL TOTAL
+========================================================= */
+
+updateOrderTotal();
+
+</script>
+
+</body>
+</html>

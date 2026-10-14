@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/register", "destination": "/login.html" },
+    { "source": "/verify-otp", "destination": "/login.html" },
+    { "source": "/account", "destination": "/account.html" },
+    { "source": "/orders", "destination": "/orders.html" },
+    { "source": "/checkout", "destination": "/checkout.html" },
+    { "source": "/order-confirmation", "destination": "/order-confirmation.html" },
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/admin/:match*", "destination": "/admin.html" },
+    { "source": "/contact-us", "destination": "/contact-us.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
+    { "source": "/terms-and-conditions", "destination": "/terms-and-conditions.html" },
+    { "source": "/refund-policy", "destination": "/refund-policy.html" },
+    { "source": "/shipping-policy", "destination": "/shipping-policy.html" },
+    { "source": "/cancellation-policy", "destination": "/cancellation-policy.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+      ]
+    }
+  ]
+}

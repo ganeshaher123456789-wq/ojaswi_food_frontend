@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Ojaswi Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ecom.css">
+    <!-- Universal Storage & Navigation Sandbox Polyfill -->
+    <script>
+    (function() {
+        const mem = { local: {}, session: {} };
+        function makeMockStorage(type) {
+            const store = mem[type];
+            return {
+                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                setItem: function(k, v) { store[k] = String(v); },
+                removeItem: function(k) { delete store[k]; },
+                clear: function() { for (let k in store) delete store[k]; },
+                key: function(i) { return Object.keys(store)[i] || null; },
+                get length() { return Object.keys(store).length; }
+            };
+        }
+        let ls, ss;
+        try {
+            window.localStorage.setItem("__test__", "1");
+            window.localStorage.removeItem("__test__");
+            ls = window.localStorage;
+        } catch(e) {
+            ls = makeMockStorage("local");
+            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
+        }
+        try {
+            window.sessionStorage.setItem("__test__", "1");
+            window.sessionStorage.removeItem("__test__");
+            ss = window.sessionStorage;
+        } catch(e) {
+            ss = makeMockStorage("session");
+            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
+        }
+        window.safeLocalStorage = ls;
+        window.safeSessionStorage = ss;
+        window.safeNavigate = function(url, fallbackHash) {
+            if (!url || typeof url !== "string" || !url.trim()) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                return;
+            }
+            try {
+                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                if (isAbout) {
+                    if (window.top && window.top !== window) {
+                        try { window.top.location.href = url; return; } catch(_) {}
+                    }
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                    return;
+                }
+                window.location.href = url;
+            } catch(e) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+            }
+        };
+    })();
+    </script>
+    <!-- Razorpay Official Checkout SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <style>
+    @media (max-width: 800px) {
+        #checkoutLayoutGrid {
+            grid-template-columns: 1fr !important;
+            gap: 25px !important;
+        }
+        main.container {
+            padding: 20px 0 60px !important;
+            width: 92% !important;
+        }
+        .container.navbar {
+            padding: 0 15px !important;
+        }
+        .order-field input, .order-field textarea, .order-field select {
+            font-size: 15px !important;
+        }
+    }
+    </style>
+</head>
+<body style="background: var(--black); color: var(--white); min-height: 100vh;">
+
+    <!-- Top Navigation Header -->
+    <header style="position: relative; background: #0a0a0a;">
+        <div class="container navbar">
+            <a href="/" class="brand">
+                <div class="brand-name">Ojaswi</div>
+                <div class="brand-subtitle">PREMIUM</div>
+            </a>
+            <div>
+                <a href="/" class="nav-order" style="border-radius: 4px;">← Continue Shopping</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 45px 0 80px;">
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px;">
+            <span class="section-label">Order Fulfillment</span>
+            <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin-top: 5px;">
+                Secure Checkout
+            </h1>
+            <p style="color: #888; font-size: 14px;">Direct dispatch from Ojaswi Foods, 52/2 Malegaon - 423203.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px;" id="checkoutLayoutGrid">
+            <!-- Left Column: Checkout Details Form -->
+            <div>
+                <form id="checkoutForm">
+                    <!-- Step 1: Customer Contact -->
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold-light); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span>1.</span> Customer Details
+                        </h2>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="order-field" style="margin-bottom: 0;">
+                                <label>Full Name *</label>
+                                <input type="text" id="custName" placeholder="Enter recipient full name" required>
+                            </div>
+                            <div class="order-field" style="margin-bottom: 0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <label style="margin-bottom: 0;">Mobile Number *</label>
+                                    <span id="custPhoneBadge" style="display: none; font-size: 11px;"></span>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <span style="background: #1c1c1c; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 12px 14px; color: var(--gold-light); font-weight: 600;">+91</span>
+                                    <input type="tel" id="custPhone" placeholder="Enter 10-digit number" maxlength="16" required style="flex: 1;">
+                                    <button type="button" id="btnVerifyPhoneCheckout" class="secondary-button" style="display: none; font-size: 11px; padding: 0 12px; white-space: nowrap; border-color: var(--gold); color: var(--gold-light);" onclick="triggerCheckoutOtp()">
+                                        ⚡ Verify OTP
+                                    </button>
+                                </div>
+                                <div id="custPhoneValidationMsg" style="font-size: 11px; min-height: 18px; margin-top: 4px; color: #888;"></div>
+                            </div>
+                        </div>
+                        <div class="order-field" style="margin-bottom: 0;">
+                            <label>Email Address (For Invoice &amp; Tracking)</label>
+                            <input type="email" id="custEmail" placeholder="your.name@example.com">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Delivery Address -->
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold-light); margin: 0; display: flex; align-items: center; gap: 10px;">
+                                <span>2.</span> Delivery Address
+                            </h2>
+                            <div id="savedAddressSelector" style="display: none;">
+                                <select id="selectSavedAddr" style="background: #1c1c1c; color: var(--gold-light); border: 1px solid rgba(217,164,65,0.3); padding: 6px 12px; font-size: 12px; border-radius: 4px;">
+                                    <option value="">-- Choose Saved Address --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="order-field">
+                            <label>House / Flat / Building No. *</label>
+                            <input type="text" id="addrHouse" placeholder="e.g. Flat 301, Ojaswi Heights" required>
+                        </div>
+                        <div class="order-field">
+                            <label>Street / Area / Colony / Landmark *</label>
+                            <input type="text" id="addrStreet" placeholder="e.g. Camp Road, Near Market Yard" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                            <div class="order-field" style="margin-bottom: 0;">
+                                <label>City *</label>
+                                <input type="text" id="addrCity" placeholder="City" value="Malegaon" required>
+                            </div>
+                            <div class="order-field" style="margin-bottom: 0;">
+                                <label>State *</label>
+                                <input type="text" id="addrState" value="Maharashtra" required>
+                            </div>
+                        </div>
+                        <div class="order-field" style="margin-bottom: 0;">
+                            <label>6-Digit PIN Code *</label>
+                            <input type="text" id="addrPincode" placeholder="e.g. 423203" value="423203" pattern="[1-9][0-9]{5}" maxlength="6" required>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Payment Method Selection -->
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold-light); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                            <span>3.</span> Payment Method
+                        </h2>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Option 1: Cash on Delivery -->
+                            <label style="display: flex; align-items: flex-start; gap: 14px; background: #181818; border: 1px solid rgba(217,164,65,0.25); border-radius: 6px; padding: 16px; cursor: pointer;">
+                                <input type="radio" name="paymentMethod" value="Cash on Delivery" checked style="margin-top: 4px; accent-color: var(--gold);">
+                                <div>
+                                    <div style="font-weight: 700; color: #fff; font-size: 15px;">💵 Cash on Delivery (COD)</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Pay with cash or UPI upon package arrival at your doorstep.</div>
+                                </div>
+                            </label>
+
+                            <!-- Option 2: Online Payment via Razorpay -->
+                            <label style="display: flex; align-items: flex-start; gap: 14px; background: #181818; border: 1px solid rgba(217,164,65,0.25); border-radius: 6px; padding: 16px; cursor: pointer;">
+                                <input type="radio" name="paymentMethod" value="Online Payment" style="margin-top: 4px; accent-color: var(--gold);">
+                                <div>
+                                    <div style="font-weight: 700; color: var(--gold-light); font-size: 15px;">⚡ Online Payment (UPI, Cards, NetBanking)</div>
+                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Instant secure checkout via Razorpay (Google Pay, PhonePe, Paytm, Cards).</div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Notes / Special Instructions -->
+                    <div class="order-field">
+                        <label>Order Notes / Delivery Instructions (Optional)</label>
+                        <textarea id="orderNotes" placeholder="Any landmark or delivery instructions..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="btnPlaceOrder" class="primary-button" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 700; letter-spacing: 1px;">
+                        CONFIRM &amp; PLACE ORDER
+                    </button>
+
+                    <!-- Direct Confirmation Channels: WhatsApp, Email, SMS -->
+                    <div style="text-align: center; color: #aaa; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin: 24px 0 12px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span style="height: 1px; width: 30px; background: rgba(255,255,255,0.15);"></span>
+                        <span>Or Confirm Order Directly Via</span>
+                        <span style="height: 1px; width: 30px; background: rgba(255,255,255,0.15);"></span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px;">
+                        <!-- Confirm via WhatsApp -->
+                        <button type="button" class="contact-option whatsapp" onclick="confirmCheckoutViaWhatsApp()" title="Confirm Order via WhatsApp" style="padding: 12px 6px; border: 1px solid rgba(46,204,113,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                            <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
+                                <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-whatsapp.svg'">
+                            </span>
+                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">WhatsApp</span>
+                            <span style="font-size: 10px; color: #2ecc71; font-weight: 500;">Instant Confirm</span>
+                        </button>
+
+                        <!-- Confirm via Email -->
+                        <button type="button" class="contact-option email" onclick="confirmCheckoutViaEmail()" title="Confirm Order via Email" style="padding: 12px 6px; border: 1px solid rgba(52,152,219,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                            <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
+                                <img src="images/icon-email.svg" alt="Email" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-email.svg'">
+                            </span>
+                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Email</span>
+                            <span style="font-size: 10px; color: #3498db; font-weight: 500;">Official Copy</span>
+                        </button>
+
+                        <!-- Confirm via SMS -->
+                        <button type="button" class="contact-option sms" onclick="confirmCheckoutViaSMS()" title="Confirm Order via SMS" style="padding: 12px 6px; border: 1px solid rgba(243,156,18,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                            <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
+                                <img src="images/icon-sms.svg" alt="Send SMS" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-sms.svg'">
+                            </span>
+                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Send SMS</span>
+                            <span style="font-size: 10px; color: #f39c12; font-weight: 500;">Text Message</span>
+                        </button>
+                    </div>
+
+                    <p style="color: #777; font-size: 10.5px; line-height: 1.5; text-align: center; margin-top: 8px;">
+                        🔒 All options include your delivery address &amp; cart items for direct confirmation from Malegaon unit.
+                    </p>
+                </form>
+            </div>
+
+            <!-- Right Column: Order Summary Card -->
+            <div>
+                <div style="background: #141414; border: 1px solid var(--border); border-radius: 8px; padding: 25px; position: sticky; top: 100px;">
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold-light); margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 12px;">
+                        Order Summary
+                    </h3>
+
+                    <div id="checkoutItemsList" style="display: flex; flex-direction: column; gap: 14px; max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                        <!-- Items injected dynamically -->
+                    </div>
+
+                    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 15px; font-size: 14px; display: flex; flex-direction: column; gap: 8px;">
+                        <div style="display: flex; justify-content: space-between; color: #aaa;">
+                            <span>Subtotal:</span>
+                            <span id="summarySubtotal">₹0</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #2ecc71;">
+                            <span>Shipping / Delivery:</span>
+                            <span>FREE</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 20px; font-weight: 700; color: var(--gold-light); border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; margin-top: 6px;">
+                            <span>Total Amount:</span>
+                            <span id="summaryTotal">₹0</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px; background: #0a0a0a; border: 1px solid rgba(217,164,65,0.2); border-radius: 6px; padding: 15px; font-size: 11px; color: #777; line-height: 1.6;">
+                        🛡️ <strong>100% Authentic Ojaswi Guarantee:</strong><br>
+                        Freshly packed at 52/2 Malegaon 423203.<br>
+                        FSSAI Lic. 3025120612245599988
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Checkout Mobile Number OTP Verification -->
+        <div id="checkoutOtpModal" class="modal" style="display: none; align-items: center; justify-content: center; z-index: 10000; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);">
+            <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; width: 100%; max-width: 420px; padding: 30px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+                <button type="button" class="modal-close" onclick="closeCheckoutOtpModal()" style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase;">Security Verification</div>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold-light); margin-top: 4px;">Verify Mobile Number</h3>
+                    <p style="font-size: 13px; color: #aaa; margin-top: 6px;">
+                        Enter the 6-digit verification code sent to<br>
+                        <strong id="checkoutOtpTarget" style="color: var(--gold-light); font-size: 15px;"></strong>
+                    </p>
+                </div>
+
+                <!-- Dev OTP Card (if in dev/console mode) -->
+                <div id="checkoutDevOtpCard" style="display: none; background: rgba(217,164,65,0.12); border: 1px solid var(--gold); border-radius: 6px; padding: 12px; margin-bottom: 18px; text-align: center;">
+                    <div style="font-size: 10px; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; font-weight: 600;">⚡ Verification Code</div>
+                    <div style="font-size: 24px; font-weight: 700; color: #fff; letter-spacing: 5px; font-family: monospace; margin: 4px 0;" id="checkoutDevOtpVal">------</div>
+                    <button type="button" class="primary-button" style="padding: 5px 14px; font-size: 11px; font-weight: 700; margin-top: 4px;" onclick="autoFillCheckoutOtp()">
+                        ⚡ Auto-fill Code &amp; Continue
+                    </button>
+                </div>
+
+                <!-- 6 OTP Boxes -->
+                <div class="otp-inputs" id="checkoutOtpContainer" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 20px;">
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="0" autofocus>
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="1">
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="2">
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="3">
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="4">
+                    <input type="text" maxlength="1" class="otp-box checkout-otp" data-idx="5">
+                </div>
+
+                <button type="button" id="btnConfirmCheckoutOtp" class="primary-button" style="width: 100%; padding: 12px; font-weight: 700;" onclick="handleVerifyCheckoutOtp()">
+                    VERIFY MOBILE &amp; PROCEED
+                </button>
+
+                <div class="resend-timer" style="margin-top: 15px; text-align: center; font-size: 12px; color: #888;">
+                    <span id="checkoutTimerText">Resend code in <strong id="checkoutSecondsLeft" style="color: var(--gold);">60</strong>s</span>
+                    <button type="button" id="btnCheckoutResend" class="resend-btn" style="display: none; background: none; border: none; color: var(--gold); text-decoration: underline; cursor: pointer;" onclick="triggerCheckoutOtp()">Resend OTP</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Confirmed Success Modal with WhatsApp, Email & SMS Options -->
+        <div id="orderSuccessModal" class="modal" style="display: none; align-items: center; justify-content: center; z-index: 10000; position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(6px); padding: 20px;">
+            <div style="background: #141414; border: 1px solid var(--gold); border-radius: 10px; width: 100%; max-width: 480px; padding: 30px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.9); text-align: center;">
+                <div style="width: 65px; height: 65px; border-radius: 50%; background: rgba(46, 204, 113, 0.15); border: 2px solid #2ecc71; color: #2ecc71; font-size: 32px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                    ✓
+                </div>
+                <div style="font-size: 11px; letter-spacing: 3px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">Order Placed Successfully</div>
+                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;" id="successModalOrderId">#OJ------</h3>
+                <p style="font-size: 13px; color: #bbb; margin-bottom: 20px;" id="successModalMsg">
+                    Your spice order has been recorded for dispatch from Malegaon 423203.
+                </p>
+
+                <!-- Channels: WhatsApp, Email, SMS -->
+                <div style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 16px; margin-bottom: 22px;">
+                    <div style="font-size: 11px; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">
+                        📲 Confirm Order &amp; Get Dispatch Updates:
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
+                        <a id="btnSuccessWhatsApp" target="_blank" class="contact-option whatsapp" style="padding: 10px 6px; border: 1px solid rgba(46,204,113,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
+                            <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 26px; height: 26px;">
+                            <span style="font-size: 11px; font-weight: 600;">WhatsApp</span>
+                            <span style="font-size: 9px; color: #2ecc71;">Direct Chat</span>
+                        </a>
+                        <a id="btnSuccessEmail" class="contact-option email" style="padding: 10px 6px; border: 1px solid rgba(52,152,219,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
+                            <img src="images/icon-email.svg" alt="Email" style="width: 26px; height: 26px;">
+                            <span style="font-size: 11px; font-weight: 600;">Email</span>
+                            <span style="font-size: 9px; color: #3498db;">Official Copy</span>
+                        </a>
+                        <a id="btnSuccessSMS" class="contact-option sms" style="padding: 10px 6px; border: 1px solid rgba(243,156,18,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
+                            <img src="images/icon-sms.svg" alt="SMS" style="width: 26px; height: 26px;">
+                            <span style="font-size: 11px; font-weight: 600;">Send SMS</span>
+                            <span style="font-size: 9px; color: #f39c12;">Text Message</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <a id="btnSuccessReceipt" href="#" class="primary-button" style="flex: 1; padding: 12px; font-size: 13px; text-align: center; text-decoration: none;">
+                        📄 View Receipt
+                    </a>
+                    <a href="/orders" class="secondary-button" style="flex: 1; padding: 12px; font-size: 13px; text-align: center; text-decoration: none;">
+                        📦 My Orders
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/ojaswi.js"></script>
+    <script>
+        let savedAddresses = [];
+        let isPhoneVerified = false;
+        let verifiedPhone = "";
+        let currentCheckoutDevOtp = "";
+        let checkoutResendInterval = null;
+        let pendingOrderSubmission = false;
+
+        const custPhoneInput = document.getElementById("custPhone");
+        const phoneValidationMsg = document.getElementById("custPhoneValidationMsg");
+        const phoneBadge = document.getElementById("custPhoneBadge");
+        const btnVerifyPhone = document.getElementById("btnVerifyPhoneCheckout");
+
+        function updatePhoneValidationUI() {
+            const rawVal = custPhoneInput.value;
+            const clean = cleanPhoneNumber(rawVal);
+            const count = clean.length;
+
+            if (!clean) {
+                phoneValidationMsg.textContent = "Enter 10-digit mobile number (e.g. 7620098478)";
+                phoneValidationMsg.style.color = "#888";
+                phoneBadge.style.display = "none";
+                btnVerifyPhone.style.display = "none";
+                return;
+            }
+
+            if (count < 10) {
+                phoneValidationMsg.textContent = `Entering phone: ${count}/10 digits`;
+                phoneValidationMsg.style.color = "#aaa";
+                phoneBadge.style.display = "none";
+                btnVerifyPhone.style.display = "none";
+                if (clean !== verifiedPhone) isPhoneVerified = false;
+                return;
+            }
+
+            if (count === 10) {
+                const formatted = `+91 ${clean.slice(0, 5)} ${clean.slice(5)}`;
+                if (isPhoneVerified && clean === verifiedPhone) {
+                    phoneValidationMsg.innerHTML = `<span style="color:#2ecc71;">✓ Verified: ${formatted}</span>`;
+                    phoneBadge.style.display = "inline-block";
+                    phoneBadge.innerHTML = `<span style="color: #2ecc71; font-weight: 700; background: rgba(46, 204, 113, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(46, 204, 113, 0.4);">✓ Verified</span>`;
+                    btnVerifyPhone.style.display = "none";
+                } else {
+                    isPhoneVerified = false;
+                    phoneValidationMsg.innerHTML = `<span style="color:var(--gold-light);">✓ Valid: ${formatted} (OTP verification required)</span>`;
+                    phoneBadge.style.display = "inline-block";
+                    phoneBadge.innerHTML = `<span style="color: #f39c12; font-weight: 600; background: rgba(243, 156, 18, 0.15); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(243, 156, 18, 0.4);">⚠️ Unverified</span>`;
+                    btnVerifyPhone.style.display = "inline-block";
+                }
+            } else {
+                phoneValidationMsg.textContent = `Too many digits (${count}). Please enter a 10-digit number.`;
+                phoneValidationMsg.style.color = "#e74c3c";
+                phoneBadge.style.display = "none";
+                btnVerifyPhone.style.display = "none";
+            }
+        }
+
+        custPhoneInput.addEventListener("input", updatePhoneValidationUI);
+        custPhoneInput.addEventListener("change", updatePhoneValidationUI);
+
+        window.openCheckoutOtpModal = function(phoneFormatted) {
+            document.getElementById("checkoutOtpTarget").textContent = phoneFormatted;
+            document.getElementById("checkoutOtpModal").style.display = "flex";
+            const boxes = document.querySelectorAll(".checkout-otp");
+            boxes.forEach(b => b.value = "");
+            boxes[0]?.focus();
+        };
+
+        window.closeCheckoutOtpModal = function() {
+            clearInterval(checkoutResendInterval);
+            document.getElementById("checkoutOtpModal").style.display = "none";
+            pendingOrderSubmission = false;
+        };
+
+        window.triggerCheckoutOtp = async function() {
+            const rawVal = custPhoneInput.value;
+            const clean = cleanPhoneNumber(rawVal);
+            if (!isValidPhoneNumber(clean)) {
+                showToast("Please enter a valid 10-digit mobile number.", "error");
+                custPhoneInput.focus();
+                return;
+            }
+
+            try {
+                btnVerifyPhone.disabled = true;
+                btnVerifyPhone.textContent = "Sending...";
+
+                const res = await apiRequest("/api/auth/request-phone-otp", {
+                    method: "POST",
+                    body: JSON.stringify({ phone: clean })
+                });
+
+                currentCheckoutDevOtp = res.devOtp || "";
+                const devCard = document.getElementById("checkoutDevOtpCard");
+                const devVal = document.getElementById("checkoutDevOtpVal");
+                if (currentCheckoutDevOtp) {
+                    devCard.style.display = "block";
+                    devVal.textContent = currentCheckoutDevOtp;
+                } else {
+                    devCard.style.display = "none";
+                }
+
+                openCheckoutOtpModal(`+91 ${clean.slice(0, 5)} ${clean.slice(5)}`);
+                startCheckoutResendTimer(60);
+                showToast(res.message || "Verification code sent successfully!", "success");
+            } catch (err) {
+                showToast(err.message || "Failed to send OTP", "error");
+            } finally {
+                btnVerifyPhone.disabled = false;
+                btnVerifyPhone.textContent = "⚡ Verify OTP";
+            }
+        };
+
+        function startCheckoutResendTimer(seconds) {
+            clearInterval(checkoutResendInterval);
+            let remaining = seconds;
+            const timerText = document.getElementById("checkoutTimerText");
+            const btnResend = document.getElementById("btnCheckoutResend");
+            const secondsLeft = document.getElementById("checkoutSecondsLeft");
+
+            timerText.style.display = "inline";
+            btnResend.style.display = "none";
+            secondsLeft.textContent = remaining;
+
+            checkoutResendInterval = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(checkoutResendInterval);
+                    timerText.style.display = "none";
+                    btnResend.style.display = "inline";
+                } else {
+                    secondsLeft.textContent = remaining;
+                }
+            }, 1000);
+        }
+
+        // Setup OTP box auto-tabbing and paste for checkout
+        const checkoutBoxes = document.querySelectorAll(".checkout-otp");
+        checkoutBoxes.forEach((box, idx) => {
+            box.addEventListener("input", (e) => {
+                if (e.target.value.length === 1 && idx < checkoutBoxes.length - 1) {
+                    checkoutBoxes[idx + 1].focus();
+                }
+            });
+            box.addEventListener("keydown", (e) => {
+                if (e.key === "Backspace" && !e.target.value && idx > 0) {
+                    checkoutBoxes[idx - 1].focus();
+                }
+            });
+            box.addEventListener("paste", (e) => {
+                e.preventDefault();
+                const pasteData = (e.clipboardData || window.clipboardData).getData("text").trim();
+                if (/^\d{6}$/.test(pasteData)) {
+                    pasteData.split("").forEach((ch, i) => {
+                        if (checkoutBoxes[i]) checkoutBoxes[i].value = ch;
+                    });
+                    checkoutBoxes[5]?.focus();
+                    window.handleVerifyCheckoutOtp();
+                }
+            });
+        });
+
+        window.autoFillCheckoutOtp = function() {
+            if (!currentCheckoutDevOtp) return;
+            currentCheckoutDevOtp.split("").forEach((digit, i) => {
+                if (checkoutBoxes[i]) checkoutBoxes[i].value = digit;
+            });
+            checkoutBoxes[5]?.focus();
+            window.handleVerifyCheckoutOtp();
+        };
+
+        window.handleVerifyCheckoutOtp = async function() {
+            let enteredOtp = "";
+            checkoutBoxes.forEach(b => enteredOtp += b.value.trim());
+
+            if (enteredOtp.length !== 6) {
+                showToast("Please enter all 6 digits of the OTP.", "error");
+                return;
+            }
+
+            const clean = cleanPhoneNumber(custPhoneInput.value);
+            const confirmBtn = document.getElementById("btnConfirmCheckoutOtp");
+
+            try {
+                confirmBtn.disabled = true;
+                confirmBtn.textContent = "VERIFYING...";
+
+                const res = await apiRequest("/api/auth/verify-phone-otp", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        phone: clean,
+                        otp: enteredOtp
+                    })
+                });
+
+                if (res.token) {
+                    localStorage.setItem("ojaswi_token", res.token);
+                    if (res.user) {
+                        localStorage.setItem("ojaswi_user", JSON.stringify(res.user));
+                    }
+                }
+
+                isPhoneVerified = true;
+                verifiedPhone = clean;
+                updatePhoneValidationUI();
+                closeCheckoutOtpModal();
+                showToast("Mobile number verified successfully! ✓", "success");
+
+                if (pendingOrderSubmission) {
+                    pendingOrderSubmission = false;
+                    await submitOrder();
+                }
+            } catch (err) {
+                showToast(err.message || "Invalid verification code", "error");
+            } finally {
+                confirmBtn.disabled = false;
+                confirmBtn.textContent = "VERIFY MOBILE & PROCEED";
+            }
+        };
+
+        async function initCheckout() {
+            const items = cart.getItems();
+            if (!items || items.length === 0) {
+                alert("Your shopping cart is empty. Please select products from our catalog.");
+                goToStoreProducts();
+                return;
+            }
+
+            renderSummary(items);
+
+            // Check if logged in & auto-fill customer info and saved addresses
+            try {
+                const authRes = await apiRequest("/api/auth/me");
+                if (authRes && authRes.isAuthenticated && authRes.user) {
+                    if (authRes.user.name) document.getElementById("custName").value = authRes.user.name;
+                    if (authRes.user.phone) {
+                        const cleanedUserPhone = cleanPhoneNumber(authRes.user.phone);
+                        document.getElementById("custPhone").value = cleanedUserPhone;
+                        isPhoneVerified = true;
+                        verifiedPhone = cleanedUserPhone;
+                    }
+                    if (authRes.user.email) document.getElementById("custEmail").value = authRes.user.email;
+
+                    // Fetch saved addresses
+                    try {
+                        const accRes = await apiRequest("/api/account");
+                        savedAddresses = accRes.addresses || [];
+
+                        if (savedAddresses.length > 0) {
+                            const selector = document.getElementById("savedAddressSelector");
+                            const selectEl = document.getElementById("selectSavedAddr");
+                            selector.style.display = "block";
+
+                            savedAddresses.forEach((addr, i) => {
+                                const opt = document.createElement("option");
+                                opt.value = i;
+                                opt.textContent = `${addr.full_name} (${addr.city}, ${addr.pincode})${addr.is_default ? " - DEFAULT" : ""}`;
+                                selectEl.appendChild(opt);
+                            });
+
+                            // Pre-select default address
+                            const defaultAddr = savedAddresses.find(a => a.is_default) || savedAddresses[0];
+                            applyAddress(defaultAddr);
+
+                            selectEl.addEventListener("change", (e) => {
+                                const idx = e.target.value;
+                                if (idx !== "") {
+                                    applyAddress(savedAddresses[idx]);
+                                }
+                            });
+                        }
+                    } catch (accErr) {
+                        console.warn("Could not load saved addresses:", accErr);
+                    }
+                }
+            } catch (e) {
+                console.warn("Auth check error:", e);
+            }
+
+            // Restore guest user data from modal transfer (runs reliably for all guests)
+            const ss = window.safeSessionStorage || sessionStorage;
+            const guestData = ss ? ss.getItem("ojaswi_guest_checkout") : null;
+            if (guestData) {
+                try {
+                    const g = JSON.parse(guestData);
+                    if (g.name && !document.getElementById("custName").value) {
+                        document.getElementById("custName").value = g.name;
+                    }
+                    if (g.phone) {
+                        const cleanGuestPhone = cleanPhoneNumber(g.phone);
+                        if (!document.getElementById("custPhone").value) {
+                            document.getElementById("custPhone").value = cleanGuestPhone;
+                        }
+                    }
+                    if (g.address) {
+                        const streetEl = document.getElementById("addrStreet");
+                        if (!streetEl.value) streetEl.value = g.address;
+                        const cityEl = document.getElementById("addrCity");
+                        if (!cityEl.value) cityEl.value = "Malegaon";
+                        const pinEl = document.getElementById("addrPincode");
+                        if (!pinEl.value) pinEl.value = "423203";
+                    }
+                    if (g.paymentMethod) {
+                        const radioEl = document.querySelector(`input[name="paymentMethod"][value="${g.paymentMethod}"]`);
+                        if (radioEl) radioEl.checked = true;
+                    }
+                    if (ss) ss.removeItem("ojaswi_guest_checkout");
+                } catch (guestErr) {
+                    console.warn("Error parsing guest checkout data:", guestErr);
+                }
+            }
+
+            updatePhoneValidationUI();
+        }
+
+        function applyAddress(addr) {
+            if (!addr) return;
+            document.getElementById("addrHouse").value = addr.flat_house || "";
+            document.getElementById("addrStreet").value = addr.area_street || "";
+            document.getElementById("addrCity").value = addr.city || "";
+            document.getElementById("addrState").value = addr.state || "Maharashtra";
+            document.getElementById("addrPincode").value = addr.pincode || "";
+            if (addr.full_name) document.getElementById("custName").value = addr.full_name;
+            if (addr.phone) {
+                document.getElementById("custPhone").value = cleanPhoneNumber(addr.phone);
+                updatePhoneValidationUI();
+            }
+        }
+
+        function renderSummary(items) {
+            const listContainer = document.getElementById("checkoutItemsList");
+            const subtotalEl = document.getElementById("summarySubtotal");
+            const totalEl = document.getElementById("summaryTotal");
+
+            const subtotal = cart.getSubtotal();
+            subtotalEl.textContent = `₹${subtotal}`;
+            totalEl.textContent = `₹${subtotal}`;
+
+            listContainer.innerHTML = items.map(item => `
+                <div style="display: flex; gap: 12px; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+                    <img src="${item.image || 'images/garam-masala.jpeg'}" alt="${item.name}" onerror="this.src='images/garam-masala.jpeg'" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px; border: 1px solid rgba(217,164,65,0.2);">
+                    <div style="flex: 1;">
+                        <div style="font-size: 13px; font-weight: 600; color: #fff;">${item.name}</div>
+                        <div style="font-size: 11px; color: #888;">Qty: ${item.quantity} × ₹${item.selling_price || item.price}</div>
+                    </div>
+                    <div style="font-weight: 700; color: var(--gold-light); font-size: 14px;">
+                        ₹${(item.selling_price || item.price) * item.quantity}
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        async function submitOrder() {
+            const btn = document.getElementById("btnPlaceOrder");
+            const items = cart.getItems();
+            if (items.length === 0) {
+                showToast("Your cart is empty.", "error");
+                return;
+            }
+
+            const customer_name = document.getElementById("custName").value.trim();
+            const customer_phone = cleanPhoneNumber(document.getElementById("custPhone").value.trim());
+            const customer_email = document.getElementById("custEmail").value.trim();
+            const notes = document.getElementById("orderNotes").value.trim();
+
+            const houseVal = document.getElementById("addrHouse").value.trim();
+            const streetVal = document.getElementById("addrStreet").value.trim();
+            const cityVal = document.getElementById("addrCity").value.trim() || "Malegaon";
+            const stateVal = document.getElementById("addrState").value.trim() || "Maharashtra";
+            const pincodeVal = document.getElementById("addrPincode").value.trim() || "423203";
+
+            const delivery_address = {
+                flat_house: houseVal,
+                area_street: streetVal || houseVal || "Direct Delivery",
+                city: cityVal,
+                district: cityVal,
+                state: stateVal,
+                pincode: pincodeVal
+            };
+
+            const payment_method = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            try {
+                btn.disabled = true;
+                btn.textContent = "PROCESSING ORDER...";
+
+                const payload = {
+                    customer_name,
+                    customer_phone,
+                    customer_email,
+                    delivery_address,
+                    items: items.map(i => ({ productId: i.id, quantity: i.quantity })),
+                    payment_method,
+                    notes
+                };
+
+                const res = await apiRequest("/api/orders", {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                });
+
+                const placedTotal = items.reduce((s, it) => s + (it.selling_price || it.price) * it.quantity, 0);
+                const orderSummaryData = {
+                    name: customer_name,
+                    phone: customer_phone,
+                    email: customer_email,
+                    address: `${delivery_address.flat_house ? delivery_address.flat_house + ', ' : ''}${delivery_address.area_street}, ${delivery_address.city} - ${delivery_address.pincode}`,
+                    items: [...items],
+                    total: placedTotal,
+                    paymentMethod: payment_method
+                };
+
+                // Persist order ID and customer phone to localStorage for cross-session order tracking
+                try {
+                    const savedOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
+                    if (!savedOrders.includes(res.orderId)) {
+                        savedOrders.unshift(res.orderId);
+                        localStorage.setItem("ojaswi_customer_orders", JSON.stringify(savedOrders));
+                    }
+                    localStorage.setItem("ojaswi_customer_phone", customer_phone);
+                    if (customer_name) localStorage.setItem("ojaswi_customer_name", customer_name);
+                } catch (e) {
+                    console.warn("Could not save order to localStorage:", e);
+                }
+
+                if (res.requiresOnlinePayment && res.razorpayOrder) {
+                    btn.textContent = "OPENING SECURE PAYMENT...";
+                    launchRazorpay(res.orderId, res.razorpayOrder, customer_name, customer_email, customer_phone, orderSummaryData);
+                } else {
+                    cart.clear();
+                    showToast("Order placed successfully! Opening WhatsApp...", "success");
+                    showOrderSuccessModal(res.orderId, orderSummaryData);
+
+                    // Automatically open customer's WhatsApp with message to website owner
+                    const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, res.orderId);
+                    const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
+                    try {
+                        window.open(waUrl, "_blank");
+                    } catch (e) {
+                        console.warn("Popup blocked, fallback button available:", e);
+                    }
+                }
+            } catch (err) {
+                showToast(err.message, "error");
+                btn.disabled = false;
+                btn.textContent = "CONFIRM & PLACE ORDER";
+            }
+        }
+
+        const OJASWI_PHONE = "917620098478";
+        const OJASWI_EMAIL = "ojaswifoods@gmail.com";
+
+        function getCheckoutOrderSummaryData() {
+            const items = cart.getItems();
+            if (!items || items.length === 0) {
+                showToast("Your cart is empty. Please add spices to your cart first.", "error");
+                return null;
+            }
+
+            const name = document.getElementById("custName").value.trim();
+            const rawPhone = document.getElementById("custPhone").value.trim();
+            const phone = cleanPhoneNumber(rawPhone);
+            const email = document.getElementById("custEmail").value.trim();
+            const house = document.getElementById("addrHouse").value.trim();
+            const street = document.getElementById("addrStreet").value.trim();
+            const city = document.getElementById("addrCity").value.trim() || "Malegaon";
+            const state = document.getElementById("addrState").value.trim() || "Maharashtra";
+            const pincode = document.getElementById("addrPincode").value.trim() || "423203";
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || "Cash on Delivery";
+
+            if (!name) {
+                showToast("Please enter recipient full name.", "error");
+                document.getElementById("custName").focus();
+                return null;
+            }
+            if (!isValidPhoneNumber(phone)) {
+                showToast("Please enter a valid 10-digit mobile number.", "error");
+                document.getElementById("custPhone").focus();
+                return null;
+            }
+            if (!street && !house) {
+                showToast("Please enter your delivery street or address.", "error");
+                document.getElementById("addrStreet").focus();
+                return null;
+            }
+
+            const fullAddress = `${house ? house + ', ' : ''}${street || house}, ${city}, ${state} - ${pincode}`;
+            const subtotal = cart.getSubtotal();
+
+            return {
+                name,
+                phone,
+                email,
+                address: fullAddress,
+                items,
+                total: subtotal,
+                paymentMethod
+            };
+        }
+
+        function buildCheckoutOrderMessage(data, orderId = "") {
+            const itemsText = data.items.map((i, idx) => 
+                `${idx + 1}. *${i.name}* x ${i.quantity} = ₹${(i.selling_price || i.price) * i.quantity}`
+            ).join("\n");
+
+            const idLine = orderId ? `*Order ID:* ${orderId}\n` : "";
+
+            return `Hello Ojaswi Foods,\n\nI want to confirm my order from the website checkout.\n\n${idLine}*Customer Details*\nName: ${data.name}\nPhone: +91 ${data.phone}${data.email ? '\nEmail: ' + data.email : ''}\n\n*Ordered Items*:\n${itemsText}\n\n*Total Amount:* ₹${data.total}\n*Payment Method:* ${data.paymentMethod}\n\n*Delivery Address*:\n${data.address}\n\nPlease confirm my order dispatch from Malegaon. Thank you!`;
+        }
+
+        function confirmCheckoutViaWhatsApp() {
+            const data = getCheckoutOrderSummaryData();
+            if (!data) return;
+            const msg = buildCheckoutOrderMessage(data);
+            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(msg);
+            window.open(waUrl, "_blank");
+        }
+
+        function confirmCheckoutViaEmail() {
+            const data = getCheckoutOrderSummaryData();
+            if (!data) return;
+            const subject = `Order Confirmation - ₹${data.total} (${data.name})`;
+            const msg = buildCheckoutOrderMessage(data);
+            const emailUrl = "mailto:" + OJASWI_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(msg);
+            window.location.href = emailUrl;
+        }
+
+        function confirmCheckoutViaSMS() {
+            const data = getCheckoutOrderSummaryData();
+            if (!data) return;
+            const msg = buildCheckoutOrderMessage(data);
+            const smsUrl = "sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(msg);
+            window.location.href = smsUrl;
+        }
+
+        function showOrderSuccessModal(orderId, details) {
+            const modal = document.getElementById("orderSuccessModal");
+            if (!modal) {
+                window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+                return;
+            }
+
+            document.getElementById("successModalOrderId").textContent = orderId;
+            document.getElementById("btnSuccessReceipt").href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+
+            const msg = buildCheckoutOrderMessage(details, orderId);
+
+            // WhatsApp Link
+            const waBtn = document.getElementById("btnSuccessWhatsApp");
+            if (waBtn) waBtn.href = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(msg);
+
+            // Email Link
+            const emailBtn = document.getElementById("btnSuccessEmail");
+            if (emailBtn) {
+                const subject = `Order Confirmation #${orderId} - ${details.name} (₹${details.total})`;
+                emailBtn.href = "mailto:" + OJASWI_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(msg);
+            }
+
+            // SMS Link
+            const smsBtn = document.getElementById("btnSuccessSMS");
+            if (smsBtn) {
+                smsBtn.href = "sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(msg);
+            }
+
+            modal.style.display = "flex";
+        }
+
+        window.confirmCheckoutViaWhatsApp = confirmCheckoutViaWhatsApp;
+        window.confirmCheckoutViaEmail = confirmCheckoutViaEmail;
+        window.confirmCheckoutViaSMS = confirmCheckoutViaSMS;
+
+        document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const items = cart.getItems();
+            if (items.length === 0) {
+                showToast("Your cart is empty. Please add spices to your cart first.", "error");
+                return;
+            }
+
+            const rawPhone = document.getElementById("custPhone").value;
+            const cleanPhone = cleanPhoneNumber(rawPhone);
+
+            if (!isValidPhoneNumber(cleanPhone)) {
+                showToast("Please enter a valid 10-digit mobile number.", "error");
+                document.getElementById("custPhone").focus();
+                return;
+            }
+
+            await submitOrder();
+        });
+
+        function launchRazorpay(orderId, razorpayOrder, name, email, phone, orderSummaryData) {
+            // Check if simulated dev mode OR if window.Razorpay is not loaded
+            if (razorpayOrder.simulated || typeof window.Razorpay === "undefined") {
+                console.log("[Checkout:Dev] Simulating online payment verification...");
+                setTimeout(async () => {
+                    try {
+                        const verifyRes = await apiRequest("/api/payments/verify", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                order_id: orderId,
+                                razorpay_order_id: razorpayOrder.id || "order_dev_" + Date.now(),
+                                razorpay_payment_id: "pay_simulated_" + Date.now(),
+                                razorpay_signature: "simulated_signature"
+                            })
+                        });
+                        cart.clear();
+                        showToast("Payment verified successfully! Opening WhatsApp...", "success");
+                        if (orderSummaryData) {
+                            showOrderSuccessModal(orderId, orderSummaryData);
+                            // Automatically open customer's WhatsApp with message to website owner
+                            const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, orderId);
+                            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
+                            try {
+                                window.open(waUrl, "_blank");
+                            } catch (e) {
+                                console.warn("Popup blocked, button available in modal:", e);
+                            }
+                        } else {
+                            window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+                        }
+                    } catch (e) {
+                        showToast(e.message, "error");
+                    }
+                }, 1000);
+                return;
+            }
+
+            // Real official Razorpay SDK
+            const options = {
+                key: razorpayOrder.keyId,
+                amount: razorpayOrder.amount,
+                currency: razorpayOrder.currency || "INR",
+                name: "Ojaswi Premium",
+                description: `Order ${orderId} - Authentic Spices`,
+                order_id: razorpayOrder.id,
+                prefill: {
+                    name,
+                    email,
+                    contact: phone.startsWith("+91") ? phone : `+91${phone}`
+                },
+                theme: {
+                    color: "#d9a441"
+                },
+                handler: async function (response) {
+                    try {
+                        const verifyRes = await apiRequest("/api/payments/verify", {
+                            method: "POST",
+                            body: JSON.stringify({
+                                order_id: orderId,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature
+                            })
+                        });
+
+                        cart.clear();
+                        showToast("Payment verified successfully! Opening WhatsApp...", "success");
+                        if (orderSummaryData) {
+                            showOrderSuccessModal(orderId, orderSummaryData);
+                            // Automatically open customer's WhatsApp with message to website owner
+                            const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, orderId);
+                            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
+                            try {
+                                window.open(waUrl, "_blank");
+                            } catch (e) {}
+                        } else {
+                            setTimeout(() => {
+                                window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+                            }, 500);
+                        }
+                    } catch (err) {
+                        showToast(err.message || "Payment verification failed.", "error");
+                    }
+                },
+                modal: {
+                    ondismiss: function () {
+                        showToast("Payment cancelled. You can retry anytime.", "info");
+                        const btn = document.getElementById("btnPlaceOrder");
+                        btn.disabled = false;
+                        btn.textContent = "CONFIRM & PLACE ORDER";
+                    }
+                }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.on("payment.failed", function (response) {
+                showToast(`Payment failed: ${response.error.description}`, "error");
+                const btn = document.getElementById("btnPlaceOrder");
+                btn.disabled = false;
+                btn.textContent = "CONFIRM & PLACE ORDER";
+            });
+            rzp.open();
+        }
+
+        initCheckout();
+    </script>
+
+    <!-- Floating WhatsApp Support Button -->
+    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20need%20help%20with%20my%20checkout" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
+        <span style="font-size: 16px;">💬</span>
+        <span>WhatsApp</span>
+    </a>
+
+    <!-- Mobile Bottom Navigation Dock (Phones Only) -->
+    <nav class="mobile-bottom-nav">
+        <a href="/" class="nav-tab">
+            <span class="tab-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="/#products" class="nav-tab">
+            <span class="tab-icon">🌶️</span>
+            <span>Spices</span>
+        </a>
+        <a href="/checkout" class="nav-tab active">
+            <span class="tab-icon">🛒</span>
+            <span>Checkout</span>
+        </a>
+        <a href="/orders" class="nav-tab">
+            <span class="tab-icon">📦</span>
+            <span>Orders</span>
+        </a>
+        <a href="/account" class="nav-tab" id="tabAccount">
+            <span class="tab-icon">👤</span>
+            <span id="tabAccountLabel">Account</span>
+        </a>
+    </nav>
+</body>
+</html>

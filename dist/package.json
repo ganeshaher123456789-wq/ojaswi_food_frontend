@@ -1,0 +1,24 @@
+{
+  "name": "ojaswi-frontend",
+  "version": "1.0.0",
+  "description": "Ojaswi Premium Authentic Indian Spices - Luxury Storefront, Customer Portal & Admin Panel",
+  "type": "module",
+  "scripts": {
+    "start": "node dev-server.js",
+    "dev": "node dev-server.js",
+    "build": "node build.js",
+    "serve": "node dev-server.js",
+    "preview": "node dev-server.js"
+  },
+  "keywords": [
+    "ojaswi",
+    "spices",
+    "frontend",
+    "ecommerce",
+    "storefront"
+  ],
+  "author": "Ojaswi Foods",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {}
+}

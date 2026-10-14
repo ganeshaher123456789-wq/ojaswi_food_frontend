@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard | Ojaswi Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ecom.css">
+    <!-- Universal Storage & Navigation Sandbox Polyfill -->
+    <script>
+    (function() {
+        const mem = { local: {}, session: {} };
+        function makeMockStorage(type) {
+            const store = mem[type];
+            return {
+                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                setItem: function(k, v) { store[k] = String(v); },
+                removeItem: function(k) { delete store[k]; },
+                clear: function() { for (let k in store) delete store[k]; },
+                key: function(i) { return Object.keys(store)[i] || null; },
+                get length() { return Object.keys(store).length; }
+            };
+        }
+        let ls, ss;
+        try {
+            window.localStorage.setItem("__test__", "1");
+            window.localStorage.removeItem("__test__");
+            ls = window.localStorage;
+        } catch(e) {
+            ls = makeMockStorage("local");
+            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
+        }
+        try {
+            window.sessionStorage.setItem("__test__", "1");
+            window.sessionStorage.removeItem("__test__");
+            ss = window.sessionStorage;
+        } catch(e) {
+            ss = makeMockStorage("session");
+            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
+        }
+        window.safeLocalStorage = ls;
+        window.safeSessionStorage = ss;
+        window.safeNavigate = function(url, fallbackHash) {
+            if (!url || typeof url !== "string" || !url.trim()) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                return;
+            }
+            try {
+                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                if (isAbout) {
+                    if (window.top && window.top !== window) {
+                        try { window.top.location.href = url; return; } catch(_) {}
+                    }
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                    return;
+                }
+                window.location.href = url;
+            } catch(e) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+            }
+        };
+    })();
+    </script>
+</head>
+<body style="background: var(--black); color: var(--white); min-height: 100vh;">
+
+    <!-- Top Navigation Header -->
+    <header style="position: relative; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.06);">
+        <div class="container navbar">
+            <a href="index.html" class="brand">
+                <div class="brand-name">Ojaswi</div>
+                <div class="brand-subtitle">PREMIUM</div>
+            </a>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <a href="index.html" class="nav-order" style="border-radius: 4px;">← Store</a>
+                <a href="orders.html" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">My Orders</a>
+                <a id="btnLoginHeader" href="login.html?redirect=account.html" class="primary-button" style="padding: 9px 16px; font-size: 13px; display: none;">Sign In</a>
+                <button id="btnLogout" class="secondary-button" style="padding: 9px 16px; font-size: 13px; color: #ff5252; border-color: rgba(255,82,82,0.3); display: none;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 50px 0 80px;">
+
+        <!-- 1. LOADING STATE SPINNER -->
+        <div id="accountLoadingSpinner" style="text-align: center; padding: 70px 20px;">
+            <div style="width: 50px; height: 50px; border: 3px solid rgba(217,164,65,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px;"></div>
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold-light); margin-bottom: 6px;">Loading Account</h3>
+            <p style="color: #888; font-size: 13px;">Verifying your Ojaswi customer session...</p>
+        </div>
+
+        <!-- 2. UNAUTHENTICATED GUEST STATE -->
+        <div id="unauthenticatedView" style="display: none; max-width: 640px; margin: 20px auto; background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 45px 30px; text-align: center;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: #1a1a1a; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--gold-light); margin: 0 auto 22px;">
+                👤
+            </div>
+            <div class="section-label" style="letter-spacing: 2px;">Customer Portal</div>
+            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold-light); margin: 8px 0 12px;">Sign In to Your Account</h2>
+            <p style="color: #aaa; font-size: 14px; line-height: 1.6; max-width: 480px; margin: 0 auto 30px;">
+                Sign in to view your profile details, manage saved delivery addresses in Malegaon or anywhere in India, and track your spice orders live.
+            </p>
+            <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                <a id="btnGuestPhone" href="login.html?mode=phone&redirect=account.html" class="primary-button" style="padding: 13px 26px; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+                    📱 Continue with Phone OTP
+                </a>
+                <a id="btnGuestEmail" href="login.html?mode=email&redirect=account.html" class="secondary-button" style="padding: 13px 24px; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+                    ✉️ Continue with Email OTP
+                </a>
+            </div>
+            <div style="margin-top: 35px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 20px;">
+                <a href="index.html" class="secondary-button" style="padding: 8px 18px; font-size: 12px;">← Return to Ojaswi Store</a>
+            </div>
+        </div>
+
+        <!-- 3. AUTHENTICATED CUSTOMER DASHBOARD -->
+        <div id="authenticatedView" style="display: none;">
+            <!-- Welcome Greeting Header -->
+            <div style="margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <span class="section-label">Account Dashboard</span>
+                    <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 42px; color: var(--gold-light); margin-top: 6px;">
+                        Welcome, <span id="accountHeadingName">Customer</span>
+                    </h1>
+                    <p style="color: #888; font-size: 14px; margin-top: 4px;">Manage your profile, saved delivery addresses and track past spice orders.</p>
+                </div>
+                <div>
+                    <button class="primary-button" style="padding: 10px 20px; font-size: 13px;" onclick="openProfileModal()">✏️ Edit Profile</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 35px;" id="dashboardGrid">
+                <!-- Left Column: Customer Profile Card -->
+                <div>
+                    <div style="background: #121212; border: 1px solid var(--border); border-radius: 8px; padding: 30px;">
+                        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 25px;">
+                            <div style="width: 60px; height: 60px; border-radius: 50%; background: #1c1c1c; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 26px; color: var(--gold-light);">
+                                👤
+                            </div>
+                            <div>
+                                <h3 id="cardFullName" style="font-size: 18px; color: #fff; margin-bottom: 4px;">Customer</h3>
+                                <span style="font-size: 11px; background: rgba(217,164,65,0.15); color: var(--gold-light); padding: 3px 8px; border-radius: 10px; border: 1px solid rgba(217,164,65,0.3);">
+                                    Verified Customer
+                                </span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 16px; font-size: 13px; color: #bbb;">
+                            <div>
+                                <span style="display: block; color: #666; font-size: 11px; text-transform: uppercase;">Mobile Number</span>
+                                <strong id="cardPhone" style="color: #ddd;">--</strong>
+                            </div>
+                            <div>
+                                <span style="display: block; color: #666; font-size: 11px; text-transform: uppercase;">Email Address</span>
+                                <strong id="cardEmail" style="color: #ddd;">--</strong>
+                            </div>
+                            <div>
+                                <span style="display: block; color: #666; font-size: 11px; text-transform: uppercase;">Member Since</span>
+                                <strong id="cardJoined" style="color: #ddd;">--</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fast Order Assistance Box -->
+                    <div style="background: #141414; border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 25px; margin-top: 25px;">
+                        <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-light); margin-bottom: 10px;">Need Spice Guidance?</h4>
+                        <p style="font-size: 12px; color: #888; line-height: 1.6; margin-bottom: 15px;">
+                            Contact our Malegaon master spice blender directly for special requests or bulk culinary orders.
+                        </p>
+                        <a href="https://wa.me/917620098478" target="_blank" class="secondary-button" style="display: block; text-align: center; font-size: 12px; padding: 10px;">
+                            💬 WhatsApp: +91 7620098478
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right Column: Saved Delivery Addresses & Recent Orders -->
+                <div>
+                    <!-- Saved Addresses Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">
+                            Saved Delivery Addresses
+                        </h2>
+                        <button class="primary-button" style="padding: 8px 16px; font-size: 12px;" onclick="openAddressModal()">
+                            + Add New Address
+                        </button>
+                    </div>
+
+                    <!-- Addresses Container -->
+                    <div id="addressListContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 45px;">
+                        <!-- Injected dynamically -->
+                    </div>
+
+                    <!-- Recent Orders Header -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 35px;">
+                        <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 0;">
+                            Recent Orders
+                        </h2>
+                        <a href="orders.html" id="linkViewAllOrders" style="color: var(--gold-light); font-size: 13px; text-decoration: underline;">
+                            View All Orders →
+                        </a>
+                    </div>
+
+                    <!-- Orders Container -->
+                    <div id="recentOrdersContainer">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- EDIT PROFILE MODAL -->
+    <div id="profileModal" class="order-modal modal" style="display: none;">
+        <div class="order-box" style="max-width: 480px;">
+            <div class="order-header">
+                <div>
+                    <span class="order-small-title">PROFILE</span>
+                    <h2>Edit Your Details</h2>
+                </div>
+                <button type="button" class="close-order" onclick="closeProfileModal()">&times;</button>
+            </div>
+            <form id="profileForm">
+                <div class="order-field">
+                    <label>Full Name</label>
+                    <input type="text" id="editProfileName" required>
+                </div>
+                <div class="order-field">
+                    <label>Email Address</label>
+                    <input type="email" id="editProfileEmail">
+                </div>
+                <div class="order-field">
+                    <label>Mobile Number (10 digits)</label>
+                    <input type="tel" id="editProfilePhone" placeholder="10-digit mobile number" maxlength="16">
+                    <div id="editPhoneValidationMsg" style="font-size: 11px; margin-top: 4px; color: #888;"></div>
+                </div>
+                <button type="submit" id="profileSubmitBtn" class="primary-button" style="width: 100%; padding: 13px; margin-top: 10px;">
+                    SAVE PROFILE
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADD / EDIT ADDRESS MODAL -->
+    <div id="addressModal" class="order-modal modal" style="display: none;">
+        <div class="order-box" style="max-width: 540px;">
+            <div class="order-header">
+                <div>
+                    <span class="order-small-title">DELIVERY</span>
+                    <h2 id="addressModalTitle">Add Delivery Address</h2>
+                </div>
+                <button type="button" class="close-order" onclick="closeAddressModal()">&times;</button>
+            </div>
+            <form id="addressForm">
+                <div class="order-field">
+                    <label>Recipient Name</label>
+                    <input type="text" id="addrName" placeholder="Full name of recipient" required>
+                </div>
+                <div class="order-field">
+                    <label>Contact Phone (10 digits)</label>
+                    <input type="tel" id="addrPhone" placeholder="10-digit phone number" maxlength="16" required>
+                    <div id="addrPhoneValidationMsg" style="font-size: 11px; margin-top: 4px; color: #888;"></div>
+                </div>
+                <div class="order-field">
+                    <label>Flat / House / Building</label>
+                    <input type="text" id="addrHouse" placeholder="e.g. Flat 402, Royal Palms" required>
+                </div>
+                <div class="order-field">
+                    <label>Area / Street / Landmark</label>
+                    <input type="text" id="addrStreet" placeholder="e.g. Near Market Yard, Camp Road" required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="order-field">
+                        <label>City</label>
+                        <input type="text" id="addrCity" placeholder="City" required>
+                    </div>
+                    <div class="order-field">
+                        <label>State</label>
+                        <input type="text" id="addrState" value="Maharashtra" required>
+                    </div>
+                </div>
+                <div class="order-field">
+                    <label>PIN Code (6 digits)</label>
+                    <input type="text" id="addrPincode" placeholder="e.g. 423203" pattern="[0-9]{6}" maxlength="6" required>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin: 15px 0;">
+                    <input type="checkbox" id="addrIsDefault" style="width: auto;">
+                    <label for="addrIsDefault" style="font-size: 13px; color: #ccc;">Make this my default delivery address</label>
+                </div>
+                <button type="submit" id="addressSubmitBtn" class="primary-button" style="width: 100%; padding: 13px;">
+                    SAVE ADDRESS
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script src="js/ojaswi.js"></script>
+    <script>
+        let currentProfile = null;
+        let currentAddresses = [];
+        let editingAddressId = null;
+
+        async function loadAccount() {
+            const spinner = document.getElementById("accountLoadingSpinner");
+            const authView = document.getElementById("authenticatedView");
+            const unauthView = document.getElementById("unauthenticatedView");
+            const btnLogout = document.getElementById("btnLogout");
+            const btnLoginHeader = document.getElementById("btnLoginHeader");
+
+            spinner.style.display = "block";
+            authView.style.display = "none";
+            unauthView.style.display = "none";
+
+            try {
+                const res = await apiRequest("/api/account");
+                
+                if (!res || !res.success || !res.profile) {
+                    throw new Error("No authenticated profile returned.");
+                }
+
+                currentProfile = res.profile;
+                currentAddresses = res.addresses || [];
+
+                // Safe parsing of name and dates
+                const fullName = res.profile.name || (res.profile.phone ? `Customer (+91 ${res.profile.phone})` : "Valued Customer");
+                const firstName = fullName.split(" ")[0];
+                
+                document.getElementById("accountHeadingName").textContent = firstName;
+                document.getElementById("cardFullName").textContent = fullName;
+                document.getElementById("cardPhone").textContent = res.profile.phone ? `+91 ${res.profile.phone}` : "Not provided";
+                document.getElementById("cardEmail").textContent = res.profile.email || "Not provided";
+
+                let joinedText = "Active Customer";
+                if (res.profile.created_at) {
+                    try {
+                        const isoStr = res.profile.created_at.includes("T") ? res.profile.created_at : res.profile.created_at.replace(" ", "T");
+                        const d = new Date(isoStr);
+                        if (!isNaN(d.getTime())) {
+                            joinedText = d.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+                        }
+                    } catch (e) {}
+                }
+                document.getElementById("cardJoined").textContent = joinedText;
+
+                // Populate Addresses
+                renderAddresses(currentAddresses);
+
+                // Populate Recent Orders
+                renderRecentOrders(res.recentOrders || []);
+
+                // Transition UI to authenticated state
+                spinner.style.display = "none";
+                unauthView.style.display = "none";
+                authView.style.display = "block";
+                if (btnLogout) btnLogout.style.display = "inline-block";
+                if (btnLoginHeader) btnLoginHeader.style.display = "none";
+
+            } catch (err) {
+                console.warn("[Account Page Auth Status]:", err.message);
+                spinner.style.display = "none";
+                authView.style.display = "none";
+                unauthView.style.display = "block";
+                if (btnLogout) btnLogout.style.display = "none";
+                if (btnLoginHeader) btnLoginHeader.style.display = "inline-block";
+            }
+        }
+
+        function renderAddresses(addresses) {
+            const container = document.getElementById("addressListContainer");
+            if (!addresses || addresses.length === 0) {
+                container.innerHTML = `
+                    <div style="background: #141414; border: 1px dashed rgba(255,255,255,0.15); border-radius: 6px; padding: 25px; grid-column: 1 / -1; text-align: center; color: #888;">
+                        <p style="margin-bottom: 12px; font-size: 14px;">No saved delivery addresses found.</p>
+                        <button class="primary-button" style="font-size: 12px; padding: 8px 18px;" onclick="openAddressModal()">+ Add Your First Address</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = addresses.map(addr => `
+                <div style="background: #131313; border: 1px solid ${addr.is_default ? "var(--gold)" : "rgba(255,255,255,0.08)"}; border-radius: 6px; padding: 20px; position: relative;">
+                    ${addr.is_default ? `<span style="position: absolute; top: 12px; right: 12px; font-size: 10px; background: var(--gold); color: #000; font-weight: 700; padding: 2px 8px; border-radius: 10px;">DEFAULT</span>` : ""}
+                    <h4 style="color: #fff; font-size: 15px; margin-bottom: 4px;">${addr.full_name}</h4>
+                    <p style="font-size: 12px; color: var(--gold-light); margin-bottom: 8px;">📞 +91 ${addr.phone}</p>
+                    <p style="font-size: 13px; color: #bbb; line-height: 1.5; margin-bottom: 15px;">
+                        ${addr.flat_house}, ${addr.area_street}<br>
+                        ${addr.city}, ${addr.state} - <strong>${addr.pincode}</strong>
+                    </p>
+                    <div style="display: flex; gap: 8px; font-size: 12px; flex-wrap: wrap;">
+                        <button class="secondary-button" style="padding: 5px 12px; font-size: 11px; color: var(--gold-light); border-color: rgba(217,164,65,0.4);" onclick="openAddressModal(${addr.id})">✏️ Edit</button>
+                        ${!addr.is_default ? `<button class="secondary-button" style="padding: 5px 10px; font-size: 11px;" onclick="setDefaultAddress(${addr.id})">Set Default</button>` : ""}
+                        <button class="secondary-button" style="padding: 5px 10px; font-size: 11px; color: #ff5252; border-color: rgba(255,82,82,0.2);" onclick="deleteAddress(${addr.id})">Delete</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        async function renderRecentOrders(orders) {
+            const container = document.getElementById("recentOrdersContainer");
+            if (!orders || orders.length === 0) {
+                // Check localStorage fallback
+                const localPhone = localStorage.getItem("ojaswi_customer_phone");
+                const localOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
+                if (localPhone || localOrders.length > 0) {
+                    try {
+                        const q = localPhone ? `phone=${encodeURIComponent(localPhone)}` : `order_ids=${encodeURIComponent(localOrders.join(','))}`;
+                        const fbRes = await apiRequest(`/api/orders?${q}`);
+                        if (fbRes.orders && fbRes.orders.length > 0) {
+                            renderRecentOrders(fbRes.orders);
+                            return;
+                        }
+                    } catch (e) {}
+                }
+
+                container.innerHTML = `
+                    <div style="background: #141414; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 30px; text-align: center; color: #888;">
+                        <p style="margin-bottom: 14px; font-size: 14px;">No spice orders linked to this profile yet.</p>
+                        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                            <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button" style="display: inline-block; padding: 10px 20px; font-size: 12px;">🌶️ Order Ojaswi Spices</a>
+                            <a href="orders.html" class="secondary-button" style="display: inline-block; padding: 10px 18px; font-size: 12px;">🔍 Track by Mobile / Order ID</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const ordersPage = (window.location.protocol === "file:" || window.location.pathname.endsWith(".html")) ? "orders.html" : "/orders";
+
+            container.innerHTML = orders.map(o => {
+                let dateStr = "Recent Order";
+                if (o.created_at) {
+                    try {
+                        const iso = o.created_at.includes("T") ? o.created_at : o.created_at.replace(" ", "T");
+                        const d = new Date(iso);
+                        if (!isNaN(d.getTime())) {
+                            dateStr = d.toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
+                        }
+                    } catch (e) {}
+                }
+                const orderLink = `${ordersPage}?id=${encodeURIComponent(o.id)}`;
+                return `
+                <div style="background: #131313; border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                            <strong style="color: var(--gold-light); font-size: 16px;">${o.id}</strong>
+                            <span class="status-badge ${(o.order_status || 'placed').toLowerCase().replace(/\s+/g, '-')}">${o.order_status || 'Processing'}</span>
+                        </div>
+                        <span style="font-size: 12px; color: #777;">
+                            Placed on ${dateStr} | ${o.payment_method || 'Online'} (${o.payment_status || 'Pending'})
+                        </span>
+                    </div>
+                    <div style="text-align: right; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <div style="font-size: 18px; font-weight: 700; color: #fff; margin-right: 6px;">₹${o.total_amount}</div>
+                        <a href="${orderLink}" class="primary-button" style="padding: 7px 14px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📦</span> Track Order
+                        </a>
+                        <a href="${orderLink}" class="secondary-button" style="padding: 7px 12px; font-size: 12px;">
+                            Receipt ↗
+                        </a>
+                    </div>
+                </div>
+            `;
+            }).join("");
+        }
+
+        // Profile Modal
+        window.openProfileModal = function() {
+            if (!currentProfile) {
+                const stored = localStorage.getItem("ojaswi_user");
+                if (stored) {
+                    try { currentProfile = JSON.parse(stored); } catch (e) {}
+                }
+            }
+            if (currentProfile) {
+                document.getElementById("editProfileName").value = currentProfile.name || "";
+                document.getElementById("editProfileEmail").value = currentProfile.email || "";
+                document.getElementById("editProfilePhone").value = currentProfile.phone || "";
+            }
+            const modal = document.getElementById("profileModal");
+            modal.style.display = "flex";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+
+        window.closeProfileModal = function() {
+            const modal = document.getElementById("profileModal");
+            modal.style.display = "none";
+            modal.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+
+        // Phone validation listeners for profile & address modals
+        const editPhoneInput = document.getElementById("editProfilePhone");
+        const editPhoneMsg = document.getElementById("editPhoneValidationMsg");
+        const addrPhoneInput = document.getElementById("addrPhone");
+        const addrPhoneMsg = document.getElementById("addrPhoneValidationMsg");
+
+        function setupLivePhoneFeedback(inputEl, msgEl) {
+            if (!inputEl || !msgEl) return;
+            const update = () => {
+                const clean = cleanPhoneNumber(inputEl.value);
+                if (!clean) {
+                    msgEl.textContent = "";
+                    return;
+                }
+                if (clean.length < 10) {
+                    msgEl.textContent = `Entering phone: ${clean.length}/10 digits`;
+                    msgEl.style.color = "#aaa";
+                } else if (clean.length === 10) {
+                    msgEl.innerHTML = `<span style="color:#2ecc71;">✓ Valid: +91 ${clean.slice(0,5)} ${clean.slice(5)}</span>`;
+                } else {
+                    msgEl.textContent = `Too many digits (${clean.length}). Must be 10 digits.`;
+                    msgEl.style.color = "#e74c3c";
+                }
+            };
+            inputEl.addEventListener("input", update);
+            inputEl.addEventListener("change", update);
+        }
+
+        setupLivePhoneFeedback(editPhoneInput, editPhoneMsg);
+        setupLivePhoneFeedback(addrPhoneInput, addrPhoneMsg);
+
+        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const name = document.getElementById("editProfileName").value.trim();
+            const email = document.getElementById("editProfileEmail").value.trim();
+            const rawPhone = document.getElementById("editProfilePhone").value.trim();
+            let cleanPhone = null;
+
+            if (rawPhone) {
+                cleanPhone = cleanPhoneNumber(rawPhone);
+                if (!isValidPhoneNumber(cleanPhone)) {
+                    showToast("Please enter a valid 10-digit mobile number.", "error");
+                    document.getElementById("editProfilePhone").focus();
+                    return;
+                }
+            }
+
+            const btn = document.getElementById("profileSubmitBtn");
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "SAVING...";
+
+            try {
+                const res = await apiRequest("/api/account", {
+                    method: "PUT",
+                    body: JSON.stringify({ name, email, phone: cleanPhone })
+                });
+                showToast(res.message || "Profile updated successfully.", "success");
+                closeProfileModal();
+                loadAccount();
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        // Address Modal: Add or Edit
+        window.openAddressModal = function(id = null) {
+            editingAddressId = id;
+            const form = document.getElementById("addressForm");
+            form.reset();
+            if (addrPhoneMsg) addrPhoneMsg.textContent = "";
+
+            const titleEl = document.getElementById("addressModalTitle");
+            const btnEl = document.getElementById("addressSubmitBtn");
+
+            if (id) {
+                const addr = currentAddresses.find(a => String(a.id) === String(id));
+                if (addr) {
+                    if (titleEl) titleEl.textContent = "Edit Delivery Address";
+                    if (btnEl) btnEl.textContent = "UPDATE ADDRESS";
+                    document.getElementById("addrName").value = addr.full_name || "";
+                    document.getElementById("addrPhone").value = addr.phone || "";
+                    document.getElementById("addrHouse").value = addr.flat_house || "";
+                    document.getElementById("addrStreet").value = addr.area_street || "";
+                    document.getElementById("addrCity").value = addr.city || "";
+                    document.getElementById("addrState").value = addr.state || "Maharashtra";
+                    document.getElementById("addrPincode").value = addr.pincode || "";
+                    document.getElementById("addrIsDefault").checked = !!addr.is_default;
+                }
+            } else {
+                if (titleEl) titleEl.textContent = "Add Delivery Address";
+                if (btnEl) btnEl.textContent = "SAVE ADDRESS";
+                document.getElementById("addrState").value = "Maharashtra";
+            }
+
+            const modal = document.getElementById("addressModal");
+            modal.style.display = "flex";
+            modal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        };
+
+        window.closeAddressModal = function() {
+            editingAddressId = null;
+            const modal = document.getElementById("addressModal");
+            modal.style.display = "none";
+            modal.classList.remove("active");
+            document.body.style.overflow = "";
+        };
+
+        document.getElementById("addressForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const rawPhone = document.getElementById("addrPhone").value.trim();
+            const cleanPhone = cleanPhoneNumber(rawPhone);
+
+            if (!isValidPhoneNumber(cleanPhone)) {
+                showToast("Please enter a valid 10-digit contact mobile number.", "error");
+                document.getElementById("addrPhone").focus();
+                return;
+            }
+
+            const pincode = document.getElementById("addrPincode").value.trim();
+            if (!/^\d{6}$/.test(pincode)) {
+                showToast("Please enter a valid 6-digit PIN code.", "error");
+                document.getElementById("addrPincode").focus();
+                return;
+            }
+
+            const payload = {
+                full_name: document.getElementById("addrName").value.trim(),
+                phone: cleanPhone,
+                flat_house: document.getElementById("addrHouse").value.trim(),
+                area_street: document.getElementById("addrStreet").value.trim(),
+                city: document.getElementById("addrCity").value.trim(),
+                state: document.getElementById("addrState").value.trim(),
+                pincode: pincode,
+                is_default: document.getElementById("addrIsDefault").checked ? 1 : 0
+            };
+
+            const submitBtn = document.getElementById("addressSubmitBtn");
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "SAVING...";
+
+            try {
+                const endpoint = editingAddressId 
+                    ? `/api/account/addresses/${editingAddressId}` 
+                    : "/api/account/addresses";
+                const method = editingAddressId ? "PUT" : "POST";
+
+                const res = await apiRequest(endpoint, {
+                    method: method,
+                    body: JSON.stringify(payload)
+                });
+                showToast(res.message || (editingAddressId ? "Address updated successfully." : "Address saved successfully."), "success");
+                closeAddressModal();
+                loadAccount();
+            } catch (err) {
+                showToast(err.message, "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        window.setDefaultAddress = async function(id) {
+            try {
+                const res = await apiRequest(`/api/account/addresses/${id}/default`, { method: "PUT" });
+                showToast(res.message || "Default address updated.", "success");
+                loadAccount();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        window.deleteAddress = async function(id) {
+            if (!confirm("Are you sure you want to remove this delivery address?")) return;
+            try {
+                const res = await apiRequest(`/api/account/addresses/${id}`, { method: "DELETE" });
+                showToast(res.message || "Address removed.", "info");
+                loadAccount();
+            } catch (err) {
+                showToast(err.message, "error");
+            }
+        };
+
+        // Outside Click & ESC Key Modal Dismissal
+        window.addEventListener("click", (e) => {
+            const profM = document.getElementById("profileModal");
+            const addrM = document.getElementById("addressModal");
+            if (e.target === profM) closeProfileModal();
+            if (e.target === addrM) closeAddressModal();
+        });
+
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                closeProfileModal();
+                closeAddressModal();
+            }
+        });
+
+        // Logout
+        document.getElementById("btnLogout").addEventListener("click", async () => {
+            try {
+                await apiRequest("/api/auth/logout", { method: "POST" });
+            } catch (e) {}
+            localStorage.removeItem("ojaswi_token");
+            localStorage.removeItem("ojaswi_user");
+            showToast("Logged out successfully.", "info");
+            loadAccount();
+        });
+
+        // Initialize on load
+        loadAccount();
+    </script>
+
+    <!-- Floating WhatsApp Support Button -->
+    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20have%20an%20account%20inquiry" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
+        <span style="font-size: 16px;">💬</span>
+        <span>WhatsApp</span>
+    </a>
+
+    <!-- Mobile Bottom Navigation Dock (Phones Only) -->
+    <nav class="mobile-bottom-nav">
+        <a href="/" class="nav-tab">
+            <span class="tab-icon">🏠</span>
+            <span>Home</span>
+        </a>
+        <a href="/#products" class="nav-tab">
+            <span class="tab-icon">🌶️</span>
+            <span>Spices</span>
+        </a>
+        <a href="/checkout" class="nav-tab">
+            <span class="tab-icon">🛒</span>
+            <span>Checkout</span>
+        </a>
+        <a href="/orders" class="nav-tab">
+            <span class="tab-icon">📦</span>
+            <span>Orders</span>
+        </a>
+        <a href="/account" class="nav-tab active" id="tabAccount">
+            <span class="tab-icon">👤</span>
+            <span id="tabAccountLabel">Account</span>
+        </a>
+    </nav>
+</body>
+</html>
