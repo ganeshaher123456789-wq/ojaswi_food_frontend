@@ -1,23 +1,18 @@
 /**
  * Ojaswi Premium Spices - Frontend Runtime Configuration
- * Backend hosted on Render: https://ojaswi-food-backend.onrender.com
+ * Live Production Cloud Backend: https://ojaswi-food-backend.onrender.com
  */
 (function () {
-  const isLocal = typeof window !== "undefined" && (
-    window.location.protocol === "file:" ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-  );
+  const prodApiUrl = "https://ojaswi-food-backend.onrender.com";
 
-  const defaultApiUrl = isLocal 
-    ? "http://localhost:5000" 
-    : "https://ojaswi-food-backend.onrender.com";
-
+  // Default to live production backend so registration & sign-in work everywhere
+  // (including file://, Live Server, and deployed domains) without requiring a local server.
   const resolved = window.OJASWI_API_URL || 
                    window.OJASWIAPIURL || 
                    window.VITE_API_URL || 
-                   defaultApiUrl;
+                   prodApiUrl;
 
   window.OJASWI_API_URL = resolved;
   window.OJASWIAPIURL = resolved;
+  window.OJASWI_PROD_API_URL = prodApiUrl;
 })();

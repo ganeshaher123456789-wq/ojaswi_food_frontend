@@ -22,60 +22,77 @@ function resolveApiBaseUrl() {
     }
   }
 
-  const isLocal = typeof window !== "undefined" && (
-    window.location.protocol === "file:" ||
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
-  );
-
-  if (isLocal) {
-    if (window.location.protocol === "file:" || (window.location.port !== "5000" && window.location.port !== "3000")) {
-      return "http://localhost:5000";
-    }
-    return "";
+  // If running strictly on localhost:3000 or localhost:5000 with a local backend
+  if (typeof window !== "undefined" && window.location.hostname === "localhost" && (window.location.port === "3000" || window.location.port === "5000")) {
+    return "http://localhost:5000";
   }
 
   return "https://ojaswi-food-backend.onrender.com";
 }
 
 export async function apiRequest(endpoint, options = {}) {
-  const baseUrl = resolveApiBaseUrl();
-  const url = endpoint.startsWith("http") ? endpoint : `${baseUrl}${endpoint}`;
+  const primaryBaseUrl = resolveApiBaseUrl();
+  const fallbackBaseUrl = "https://ojaswi-food-backend.onrender.com";
 
-  const defaultHeaders = {
-    "Content-Type": "application/json"
-  };
+  async function executeFetch(baseUrl) {
+    const url = endpoint.startsWith("http") ? endpoint : `${baseUrl}${endpoint}`;
+    const defaultHeaders = {
+      "Content-Type": "application/json"
+    };
 
-  let token = null;
-  try {
-    const storage = window.safeLocalStorage || window.localStorage;
-    if (storage) token = storage.getItem("ojaswi_token");
-  } catch (e) {}
-  if (token) {
-    defaultHeaders["Authorization"] = `Bearer ${token}`;
-  }
+    let token = null;
+    try {
+      const storage = window.safeLocalStorage || window.localStorage;
+      if (storage) token = storage.getItem("ojaswi_token");
+    } catch (e) {}
+    if (token) {
+      defaultHeaders["Authorization"] = `Bearer ${token}`;
+    }
 
-  const isLocalFile = typeof window !== "undefined" && window.location.protocol === "file:";
-  const config = {
-    ...options,
-    headers: {
-      ...defaultHeaders,
-      ...options.headers
-    },
-    credentials: isLocalFile ? "omit" : "include" // Send HttpOnly auth cookie when not file://
-  };
+    const isLocalFile = typeof window !== "undefined" && window.location.protocol === "file:";
+    const config = {
+      ...options,
+      headers: {
+        ...defaultHeaders,
+        ...options.headers
+      },
+      credentials: isLocalFile ? "omit" : "include"
+    };
 
-  try {
     const res = await fetch(url, config);
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-      throw new Error(data.error || `Request failed with status ${res.status}`);
+      const err = new Error(data.error || data.message || `Request failed with status ${res.status}`);
+      err.status = res.status;
+      throw err;
     }
 
     return data;
+  }
+
+  try {
+    return await executeFetch(primaryBaseUrl);
   } catch (err) {
-    console.error(`[API Error] ${endpoint}:`, err.message);
+    const isNetworkError = err.name === "TypeError" && (
+      err.message.includes("fetch") || 
+      err.message.includes("Failed to fetch") || 
+      err.message.includes("NetworkError") ||
+      err.message.includes("network")
+    );
+
+    if (isNetworkError && primaryBaseUrl !== fallbackBaseUrl && !endpoint.startsWith("http")) {
+      console.warn(`[API Failover] Connection to ${primaryBaseUrl} failed. Retrying with live cloud backend: ${fallbackBaseUrl}`);
+      try {
+        return await executeFetch(fallbackBaseUrl);
+      } catch (fallbackErr) {
+        console.error("[API Failover Error]:", fallbackErr);
+      }
+    }
+
+    if (isNetworkError) {
+      throw new Error("Unable to connect to Ojaswi Backend Server. Please check your network connection and try again.");
+    }
     throw err;
   }
 }
