@@ -7,6 +7,9 @@ function resolveApiBaseUrl() {
     if (window.OJASWI_API_URL && typeof window.OJASWI_API_URL === "string" && window.OJASWI_API_URL.trim()) {
       return window.OJASWI_API_URL.trim().replace(/\/+$/, "");
     }
+    if (window.OJASWIAPIURL && typeof window.OJASWIAPIURL === "string" && window.OJASWIAPIURL.trim()) {
+      return window.OJASWIAPIURL.trim().replace(/\/+$/, "");
+    }
     if (window.VITE_API_URL && typeof window.VITE_API_URL === "string" && window.VITE_API_URL.trim()) {
       return window.VITE_API_URL.trim().replace(/\/+$/, "");
     }
@@ -26,12 +29,13 @@ function resolveApiBaseUrl() {
   );
 
   if (isLocal) {
-    if (window.location.protocol === "file:" || (window.location.port && window.location.port !== "5000" && window.location.port !== "3000")) {
+    if (window.location.protocol === "file:" || (window.location.port !== "5000" && window.location.port !== "3000")) {
       return "http://localhost:5000";
     }
+    return "";
   }
 
-  return "";
+  return "https://ojaswi-food-backend.onrender.com";
 }
 
 export async function apiRequest(endpoint, options = {}) {
@@ -51,13 +55,14 @@ export async function apiRequest(endpoint, options = {}) {
     defaultHeaders["Authorization"] = `Bearer ${token}`;
   }
 
+  const isLocalFile = typeof window !== "undefined" && window.location.protocol === "file:";
   const config = {
     ...options,
     headers: {
       ...defaultHeaders,
       ...options.headers
     },
-    credentials: "include" // Send HttpOnly auth cookie
+    credentials: isLocalFile ? "omit" : "include" // Send HttpOnly auth cookie when not file://
   };
 
   try {

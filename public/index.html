@@ -2055,13 +2055,13 @@
         <span>Cart</span>
         <span class="tab-badge cart-count-badge" style="display: none;">0</span>
     </button>
-    <a href="/orders" onclick="goToOrders(event)" class="nav-tab" id="tabOrders">
+    <a href="orders.html" onclick="goToOrders(event)" class="nav-tab" id="tabOrders">
         <span class="tab-icon">📦</span>
         <span>Orders</span>
     </a>
-    <a href="/login" onclick="goToAccount(event)" class="nav-tab" id="tabAccount" aria-label="Customer Account or Login">
+    <a href="account.html" onclick="goToAccount(event)" class="nav-tab" id="tabAccount" aria-label="Customer Account or Login">
         <span class="tab-icon">👤</span>
-        <span id="tabAccountLabel">Login</span>
+        <span id="tabAccountLabel">Account</span>
     </a>
 </nav>
 
@@ -2083,8 +2083,8 @@
         <a href="#faq" onclick="toggleMobileDrawer()"><span>❓</span> FAQ &amp; Delivery Help</a>
         <a href="#contact" onclick="toggleMobileDrawer()"><span>📍</span> Contact &amp; Unit Address</a>
         <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 6px 0;">
-        <a href="/orders" onclick="toggleMobileDrawer(); goToOrders(event)"><span>📦</span> Track My Orders</a>
-        <a href="/login" id="drawerLoginLink" onclick="toggleMobileDrawer(); goToAccount(event)"><span>👤</span> Customer Account / Login</a>
+        <a href="orders.html" onclick="toggleMobileDrawer(); goToOrders(event)"><span>📦</span> Track My Orders</a>
+        <a href="account.html" id="drawerLoginLink" onclick="toggleMobileDrawer(); goToAccount(event)"><span>👤</span> Customer Account / Login</a>
         <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods" target="_blank" style="color: #2ecc71;"><span>💬</span> WhatsApp Direct Order</a>
         <a href="tel:+917620098478" style="color: var(--gold-light);"><span>📞</span> Call +91 7620098478</a>
     </nav>
@@ -2245,7 +2245,12 @@ window.toggleMobileDrawer = toggleMobileDrawer;
 function goToOrders(event) {
     if (event && event.preventDefault) event.preventDefault();
     const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-    const isLocal = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    const isLocal = isAbout || 
+                    window.location.protocol === "file:" || 
+                    window.location.pathname.endsWith(".html") || 
+                    window.location.pathname.includes(".html") || 
+                    window.location.pathname.includes("/public/") ||
+                    (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
     const target = isLocal ? "orders.html" : "/orders";
     if (window.safeNavigate) {
         window.safeNavigate(target, "#orders");
@@ -2258,13 +2263,18 @@ window.goToOrders = goToOrders;
 function goToAccount(event) {
     if (event && event.preventDefault) event.preventDefault();
     const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-    const isLocal = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    const isLocal = isAbout || 
+                    window.location.protocol === "file:" || 
+                    window.location.pathname.endsWith(".html") || 
+                    window.location.pathname.includes(".html") || 
+                    window.location.pathname.includes("/public/") ||
+                    (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
     let isLoggedIn = false;
     try {
         const u = window.safeLocalStorage ? window.safeLocalStorage.getItem("ojaswi_user") : localStorage.getItem("ojaswi_user");
         if (u) isLoggedIn = true;
     } catch(e) {}
-    const target = isLoggedIn ? (isLocal ? "account.html" : "/account") : (isLocal ? "login.html" : "/login");
+    const target = isLocal ? "account.html" : "/account";
     if (window.safeNavigate) {
         window.safeNavigate(target, isLoggedIn ? "#account" : "#login");
     } else {
@@ -2358,16 +2368,64 @@ function getOrderData() {
     return { name, phone: cleanPhone, address, product, quantity, price, total };
 }
 
+function buildRichWhatsAppOrderMessage(order, orderId) {
+    const id = orderId || ("OJ" + Math.random().toString(36).substring(2, 8).toUpperCase());
+    const now = new Date();
+    const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+    const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+
+    return `🌶️ *NEW OJASWI FOODS ORDER* 🌶️
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📦 *ORDER INFORMATION*
+• *Order ID:* #${id}
+• *Date & Time:* ${dateStr}, ${timeStr}
+• *Payment Method:* ${order.paymentMethod || "Cash on Delivery (COD)"}
+• *Order Status:* Placed (Awaiting Dispatch)
+
+👤 *CUSTOMER INFORMATION*
+• *Customer Name:* ${order.name}
+• *Mobile Number:* +91 ${order.phone}
+• *Delivery Address:* ${order.address}, Malegaon, Maharashtra - 423203
+
+🛒 *ORDERED PRODUCT DETAILS*
+• *Product Name:* ${order.product}
+• *Packaging / Net Weight:* NET WEIGHT 500g
+• *Quantity:* ${order.quantity} pack(s)
+• *Price per pack:* ₹${order.price} (MRP: ₹${order.price + 50})
+• *Item Subtotal:* ₹${order.total}
+• *Delivery Charge:* ₹0 (FREE Express Delivery)
+• *Total Payable Amount:* ₹${order.total}
+
+🏭 *FACTORY & DISPATCH UNIT*
+• *Manufacturer:* Ojaswi Foods, 52/2, Malegaon - 423203, Nashik
+• *FSSAI License:* 3025120612245599988
+• *Official Phone:* +91 7620098478
+
+_Hello Ojaswi Foods Team, please confirm my order and arrange dispatch to my address. Thank you!_`;
+}
+
+function openWhatsAppDirectly(url) {
+    const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+        window.location.href = url;
+    } else {
+        const win = window.open(url, "_blank");
+        if (!win || win.closed || typeof win.closed === "undefined") {
+            window.location.href = url;
+        }
+    }
+}
+
 function createOrderMessage(order) {
-    return `Hello Ojaswi Premium,\n\nI would like to place an order.\n\n*Customer Details*\nName: ${order.name}\nPhone: ${order.phone}\n\n*Product Details*\nProduct: ${order.product}\nQuantity: ${order.quantity}\nPrice per pack: ₹${order.price}\nTotal: ₹${order.total}\n\n*Delivery Address*\n${order.address}\n\nPlease confirm my order.\n\nThank you.`;
+    return buildRichWhatsAppOrderMessage(order);
 }
 
 function orderThroughWhatsApp() {
     const order = getOrderData();
     if (!order) return;
-    const message = createOrderMessage(order);
-    const whatsappURL = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(message);
-    window.open(whatsappURL, "_blank");
+    const message = buildRichWhatsAppOrderMessage(order);
+    const whatsappURL = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(message);
+    openWhatsAppDirectly(whatsappURL);
 }
 
 function orderThroughEmail() {
@@ -2443,7 +2501,12 @@ function proceedModalToCheckout(selectedMethod) {
 
     closeOrderModal();
     const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-    const isLocalFile = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    const isLocalFile = isAbout || 
+                        window.location.protocol === "file:" || 
+                        window.location.pathname.endsWith(".html") || 
+                        window.location.pathname.includes(".html") || 
+                        window.location.pathname.includes("/public/") || 
+                        (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
     const target = isLocalFile ? "checkout.html" : "/checkout";
     if (window.safeNavigate) {
         window.safeNavigate(target, "#checkout");
@@ -2468,7 +2531,7 @@ async function placeOrderFromModal() {
     const originalText = btn ? btn.textContent : "";
     if (btn) {
         btn.disabled = true;
-        btn.textContent = "PLACING ORDER...";
+        btn.textContent = "OPENING WHATSAPP...";
     }
 
     const productMapping = {
@@ -2490,9 +2553,23 @@ async function placeOrderFromModal() {
     };
 
     const productId = productMapping[order.product] || 1;
+    const orderId = "OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
+    // 1. Build rich WhatsApp message with all product details and customer info
+    const waMsg = buildRichWhatsAppOrderMessage({ ...order, paymentMethod }, orderId);
+    const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waMsg);
+
+    // 2. Open WhatsApp directly to send order details to the website owner
+    openWhatsAppDirectly(waUrl);
+
+    if (window.showToast) {
+        window.showToast("Opening WhatsApp with order details...", "success");
+    }
+
+    // 3. Save order into backend database
     try {
         const payload = {
+            orderId: orderId,
             customer_name: order.name,
             customer_phone: order.phone,
             delivery_address: {
@@ -2506,65 +2583,43 @@ async function placeOrderFromModal() {
             payment_method: "Cash on Delivery"
         };
 
-        const res = await (window.apiRequest ? window.apiRequest("/api/orders", {
-            method: "POST",
-            body: JSON.stringify(payload)
-        }) : fetch("/api/orders", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        }).then(r => r.json()));
-
-        const orderId = res.orderId || res.id || "#OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
-
-        // Save order ID to localStorage
-        try {
-            const storage = window.safeLocalStorage || localStorage;
-            const savedOrders = JSON.parse(storage.getItem("ojaswi_customer_orders") || "[]");
-            if (!savedOrders.includes(orderId)) {
-                savedOrders.unshift(orderId);
-                storage.setItem("ojaswi_customer_orders", JSON.stringify(savedOrders));
-            }
-            storage.setItem("ojaswi_customer_phone", order.phone);
-            storage.setItem("ojaswi_customer_name", order.name);
-        } catch (e) {
-            console.warn("Could not save to local storage:", e);
+        if (window.apiRequest) {
+            window.apiRequest("/api/orders", {
+                method: "POST",
+                body: JSON.stringify(payload)
+            }).catch(console.warn);
+        } else {
+            fetch("/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+                keepalive: true
+            }).catch(console.warn);
         }
+    } catch (e) {
+        console.warn("Background order save notice:", e);
+    }
 
-        if (window.showToast) {
-            window.showToast("Order placed successfully! Opening WhatsApp...", "success");
-        }
-
-        // WhatsApp message to owner
-        const waMsg = `Hello Ojaswi Foods,\n\nI want to confirm my order from the website modal.\n\n*Order ID:* ${orderId}\n*Customer:* ${order.name}\n*Phone:* +91 ${order.phone}\n\n*Ordered Product*:\n1. *${order.product}* x ${order.quantity} = ₹${order.total}\n\n*Total Amount:* ₹${order.total}\n*Payment Method:* Cash on Delivery\n\n*Delivery Address*:\n${order.address}\n\nPlease confirm dispatch from Malegaon. Thank you!`;
-        const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waMsg);
-        try {
-            window.open(waUrl, "_blank");
-        } catch (e) {
-            console.warn("Popup blocked:", e);
-        }
-
-        closeOrderModal();
-        const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-        const isLocalFile = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
-        const confirmUrl = isLocalFile ? `order-confirmation.html?id=${encodeURIComponent(orderId)}` : `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+    closeOrderModal();
+    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+    const isLocalFile = isAbout || 
+                        window.location.protocol === "file:" || 
+                        window.location.pathname.endsWith(".html") || 
+                        window.location.pathname.includes(".html") || 
+                        window.location.pathname.includes("/public/") || 
+                        (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+    const confirmUrl = isLocalFile ? `order-confirmation.html?id=${encodeURIComponent(orderId)}` : `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+    setTimeout(() => {
         if (window.safeNavigate) {
             window.safeNavigate(confirmUrl, "#orders");
         } else {
             try { window.location.href = confirmUrl; } catch(e) {}
         }
-    } catch (err) {
-        if (window.showToast) {
-            window.showToast(err.message || "Failed to place order. Redirecting to checkout...", "error");
-        } else {
-            alert(err.message || "Order placement failed.");
-        }
-        proceedModalToCheckout("Cash on Delivery");
-    } finally {
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = originalText;
-        }
+    }, 1200);
+
+    if (btn) {
+        btn.disabled = false;
+        btn.textContent = originalText;
     }
 }
 

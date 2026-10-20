@@ -1,10 +1,23 @@
 /**
  * Ojaswi Premium Spices - Frontend Runtime Configuration
- * 
- * When deploying frontend to Vercel and backend to Render:
- * Set OJASWI_API_URL to your live Render backend URL.
- * 
- * Example:
- * window.OJASWI_API_URL = "https://ojaswi-backend.onrender.com";
+ * Backend hosted on Render: https://ojaswi-food-backend.onrender.com
  */
-window.OJASWI_API_URL = window.OJASWI_API_URL || "";
+(function () {
+  const isLocal = typeof window !== "undefined" && (
+    window.location.protocol === "file:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  );
+
+  const defaultApiUrl = isLocal 
+    ? "http://localhost:5000" 
+    : "https://ojaswi-food-backend.onrender.com";
+
+  const resolved = window.OJASWI_API_URL || 
+                   window.OJASWIAPIURL || 
+                   window.VITE_API_URL || 
+                   defaultApiUrl;
+
+  window.OJASWI_API_URL = resolved;
+  window.OJASWIAPIURL = resolved;
+})();

@@ -91,12 +91,12 @@
     <!-- Top Navigation Header -->
     <header style="position: relative; background: #0a0a0a;">
         <div class="container navbar">
-            <a href="/" class="brand">
+            <a href="index.html" class="brand">
                 <div class="brand-name">Ojaswi</div>
                 <div class="brand-subtitle">PREMIUM</div>
             </a>
             <div>
-                <a href="/" class="nav-order" style="border-radius: 4px;">← Continue Shopping</a>
+                <a href="index.html" class="nav-order" style="border-radius: 4px;">← Continue Shopping</a>
             </div>
         </div>
     </header>
@@ -216,8 +216,9 @@
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" id="btnPlaceOrder" class="primary-button" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 700; letter-spacing: 1px;">
-                        CONFIRM &amp; PLACE ORDER
+                    <button type="submit" id="btnPlaceOrder" class="primary-button" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <span>💬</span>
+                        <span>CONFIRM ORDER (DIRECT TO WHATSAPP)</span>
                     </button>
 
                     <!-- Direct Confirmation Channels: WhatsApp, Email, SMS -->
@@ -353,28 +354,24 @@
                     Your spice order has been recorded for dispatch from Malegaon 423203.
                 </p>
 
-                <!-- Channels: WhatsApp, Email, SMS -->
-                <div style="background: #1c1c1c; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 16px; margin-bottom: 22px;">
-                    <div style="font-size: 11px; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-bottom: 12px;">
-                        📲 Confirm Order &amp; Get Dispatch Updates:
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-                        <a id="btnSuccessWhatsApp" target="_blank" class="contact-option whatsapp" style="padding: 10px 6px; border: 1px solid rgba(46,204,113,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
-                            <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 26px; height: 26px;">
-                            <span style="font-size: 11px; font-weight: 600;">WhatsApp</span>
-                            <span style="font-size: 9px; color: #2ecc71;">Direct Chat</span>
-                        </a>
-                        <a id="btnSuccessEmail" class="contact-option email" style="padding: 10px 6px; border: 1px solid rgba(52,152,219,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
-                            <img src="images/icon-email.svg" alt="Email" style="width: 26px; height: 26px;">
-                            <span style="font-size: 11px; font-weight: 600;">Email</span>
-                            <span style="font-size: 9px; color: #3498db;">Official Copy</span>
-                        </a>
-                        <a id="btnSuccessSMS" class="contact-option sms" style="padding: 10px 6px; border: 1px solid rgba(243,156,18,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; color: #fff;">
-                            <img src="images/icon-sms.svg" alt="SMS" style="width: 26px; height: 26px;">
-                            <span style="font-size: 11px; font-weight: 600;">Send SMS</span>
-                            <span style="font-size: 9px; color: #f39c12;">Text Message</span>
-                        </a>
-                    </div>
+                <!-- Direct WhatsApp Order Confirmation Action -->
+                <div style="margin-bottom: 16px;">
+                    <a id="btnSuccessWhatsApp" target="_blank" class="primary-button" style="width: 100%; background: #25D366; color: #fff; font-size: 14px; font-weight: 700; padding: 13px; border-radius: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.4); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" onerror="this.src='./images/icon-whatsapp.svg'">
+                        <span>💬 Confirm Order on WhatsApp (+91 7620098478)</span>
+                    </a>
+                </div>
+
+                <!-- Secondary Channels: Email, SMS -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px;">
+                    <a id="btnSuccessEmail" class="contact-option email" style="padding: 10px 6px; border: 1px solid rgba(52,152,219,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; color: #fff;">
+                        <img src="images/icon-email.svg" alt="Email" style="width: 20px; height: 20px;">
+                        <span style="font-size: 11px; font-weight: 600;">Confirm via Email</span>
+                    </a>
+                    <a id="btnSuccessSMS" class="contact-option sms" style="padding: 10px 6px; border: 1px solid rgba(243,156,18,0.3); background: #121212; border-radius: 6px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px; color: #fff;">
+                        <img src="images/icon-sms.svg" alt="SMS" style="width: 20px; height: 20px;">
+                        <span style="font-size: 11px; font-weight: 600;">Confirm via SMS</span>
+                    </a>
                 </div>
 
                 <div style="display: flex; gap: 10px;">
@@ -771,10 +768,33 @@
             };
 
             const payment_method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            // Synchronously pre-open window on Desktop right within the user's click gesture
+            // This 100% guarantees the browser popup blocker will NOT suppress WhatsApp!
+            let waWindow = null;
+            if (!isMobile && payment_method !== "Online Payment (UPI, Cards, NetBanking)") {
+                try {
+                    waWindow = window.open("", "_blank");
+                    if (waWindow) {
+                        waWindow.document.title = "Ojaswi Foods - Opening WhatsApp...";
+                        waWindow.document.body.innerHTML = `
+                            <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #0c0c0c; color: #fff; text-align: center; padding: 24px;">
+                                <div style="width: 64px; height: 64px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; font-size: 32px; box-shadow: 0 4px 20px rgba(37,211,102,0.45);">💬</div>
+                                <h2 style="margin: 0 0 10px 0; color: #2ecc71; font-size: 22px;">Opening WhatsApp...</h2>
+                                <p style="margin: 0 0 16px 0; color: #aaa; font-size: 14px; max-width: 380px;">Connecting directly to website owner (+91 7620098478) to confirm your spice order...</p>
+                                <div style="font-size: 12px; color: #666;">If WhatsApp does not open automatically, please click <a id="waDirectFallbackLink" href="#" style="color: #2ecc71; text-decoration: underline;">here</a>.</div>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    console.warn("Could not pre-open window:", e);
+                }
+            }
 
             try {
                 btn.disabled = true;
-                btn.textContent = "PROCESSING ORDER...";
+                btn.innerHTML = '<span>⏳</span><span>CONFIRMING ORDER &amp; OPENING WHATSAPP...</span>';
 
                 const payload = {
                     customer_name,
@@ -816,26 +836,44 @@
                 }
 
                 if (res.requiresOnlinePayment && res.razorpayOrder) {
+                    if (waWindow && !waWindow.closed) {
+                        try { waWindow.close(); } catch (e) {}
+                    }
                     btn.textContent = "OPENING SECURE PAYMENT...";
                     launchRazorpay(res.orderId, res.razorpayOrder, customer_name, customer_email, customer_phone, orderSummaryData);
                 } else {
                     cart.clear();
-                    showToast("Order placed successfully! Opening WhatsApp...", "success");
+                    showToast("Order confirmed! Opening WhatsApp now to notify website owner...", "success");
                     showOrderSuccessModal(res.orderId, orderSummaryData);
 
-                    // Automatically open customer's WhatsApp with message to website owner
+                    // Directly open customer's WhatsApp to send full order details to website owner (+91 7620098478)
                     const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, res.orderId);
-                    const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
-                    try {
-                        window.open(waUrl, "_blank");
-                    } catch (e) {
-                        console.warn("Popup blocked, fallback button available:", e);
+                    const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
+
+                    if (isMobile) {
+                        // On mobile, window.location.href directly triggers the native WhatsApp app
+                        window.location.href = waUrl;
+                    } else if (waWindow && !waWindow.closed) {
+                        // On desktop, redirect pre-opened window directly to WhatsApp
+                        try {
+                            const fallbackLink = waWindow.document.getElementById("waDirectFallbackLink");
+                            if (fallbackLink) fallbackLink.href = waUrl;
+                            waWindow.location.href = waUrl;
+                        } catch (e) {
+                            window.location.href = waUrl;
+                        }
+                    } else {
+                        // Fallback
+                        window.location.href = waUrl;
                     }
                 }
             } catch (err) {
+                if (waWindow && !waWindow.closed) {
+                    try { waWindow.close(); } catch (e) {}
+                }
                 showToast(err.message, "error");
                 btn.disabled = false;
-                btn.textContent = "CONFIRM & PLACE ORDER";
+                btn.innerHTML = '<span>💬</span><span>CONFIRM ORDER (DIRECT TO WHATSAPP)</span>';
             }
         }
 
@@ -891,21 +929,59 @@
         }
 
         function buildCheckoutOrderMessage(data, orderId = "") {
+            const id = orderId || ("OJ" + Math.random().toString(36).substring(2, 8).toUpperCase());
+            const now = new Date();
+            const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+            const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
+
             const itemsText = data.items.map((i, idx) => 
-                `${idx + 1}. *${i.name}* x ${i.quantity} = ₹${(i.selling_price || i.price) * i.quantity}`
-            ).join("\n");
+                `  ${idx + 1}. *${i.name}* (500g)\n     Qty: ${i.quantity} pack(s) • Price: ₹${i.selling_price || i.price} • Total: ₹${(i.selling_price || i.price) * i.quantity}`
+            ).join("\n\n");
 
-            const idLine = orderId ? `*Order ID:* ${orderId}\n` : "";
+            return `🌶️ *NEW OJASWI FOODS ORDER* 🌶️
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📦 *ORDER INFORMATION*
+• *Order ID:* #${id}
+• *Date & Time:* ${dateStr}, ${timeStr}
+• *Payment Method:* ${data.paymentMethod || "Cash on Delivery"}
+• *Order Status:* Placed (Pending Dispatch)
 
-            return `Hello Ojaswi Foods,\n\nI want to confirm my order from the website checkout.\n\n${idLine}*Customer Details*\nName: ${data.name}\nPhone: +91 ${data.phone}${data.email ? '\nEmail: ' + data.email : ''}\n\n*Ordered Items*:\n${itemsText}\n\n*Total Amount:* ₹${data.total}\n*Payment Method:* ${data.paymentMethod}\n\n*Delivery Address*:\n${data.address}\n\nPlease confirm my order dispatch from Malegaon. Thank you!`;
+👤 *CUSTOMER INFORMATION*
+• *Customer Name:* ${data.name}
+• *Mobile Number:* +91 ${data.phone}${data.email ? '\n• *Email:* ' + data.email : ''}
+• *Delivery Address:* ${data.address}
+
+🛒 *ORDERED PRODUCTS*
+${itemsText}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💰 *BILLING SUMMARY*
+• *Subtotal:* ₹${data.total}
+• *Delivery Charges:* ₹0 (FREE Express Delivery)
+• *Total Payable Amount:* ₹${data.total}
+
+🏭 *FACTORY & DISPATCH UNIT*
+• *Manufacturer:* Ojaswi Foods, 52/2, Malegaon - 423203, Nashik
+• *FSSAI License:* 3025120612245599988
+• *Official Care:* +91 7620098478
+
+_Hello Ojaswi Foods Team, please confirm my order and arrange dispatch from Malegaon. Thank you!_`;
+        }
+
+        function openWhatsAppDirectly(url) {
+            const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                window.location.href = url;
+            } else {
+                const win = window.open(url, "_blank");
+                if (!win || win.closed || typeof win.closed === "undefined") {
+                    window.location.href = url;
+                }
+            }
         }
 
         function confirmCheckoutViaWhatsApp() {
-            const data = getCheckoutOrderSummaryData();
-            if (!data) return;
-            const msg = buildCheckoutOrderMessage(data);
-            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(msg);
-            window.open(waUrl, "_blank");
+            submitOrder();
         }
 
         function confirmCheckoutViaEmail() {
@@ -1001,17 +1077,12 @@
                         showToast("Payment verified successfully! Opening WhatsApp...", "success");
                         if (orderSummaryData) {
                             showOrderSuccessModal(orderId, orderSummaryData);
-                            // Automatically open customer's WhatsApp with message to website owner
-                            const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, orderId);
-                            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
-                            try {
-                                window.open(waUrl, "_blank");
-                            } catch (e) {
-                                console.warn("Popup blocked, button available in modal:", e);
-                            }
-                        } else {
-                            window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
                         }
+                        const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData || { items: [], total: 0, paymentMethod: "Online Payment (Paid)" }, orderId);
+                        const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
+                        setTimeout(() => {
+                            window.location.href = waUrl;
+                        }, 500);
                     } catch (e) {
                         showToast(e.message, "error");
                     }
@@ -1051,17 +1122,12 @@
                         showToast("Payment verified successfully! Opening WhatsApp...", "success");
                         if (orderSummaryData) {
                             showOrderSuccessModal(orderId, orderSummaryData);
-                            // Automatically open customer's WhatsApp with message to website owner
-                            const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, orderId);
-                            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg);
-                            try {
-                                window.open(waUrl, "_blank");
-                            } catch (e) {}
-                        } else {
-                            setTimeout(() => {
-                                window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
-                            }, 500);
                         }
+                        const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData || { items: [], total: 0, paymentMethod: "Online Payment (Paid)" }, orderId);
+                        const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
+                        setTimeout(() => {
+                            window.location.href = waUrl;
+                        }, 500);
                     } catch (err) {
                         showToast(err.message || "Payment verification failed.", "error");
                     }
@@ -1097,23 +1163,23 @@
 
     <!-- Mobile Bottom Navigation Dock (Phones Only) -->
     <nav class="mobile-bottom-nav">
-        <a href="/" class="nav-tab">
+        <a href="index.html" class="nav-tab">
             <span class="tab-icon">🏠</span>
             <span>Home</span>
         </a>
-        <a href="/#products" class="nav-tab">
+        <a href="index.html#products" class="nav-tab">
             <span class="tab-icon">🌶️</span>
             <span>Spices</span>
         </a>
-        <a href="/checkout" class="nav-tab active">
+        <a href="checkout.html" class="nav-tab active">
             <span class="tab-icon">🛒</span>
             <span>Checkout</span>
         </a>
-        <a href="/orders" class="nav-tab">
+        <a href="orders.html" class="nav-tab">
             <span class="tab-icon">📦</span>
             <span>Orders</span>
         </a>
-        <a href="/account" class="nav-tab" id="tabAccount">
+        <a href="account.html" class="nav-tab" id="tabAccount">
             <span class="tab-icon">👤</span>
             <span id="tabAccountLabel">Account</span>
         </a>

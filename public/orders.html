@@ -149,14 +149,15 @@
     <!-- Top Navigation Header -->
     <header style="position: relative; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.06);" class="no-print">
         <div class="container navbar">
-            <a href="/" class="brand">
+            <a href="index.html" onclick="goToStore(event)" class="brand">
                 <div class="brand-name">Ojaswi</div>
                 <div class="brand-subtitle">PREMIUM</div>
             </a>
-            <div style="display: flex; gap: 12px; align-items: center;">
-                <a href="/" class="nav-order" style="border-radius: 4px;">← Store</a>
-                <a href="/account" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">My Account</a>
-                <a href="/login" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">Login</a>
+            <div style="display: flex; gap: 12px; align-items: center;" id="orderHeaderAuth">
+                <a href="index.html" onclick="goToStore(event)" class="nav-order" style="border-radius: 4px;">← Store</a>
+                <a href="account.html" onclick="goToAccount(event)" id="btnNavAccount" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">My Account</a>
+                <a href="login.html" onclick="goToLogin(event)" id="btnNavLogin" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">Login</a>
+                <button type="button" id="btnNavLogout" onclick="handleLogout()" class="secondary-button" style="padding: 9px 16px; font-size: 13px; color: #ff5252; border-color: rgba(255,82,82,0.3); display: none;">Logout</button>
             </div>
         </div>
     </header>
@@ -182,18 +183,41 @@
         <div id="singleOrderDetailSection" style="display: none; margin-bottom: 45px;">
             <div class="receipt-card">
                 
-                <!-- Receipt Top Brand Header -->
-                <div class="receipt-header" style="margin-bottom: 20px;">
-                    <span style="font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase;">Official Dispatch &amp; Tracking Portal</span>
-                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin: 8px 0; flex-wrap: wrap;">
-                        <h2 id="receiptOrderId" style="font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold-light); margin: 0;">#OJ------</h2>
-                        <span id="receiptOrderStatusBadge" class="status-badge" style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 600;">Confirmed</span>
+                <!-- Prominent Ojaswi Foods Logo & Header -->
+                <div class="receipt-brand-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <div class="receipt-logo-badge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
+                            <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
+                            <span style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
+                        </div>
+                        <div>
+                            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">OJASWI FOODS</div>
+                            <div style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">Premium Authentic Spices • Malegaon Factory</div>
+                            <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203, Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
+                        </div>
                     </div>
-                    <p id="receiptDate" style="color: #888; font-size: 12.5px; margin: 0;"></p>
+                    <div style="text-align: right;">
+                        <span style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official Tax Invoice</span>
+                        <div id="receiptDate" style="color: #888; font-size: 12px; margin-top: 5px;"></div>
+                    </div>
                 </div>
 
-                <!-- LIVE DELIVERY TRACKING TIMELINE PANEL -->
-                <div class="live-tracking-panel">
+                <!-- Order ID & Status Header Bar -->
+                <div class="receipt-order-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #161616; padding: 12px 18px; border-radius: 6px; border-left: 4px solid var(--gold);">
+                    <div>
+                        <span style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Official Order ID</span>
+                        <div id="receiptOrderId" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 700; color: var(--gold-light); margin: 2px 0 0 0;">#OJ------</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order Status</span>
+                        <div style="margin-top: 2px;">
+                            <span id="receiptOrderStatusBadge" class="status-badge" style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 600;">Confirmed</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LIVE DELIVERY TRACKING TIMELINE PANEL (Hidden on Print: Remove the track the order) -->
+                <div class="live-tracking-panel no-print">
                     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                         <div>
                             <span style="font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">Live Dispatch Progress</span>
@@ -298,7 +322,7 @@
                 </div>
 
                 <!-- Payment Details & Print Actions -->
-                <div style="background: #161616; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
+                <div class="receipt-payment-box" style="background: #161616; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
                     <div>
                         <span style="color: #777; font-size: 11px; text-transform: uppercase;">Payment Details</span>
                         <div id="receiptPayment" style="color: #fff; font-weight: 600; font-size: 14px; margin-top: 2px;">--</div>
@@ -310,7 +334,7 @@
                 </div>
 
                 <!-- Packaging & Origin Verification -->
-                <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; font-size: 11.5px; color: #666; line-height: 1.6;">
+                <div class="receipt-footer-pack" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; font-size: 11.5px; color: #666; line-height: 1.6;">
                     Packed By: <strong>Ojaswi Foods, 52/2, Malegaon - 423203</strong><br>
                     FSSAI Lic. <strong>3025120612245599988</strong> | WhatsApp Live Updates: <strong>+91 7620098478</strong>
                 </div>
@@ -362,7 +386,128 @@
     <script>
         const OJASWI_PHONE = "917620098478";
 
+        // Navigation helpers for seamless routing in file://, Live Server, and production
+        window.goToAccount = function(event) {
+            if (event && event.preventDefault) event.preventDefault();
+            const isLocal = window.location.protocol === "file:" || 
+                            window.location.protocol === "about:" || 
+                            window.location.pathname.endsWith(".html") || 
+                            window.location.pathname.includes(".html") || 
+                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const target = isLocal ? "account.html" : "/account";
+            if (window.safeNavigate) {
+                window.safeNavigate(target, "#account");
+            } else {
+                window.location.href = target;
+            }
+        };
+
+        window.goToStore = function(event) {
+            if (event && event.preventDefault) event.preventDefault();
+            const isLocal = window.location.protocol === "file:" || 
+                            window.location.protocol === "about:" || 
+                            window.location.pathname.endsWith(".html") || 
+                            window.location.pathname.includes(".html") || 
+                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const target = isLocal ? "index.html" : "/";
+            if (window.safeNavigate) {
+                window.safeNavigate(target, "");
+            } else {
+                window.location.href = target;
+            }
+        };
+
+        window.goToLogin = function(event) {
+            if (event && event.preventDefault) event.preventDefault();
+            const isLocal = window.location.protocol === "file:" || 
+                            window.location.protocol === "about:" || 
+                            window.location.pathname.endsWith(".html") || 
+                            window.location.pathname.includes(".html") || 
+                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const target = isLocal ? "login.html" : "/login";
+            if (window.safeNavigate) {
+                window.safeNavigate(target, "#login");
+            } else {
+                window.location.href = target;
+            }
+        };
+
+        window.goToCheckout = function(event) {
+            if (event && event.preventDefault) event.preventDefault();
+            const isLocal = window.location.protocol === "file:" || 
+                            window.location.protocol === "about:" || 
+                            window.location.pathname.endsWith(".html") || 
+                            window.location.pathname.includes(".html") || 
+                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const target = isLocal ? "checkout.html" : "/checkout";
+            if (window.safeNavigate) {
+                window.safeNavigate(target, "#checkout");
+            } else {
+                window.location.href = target;
+            }
+        };
+
+        window.handleLogout = async function() {
+            try {
+                if (window.safeLocalStorage) {
+                    window.safeLocalStorage.removeItem("ojaswi_user");
+                    window.safeLocalStorage.removeItem("ojaswi_token");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_phone");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_name");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_orders");
+                }
+                localStorage.removeItem("ojaswi_user");
+                localStorage.removeItem("ojaswi_token");
+                localStorage.removeItem("ojaswi_customer_phone");
+                localStorage.removeItem("ojaswi_customer_name");
+                localStorage.removeItem("ojaswi_customer_orders");
+            } catch(e) {}
+            try {
+                if (typeof apiRequest === "function") {
+                    await apiRequest("/api/auth/logout", { method: "POST" });
+                }
+            } catch(e) {}
+            if (typeof showToast === "function") {
+                showToast("Logged out successfully.", "info");
+            }
+            syncOrdersAuthHeader();
+            loadOrdersList();
+        };
+
+        function syncOrdersAuthHeader() {
+            let user = null;
+            try {
+                const raw = (window.safeLocalStorage ? window.safeLocalStorage.getItem("ojaswi_user") : localStorage.getItem("ojaswi_user"));
+                if (raw) user = JSON.parse(raw);
+            } catch(e) {}
+
+            const btnAcc = document.getElementById("btnNavAccount");
+            const btnLog = document.getElementById("btnNavLogin");
+            const btnOut = document.getElementById("btnNavLogout");
+            const tabAcc = document.getElementById("tabAccountLabel");
+
+            if (user && (user.name || user.phone || user.email)) {
+                const displayName = user.name ? user.name.split(" ")[0] : "Account";
+                if (btnAcc) {
+                    btnAcc.textContent = "👤 " + displayName;
+                    btnAcc.title = user.name || user.phone || user.email;
+                }
+                if (btnLog) btnLog.style.display = "none";
+                if (btnOut) btnOut.style.display = "inline-block";
+                if (tabAcc) tabAcc.textContent = displayName;
+            } else {
+                if (btnAcc) {
+                    btnAcc.textContent = "My Account";
+                    btnAcc.title = "Customer Account Dashboard";
+                }
+                if (btnLog) btnLog.style.display = "inline-block";
+                if (btnOut) btnOut.style.display = "none";
+                if (tabAcc) tabAcc.textContent = "Account";
+            }
+        }
+
         async function initOrdersPage() {
+            syncOrdersAuthHeader();
             const urlParams = new URLSearchParams(window.location.search);
             const specificOrderId = urlParams.get("id");
             const searchParam = urlParams.get("search") || urlParams.get("phone");
@@ -539,34 +684,11 @@
 
             try {
                 const res = await apiRequest("/api/orders");
-                let orders = res.orders || [];
-
-                // Fallback: If 0 orders returned, check localStorage for customer phone or placed order IDs
-                if (orders.length === 0) {
-                    const localPhone = localStorage.getItem("ojaswi_customer_phone");
-                    const localOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
-
-                    if (localPhone) {
-                        try {
-                            const fallbackRes = await apiRequest(`/api/orders?phone=${encodeURIComponent(localPhone)}`);
-                            if (fallbackRes.orders && fallbackRes.orders.length > 0) {
-                                orders = fallbackRes.orders;
-                                updateFilterBadge(`Saved Phone: +91 ${localPhone}`);
-                                document.getElementById("orderSearchInput").value = localPhone;
-                            }
-                        } catch (e) {}
-                    }
-
-                    if (orders.length === 0 && localOrders.length > 0) {
-                        try {
-                            const idsRes = await apiRequest(`/api/orders?order_ids=${encodeURIComponent(localOrders.join(','))}`);
-                            if (idsRes.orders && idsRes.orders.length > 0) {
-                                orders = idsRes.orders;
-                                updateFilterBadge(`Saved Orders: ${localOrders.length}`);
-                            }
-                        } catch (e) {}
-                    }
+                if (res && res.requiresAuth) {
+                    renderEmptyOrdersUI(container, true);
+                    return;
                 }
+                const orders = res.orders || [];
 
                 if (orders.length === 0) {
                     renderEmptyOrdersUI(container, false);
@@ -575,25 +697,6 @@
 
                 renderOrdersCards(container, orders);
             } catch (err) {
-                // If unauthenticated, check localStorage first before showing login prompt
-                const localPhone = localStorage.getItem("ojaswi_customer_phone");
-                const localOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
-
-                if (localPhone || localOrders.length > 0) {
-                    try {
-                        const q = localPhone ? `phone=${encodeURIComponent(localPhone)}` : `order_ids=${encodeURIComponent(localOrders.join(','))}`;
-                        const guestRes = await apiRequest(`/api/orders?${q}`);
-                        if (guestRes.orders && guestRes.orders.length > 0) {
-                            if (localPhone) {
-                                updateFilterBadge(`Saved Phone: +91 ${localPhone}`);
-                                document.getElementById("orderSearchInput").value = localPhone;
-                            }
-                            renderOrdersCards(container, guestRes.orders);
-                            return;
-                        }
-                    } catch (e) {}
-                }
-
                 renderEmptyOrdersUI(container, true);
             }
         }
@@ -699,14 +802,18 @@
             container.innerHTML = `
                 <div style="background: #121212; border: 1px dashed rgba(255,255,255,0.15); border-radius: 8px; padding: 50px 20px; text-align: center; color: #888;">
                     <p style="font-size: 40px; margin-bottom: 12px;">📦</p>
-                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin-bottom: 8px;">No Orders Found in This View</h3>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin-bottom: 8px;">
+                        ${showLoginOption ? 'Sign In to View Orders' : 'No order history found.'}
+                    </h3>
                     <p style="font-size: 14px; max-width: 520px; margin: 0 auto 24px; line-height: 1.6; color: #aaa;">
-                        Have you placed an order as guest or with a specific mobile number? Use the search box above to instantly look up your order, or explore our hand-ground spices from Malegaon.
+                        ${showLoginOption 
+                            ? 'Please sign in to your customer account to view your past orders and live tracking history.' 
+                            : 'You have not placed any spice orders yet. Explore our pure, stone-ground authentic spices from Malegaon.'}
                     </p>
                     <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
                         <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button" style="display: inline-block; padding: 12px 24px;">Explore Spices</a>
-                        ${showLoginOption ? `<a href="/login?redirect=/orders" class="secondary-button" style="display: inline-block; padding: 12px 22px;">Login to Account</a>` : ''}
-                        <a href="https://wa.me/${OJASWI_PHONE}?text=${encodeURIComponent('Hello Ojaswi Foods, I need help tracking my spice order')}" target="_blank" class="secondary-button" style="display: inline-block; padding: 12px 20px; color: #2ecc71; border-color: rgba(46,204,113,0.4);">
+                        ${showLoginOption ? `<a href="login.html?redirect=orders.html" onclick="goToLogin(event)" class="secondary-button" style="display: inline-block; padding: 12px 22px;">Login to Account</a>` : ''}
+                        <a href="https://wa.me/${OJASWI_PHONE}?text=${encodeURIComponent('Hello Ojaswi Foods, I need help ordering spices')}" target="_blank" class="secondary-button" style="display: inline-block; padding: 12px 20px; color: #2ecc71; border-color: rgba(46,204,113,0.4);">
                             💬 WhatsApp Help: +91 7620098478
                         </a>
                     </div>
@@ -1018,23 +1125,23 @@
 
     <!-- Mobile Bottom Navigation Dock (Phones Only) -->
     <nav class="mobile-bottom-nav">
-        <a href="/" class="nav-tab">
+        <a href="index.html" onclick="goToStore(event)" class="nav-tab">
             <span class="tab-icon">🏠</span>
             <span>Home</span>
         </a>
-        <a href="/#products" class="nav-tab">
+        <a href="index.html#products" onclick="goToStoreProducts(event)" class="nav-tab">
             <span class="tab-icon">🌶️</span>
             <span>Spices</span>
         </a>
-        <a href="/checkout" class="nav-tab">
+        <a href="checkout.html" onclick="goToCheckout(event)" class="nav-tab">
             <span class="tab-icon">🛒</span>
             <span>Checkout</span>
         </a>
-        <a href="/orders" class="nav-tab active">
+        <a href="orders.html" class="nav-tab active">
             <span class="tab-icon">📦</span>
             <span>Orders</span>
         </a>
-        <a href="/account" class="nav-tab" id="tabAccount">
+        <a href="account.html" onclick="goToAccount(event)" class="nav-tab" id="tabAccount">
             <span class="tab-icon">👤</span>
             <span id="tabAccountLabel">Account</span>
         </a>

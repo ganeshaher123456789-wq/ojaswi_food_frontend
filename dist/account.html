@@ -103,11 +103,11 @@
                 Sign in to view your profile details, manage saved delivery addresses in Malegaon or anywhere in India, and track your spice orders live.
             </p>
             <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
-                <a id="btnGuestPhone" href="login.html?mode=phone&redirect=account.html" class="primary-button" style="padding: 13px 26px; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
-                    📱 Continue with Phone OTP
+                <a id="btnGuestSignIn" href="login.html?redirect=account.html" class="primary-button" style="padding: 13px 26px; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+                    🔐 Sign In to Account
                 </a>
-                <a id="btnGuestEmail" href="login.html?mode=email&redirect=account.html" class="secondary-button" style="padding: 13px 24px; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
-                    ✉️ Continue with Email OTP
+                <a id="btnGuestRegister" href="login.html?mode=register&redirect=account.html" class="secondary-button" style="padding: 13px 24px; font-size: 14px; display: inline-flex; align-items: center; gap: 8px;">
+                    ✨ Create New Account
                 </a>
             </div>
             <div style="margin-top: 35px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 20px;">
@@ -296,8 +296,110 @@
     </div>
 
     <!-- SCRIPT LOGIC -->
+    <script src="config.js"></script>
     <script src="js/ojaswi.js"></script>
     <script>
+        // Universal API client resolution & polyfill
+        function resolveApiBaseUrl() {
+            if (typeof window !== "undefined") {
+                if (window.OJASWI_API_URL && typeof window.OJASWI_API_URL === "string" && window.OJASWI_API_URL.trim()) {
+                    return window.OJASWI_API_URL.trim().replace(/\/+$/, "");
+                }
+                if (window.OJASWIAPIURL && typeof window.OJASWIAPIURL === "string" && window.OJASWIAPIURL.trim()) {
+                    return window.OJASWIAPIURL.trim().replace(/\/+$/, "");
+                }
+                if (window.VITE_API_URL && typeof window.VITE_API_URL === "string" && window.VITE_API_URL.trim()) {
+                    return window.VITE_API_URL.trim().replace(/\/+$/, "");
+                }
+                if (window.__ENV__?.API_URL && typeof window.__ENV__.API_URL === "string" && window.__ENV__.API_URL.trim()) {
+                    return window.__ENV__.API_URL.trim().replace(/\/+$/, "");
+                }
+                const meta = document.querySelector('meta[name="api-base-url"]');
+                if (meta && meta.content && !meta.content.startsWith("%") && meta.content.trim()) {
+                    return meta.content.trim().replace(/\/+$/, "");
+                }
+            }
+            const isLocal = typeof window !== "undefined" && (
+                window.location.protocol === "file:" ||
+                window.location.hostname === "localhost" ||
+                window.location.hostname === "127.0.0.1"
+            );
+            if (isLocal) {
+                if (window.location.protocol === "file:" || (window.location.port !== "5000" && window.location.port !== "3000")) {
+                    return "http://localhost:5000";
+                }
+                return "";
+            }
+            return "https://ojaswi-food-backend.onrender.com";
+        }
+
+        if (typeof window.apiRequest !== "function") {
+            window.apiRequest = async function(endpoint, options = {}) {
+                const baseUrl = resolveApiBaseUrl();
+                const url = endpoint.startsWith("http") ? endpoint : baseUrl + endpoint;
+                const defaultHeaders = {
+                    "Content-Type": "application/json"
+                };
+
+                const storage = window.safeLocalStorage || window.localStorage;
+                let token = null;
+                try {
+                    token = storage ? storage.getItem("ojaswi_token") : null;
+                } catch (_) {}
+
+                if (token) {
+                    defaultHeaders["Authorization"] = `Bearer ${token}`;
+                }
+
+                const isLocalFile = typeof window !== "undefined" && window.location.protocol === "file:";
+                const config = {
+                    ...options,
+                    headers: {
+                        ...defaultHeaders,
+                        ...(options.headers || {})
+                    },
+                    credentials: isLocalFile ? "omit" : "include"
+                };
+
+                try {
+                    const res = await fetch(url, config);
+                    const data = await res.json().catch(() => ({}));
+                    if (!res.ok || data.success === false) {
+                        const err = new Error(data.error || data.message || `Request failed with status ${res.status}`);
+                        err.status = res.status;
+                        throw err;
+                    }
+                    return data;
+                } catch (err) {
+                    console.error(`[API Error] ${endpoint}:`, err);
+                    throw err;
+                }
+            };
+        }
+        const apiRequest = window.apiRequest;
+
+        // Universal notification helper
+        if (typeof window.showToast !== "function") {
+            window.showToast = function(msg, type = "info") {
+                let container = document.getElementById("toastContainer");
+                if (!container) {
+                    container = document.createElement("div");
+                    container.id = "toastContainer";
+                    container.className = "toast-container";
+                    document.body.appendChild(container);
+                }
+                const toast = document.createElement("div");
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `<span>${msg}</span>`;
+                container.appendChild(toast);
+                setTimeout(() => {
+                    toast.style.opacity = "0";
+                    toast.style.transition = "opacity 0.3s ease";
+                    setTimeout(() => toast.remove(), 300);
+                }, 3500);
+            };
+        }
+
         let currentProfile = null;
         let currentAddresses = [];
         let editingAddressId = null;
@@ -309,9 +411,42 @@
             const btnLogout = document.getElementById("btnLogout");
             const btnLoginHeader = document.getElementById("btnLoginHeader");
 
-            spinner.style.display = "block";
-            authView.style.display = "none";
-            unauthView.style.display = "none";
+            const storage = window.safeLocalStorage || window.localStorage;
+            let cachedUser = null;
+            let cachedToken = null;
+            try {
+                cachedToken = storage.getItem("ojaswi_token");
+                const rawUser = storage.getItem("ojaswi_user");
+                if (rawUser) cachedUser = JSON.parse(rawUser);
+            } catch (_) {}
+
+            // Immediate local profile rendering if cached user exists
+            if (cachedUser) {
+                const fullName = cachedUser.name || (cachedUser.phone ? `Customer (+91 ${cachedUser.phone})` : "Valued Customer");
+                const firstName = fullName.split(" ")[0];
+                document.getElementById("accountHeadingName").textContent = firstName;
+                document.getElementById("cardFullName").textContent = fullName;
+                document.getElementById("cardPhone").textContent = cachedUser.phone ? `+91 ${cachedUser.phone}` : "Not provided";
+                document.getElementById("cardEmail").textContent = cachedUser.email || "Not provided";
+                document.getElementById("cardJoined").textContent = "Active Customer";
+
+                if (spinner) spinner.style.display = "none";
+                if (unauthView) unauthView.style.display = "none";
+                if (authView) authView.style.display = "block";
+                if (btnLogout) btnLogout.style.display = "inline-block";
+                if (btnLoginHeader) btnLoginHeader.style.display = "none";
+            } else if (!cachedToken) {
+                if (spinner) spinner.style.display = "none";
+                if (authView) authView.style.display = "none";
+                if (unauthView) unauthView.style.display = "block";
+                if (btnLogout) btnLogout.style.display = "none";
+                if (btnLoginHeader) btnLoginHeader.style.display = "inline-block";
+                return;
+            } else {
+                if (spinner) spinner.style.display = "block";
+                if (authView) authView.style.display = "none";
+                if (unauthView) unauthView.style.display = "none";
+            }
 
             try {
                 const res = await apiRequest("/api/account");
@@ -322,6 +457,10 @@
 
                 currentProfile = res.profile;
                 currentAddresses = res.addresses || [];
+
+                try {
+                    storage.setItem("ojaswi_user", JSON.stringify(res.profile));
+                } catch (_) {}
 
                 // Safe parsing of name and dates
                 const fullName = res.profile.name || (res.profile.phone ? `Customer (+91 ${res.profile.phone})` : "Valued Customer");
@@ -351,19 +490,31 @@
                 renderRecentOrders(res.recentOrders || []);
 
                 // Transition UI to authenticated state
-                spinner.style.display = "none";
-                unauthView.style.display = "none";
-                authView.style.display = "block";
+                if (spinner) spinner.style.display = "none";
+                if (unauthView) unauthView.style.display = "none";
+                if (authView) authView.style.display = "block";
                 if (btnLogout) btnLogout.style.display = "inline-block";
                 if (btnLoginHeader) btnLoginHeader.style.display = "none";
 
             } catch (err) {
                 console.warn("[Account Page Auth Status]:", err.message);
-                spinner.style.display = "none";
-                authView.style.display = "none";
-                unauthView.style.display = "block";
-                if (btnLogout) btnLogout.style.display = "none";
-                if (btnLoginHeader) btnLoginHeader.style.display = "inline-block";
+                if (err.status === 401) {
+                    try {
+                        storage.removeItem("ojaswi_token");
+                        storage.removeItem("ojaswi_user");
+                    } catch (_) {}
+                    if (spinner) spinner.style.display = "none";
+                    if (authView) authView.style.display = "none";
+                    if (unauthView) unauthView.style.display = "block";
+                    if (btnLogout) btnLogout.style.display = "none";
+                    if (btnLoginHeader) btnLoginHeader.style.display = "inline-block";
+                } else if (!cachedUser) {
+                    if (spinner) spinner.style.display = "none";
+                    if (authView) authView.style.display = "none";
+                    if (unauthView) unauthView.style.display = "block";
+                    if (btnLogout) btnLogout.style.display = "none";
+                    if (btnLoginHeader) btnLoginHeader.style.display = "inline-block";
+                }
             }
         }
 
@@ -397,29 +548,15 @@
             `).join("");
         }
 
-        async function renderRecentOrders(orders) {
+        function renderRecentOrders(orders) {
             const container = document.getElementById("recentOrdersContainer");
             if (!orders || orders.length === 0) {
-                // Check localStorage fallback
-                const localPhone = localStorage.getItem("ojaswi_customer_phone");
-                const localOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
-                if (localPhone || localOrders.length > 0) {
-                    try {
-                        const q = localPhone ? `phone=${encodeURIComponent(localPhone)}` : `order_ids=${encodeURIComponent(localOrders.join(','))}`;
-                        const fbRes = await apiRequest(`/api/orders?${q}`);
-                        if (fbRes.orders && fbRes.orders.length > 0) {
-                            renderRecentOrders(fbRes.orders);
-                            return;
-                        }
-                    } catch (e) {}
-                }
-
                 container.innerHTML = `
                     <div style="background: #141414; border: 1px solid rgba(255,255,255,0.06); border-radius: 6px; padding: 30px; text-align: center; color: #888;">
-                        <p style="margin-bottom: 14px; font-size: 14px;">No spice orders linked to this profile yet.</p>
+                        <p style="margin-bottom: 14px; font-size: 14px; color: #bbb;">No order history found.</p>
                         <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
                             <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button" style="display: inline-block; padding: 10px 20px; font-size: 12px;">🌶️ Order Ojaswi Spices</a>
-                            <a href="orders.html" class="secondary-button" style="display: inline-block; padding: 10px 18px; font-size: 12px;">🔍 Track by Mobile / Order ID</a>
+                            <a href="orders.html" class="secondary-button" style="display: inline-block; padding: 10px 18px; font-size: 12px;">📦 View Orders Portal</a>
                         </div>
                     </div>
                 `;
@@ -701,6 +838,18 @@
             } catch (e) {}
             localStorage.removeItem("ojaswi_token");
             localStorage.removeItem("ojaswi_user");
+            localStorage.removeItem("ojaswi_customer_phone");
+            localStorage.removeItem("ojaswi_customer_name");
+            localStorage.removeItem("ojaswi_customer_orders");
+            if (window.safeLocalStorage) {
+                try {
+                    window.safeLocalStorage.removeItem("ojaswi_token");
+                    window.safeLocalStorage.removeItem("ojaswi_user");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_phone");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_name");
+                    window.safeLocalStorage.removeItem("ojaswi_customer_orders");
+                } catch (_) {}
+            }
             showToast("Logged out successfully.", "info");
             loadAccount();
         });
@@ -717,23 +866,23 @@
 
     <!-- Mobile Bottom Navigation Dock (Phones Only) -->
     <nav class="mobile-bottom-nav">
-        <a href="/" class="nav-tab">
+        <a href="index.html" class="nav-tab">
             <span class="tab-icon">🏠</span>
             <span>Home</span>
         </a>
-        <a href="/#products" class="nav-tab">
+        <a href="index.html#products" class="nav-tab">
             <span class="tab-icon">🌶️</span>
             <span>Spices</span>
         </a>
-        <a href="/checkout" class="nav-tab">
+        <a href="checkout.html" class="nav-tab">
             <span class="tab-icon">🛒</span>
             <span>Checkout</span>
         </a>
-        <a href="/orders" class="nav-tab">
+        <a href="orders.html" class="nav-tab">
             <span class="tab-icon">📦</span>
             <span>Orders</span>
         </a>
-        <a href="/account" class="nav-tab active" id="tabAccount">
+        <a href="account.html" class="nav-tab active" id="tabAccount">
             <span class="tab-icon">👤</span>
             <span id="tabAccountLabel">Account</span>
         </a>

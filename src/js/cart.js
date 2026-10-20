@@ -123,7 +123,7 @@ class CartManager {
               <span>Estimated Total:</span>
               <span id="cartDrawerTotal">₹0</span>
             </div>
-            <button id="cartDrawerCheckoutBtn" class="cart-checkout-btn">Proceed to Checkout</button>
+            <a href="checkout.html" id="cartDrawerCheckoutBtn" class="cart-checkout-btn" style="display: block; text-decoration: none; text-align: center; box-sizing: border-box; cursor: pointer;">Proceed to Checkout</a>
           </div>
         </aside>
       `;
@@ -135,9 +135,17 @@ class CartManager {
 
       overlay?.addEventListener("click", () => this.closeDrawer());
       closeBtn?.addEventListener("click", () => this.closeDrawer());
-      checkoutBtn?.addEventListener("click", () => {
+      checkoutBtn?.addEventListener("click", (e) => {
+        if (e && e.preventDefault) e.preventDefault();
         this.closeDrawer();
-        window.location.href = "/checkout";
+        const isLocal = window.location.protocol === "file:" ||
+                        window.location.protocol === "about:" ||
+                        window.location.pathname.endsWith(".html") ||
+                        window.location.pathname.includes(".html") ||
+                        window.location.pathname.includes("/public/") ||
+                        (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+        const target = isLocal ? "checkout.html" : "/checkout";
+        window.location.href = target;
       });
     }
 

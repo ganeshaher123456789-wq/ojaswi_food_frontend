@@ -38,6 +38,37 @@ for (const file of files) {
   }
 }
 
+// Generate production runtime config
+const prodApiUrl = process.env.VITE_API_URL || 
+                   process.env.PUBLIC_API_URL || 
+                   process.env.OJASWI_API_URL || 
+                   process.env.OJASWIAPIURL || 
+                   "https://ojaswi-food-backend.onrender.com";
+
+const prodConfigContent = `/**
+ * Ojaswi Premium Spices - Frontend Production Configuration (Vercel Build)
+ * Live Render Backend: ${prodApiUrl}
+ */
+(function() {
+  const isLocal = typeof window !== "undefined" && (
+    window.location.protocol === "file:" ||
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
+  );
+  const defaultApiUrl = isLocal ? "http://localhost:5000" : "${prodApiUrl}";
+  const resolved = window.OJASWI_API_URL || window.OJASWIAPIURL || window.VITE_API_URL || defaultApiUrl;
+  window.OJASWI_API_URL = resolved;
+  window.OJASWIAPIURL = resolved;
+})();
+`;
+
+fs.writeFileSync(path.resolve(distDir, "config.js"), prodConfigContent, "utf8");
+const distPublicDir = path.resolve(distDir, "public");
+if (fs.existsSync(distPublicDir)) {
+  fs.writeFileSync(path.resolve(distPublicDir, "config.js"), prodConfigContent, "utf8");
+}
+console.log(`✓ Injected production backend configuration (${prodApiUrl}) into dist/config.js`);
+
 console.log(`✓ Copied ${htmlCount} storefront HTML pages and configurations into dist/`);
 console.log("==================================================");
 console.log("✨ FRONTEND PRODUCTION BUILD COMPLETE AND VERIFIED!");

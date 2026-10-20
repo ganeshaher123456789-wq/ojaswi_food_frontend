@@ -15,12 +15,10 @@ async function checkAuthStatus() {
 
     if (res.isAuthenticated && res.user) {
       const displayName = res.user.name ? res.user.name.split(" ")[0] : "Account";
-      const isAdmin = res.user.role === "admin";
-      const link = isAdmin ? "/admin" : "/account";
 
       const html = `
-        <a href="${link}" class="account-link" title="${res.user.name || res.user.phone || res.user.email}">
-          <span>👤</span> ${displayName} ${isAdmin ? "(Admin)" : ""}
+        <a href="/account" class="account-link" title="${res.user.name || res.user.phone || res.user.email}">
+          <span>👤</span> ${displayName}
         </a>
       `;
 

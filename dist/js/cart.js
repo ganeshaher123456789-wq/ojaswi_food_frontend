@@ -1,4 +1,4 @@
-import { showToast } from "./api.js";
+import { showToast, apiRequest } from "./api.js";
 
 const STORAGE_KEY = "ojaswi_cart_items";
 
@@ -7,6 +7,7 @@ class CartManager {
     this.items = this.load();
     this.initDrawer();
     this.updateBadges();
+    this.fetchRemoteCart();
   }
 
   load() {
@@ -27,6 +28,38 @@ class CartManager {
     this.updateBadges();
     this.renderDrawer();
     window.dispatchEvent(new CustomEvent("cart:updated", { detail: { items: this.items } }));
+    this.syncWithBackend();
+  }
+
+  async syncWithBackend() {
+    try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) return;
+      await apiRequest("/api/cart/sync", {
+        method: "POST",
+        body: JSON.stringify({ items: this.items })
+      });
+    } catch (e) {
+      // Background sync - ignore network errors
+    }
+  }
+
+  async fetchRemoteCart() {
+    try {
+      const res = await apiRequest("/api/cart");
+      if (res && res.success && Array.isArray(res.items) && res.items.length > 0) {
+        if (!this.items || this.items.length === 0) {
+          this.items = res.items;
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(this.items));
+          } catch (e) {}
+          this.updateBadges();
+          this.renderDrawer();
+          window.dispatchEvent(new CustomEvent("cart:updated", { detail: { items: this.items } }));
+        }
+      }
+    } catch (e) {
+      // Ignore
+    }
   }
 
   getItems() {
@@ -123,7 +156,7 @@ class CartManager {
               <span>Estimated Total:</span>
               <span id="cartDrawerTotal">₹0</span>
             </div>
-            <button id="cartDrawerCheckoutBtn" class="cart-checkout-btn">Proceed to Checkout</button>
+            <a href="checkout.html" id="cartDrawerCheckoutBtn" class="cart-checkout-btn" style="display: block; text-decoration: none; text-align: center; box-sizing: border-box; cursor: pointer;">Proceed to Checkout</a>
           </div>
         </aside>
       `;
@@ -135,9 +168,17 @@ class CartManager {
 
       overlay?.addEventListener("click", () => this.closeDrawer());
       closeBtn?.addEventListener("click", () => this.closeDrawer());
-      checkoutBtn?.addEventListener("click", () => {
+      checkoutBtn?.addEventListener("click", (e) => {
+        if (e && e.preventDefault) e.preventDefault();
         this.closeDrawer();
-        window.location.href = "/checkout";
+        const isLocal = window.location.protocol === "file:" ||
+                        window.location.protocol === "about:" ||
+                        window.location.pathname.endsWith(".html") ||
+                        window.location.pathname.includes(".html") ||
+                        window.location.pathname.includes("/public/") ||
+                        (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+        const target = isLocal ? "checkout.html" : "/checkout";
+        window.location.href = target;
       });
     }
 

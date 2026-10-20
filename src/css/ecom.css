@@ -686,24 +686,192 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Print Invoice Styles */
+/* =========================================================
+   OFFICIAL PRINT INVOICE & RECEIPT STYLES
+   - Hides live tracking timeline, steppers, and web UI
+   - Shows prominent Ojaswi Foods Logo and Brand Header
+   - Shows clear order details & itemized amounts with zero ink waste
+========================================================= */
 @media print {
-    body {
-        background: #fff !important;
-        color: #000 !important;
+    @page {
+        margin: 10mm 14mm;
+        size: auto;
     }
-    header, footer, .hero-buttons, .no-print, button {
+
+    html, body {
+        background: #ffffff !important;
+        color: #111111 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Completely hide navigation, footers, interactive buttons, search, and all tracking components */
+    header,
+    footer,
+    nav,
+    button,
+    .no-print,
+    .hero-buttons,
+    .live-tracking-panel,
+    .timeline-tracker,
+    .tracking-meta-grid,
+    #trackingTimelineContainer,
+    #trackingLiveNoteCard,
+    #deliveredReviewBanner,
+    #confTimelineStepper,
+    .tracking-stepper-box,
+    #orderLookupForm,
+    #orderSearchInput,
+    .contact-option,
+    #mainNav,
+    .nav-actions {
         display: none !important;
     }
-    .receipt-card {
-        border: none !important;
-        background: #fff !important;
-        color: #000 !important;
-        box-shadow: none !important;
+
+    .container, main {
+        max-width: 100% !important;
+        width: 100% !important;
         padding: 0 !important;
+        margin: 0 !important;
     }
-    .receipt-card * {
-        color: #000 !important;
+
+    .receipt-card {
+        border: 1px solid #d5d5d5 !important;
+        background: #ffffff !important;
+        color: #111111 !important;
+        box-shadow: none !important;
+        padding: 24px 28px !important;
+        margin: 0 auto !important;
+        border-radius: 4px !important;
+        max-width: 100% !important;
+    }
+
+    /* Prominent Ojaswi Foods Logo Header on Print */
+    .receipt-brand-header {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        border-bottom: 2px solid #b88228 !important;
+        padding-bottom: 14px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .receipt-brand-header * {
+        color: #111111 !important;
+    }
+
+    .receipt-logo-badge {
+        background: #fdf6e6 !important;
+        border: 2px solid #b88228 !important;
+        box-shadow: none !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+
+    .receipt-logo-badge span {
+        color: #946200 !important;
+    }
+
+    /* Order Details Bar */
+    .receipt-order-bar {
+        background: #f8f9fa !important;
+        border: 1px solid #e2e8f0 !important;
+        border-left: 4px solid #b88228 !important;
+        padding: 10px 14px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .receipt-order-bar * {
+        color: #111111 !important;
+    }
+
+    .status-badge {
+        background: #e2e8f0 !important;
+        color: #111111 !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+
+    /* Customer & Destination Grid */
+    .receipt-details-grid {
+        background: #f8f9fa !important;
+        border: 1px solid #e2e8f0 !important;
+        color: #111111 !important;
+        padding: 14px 16px !important;
+        margin-bottom: 18px !important;
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+    }
+
+    .receipt-details-grid * {
+        color: #111111 !important;
+    }
+
+    .receipt-details-grid span {
+        color: #64748b !important;
+        font-weight: 700 !important;
+    }
+
+    /* Line Items & Amounts Table */
+    table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+        margin-bottom: 20px !important;
+    }
+
+    table th {
+        background: #f1f5f9 !important;
+        color: #111111 !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+        padding: 8px 6px !important;
+        font-weight: 700 !important;
+        font-size: 12px !important;
+    }
+
+    table td {
+        border-bottom: 1px solid #e2e8f0 !important;
+        color: #1e293b !important;
+        padding: 8px 6px !important;
+        font-size: 13px !important;
+    }
+
+    table td * {
+        color: #1e293b !important;
+    }
+
+    table tfoot tr td {
+        border-top: 1px solid #cbd5e1 !important;
+        color: #111111 !important;
+    }
+
+    table tfoot tr td * {
+        color: #111111 !important;
+    }
+
+    /* Payment details container */
+    .receipt-payment-box {
+        background: #f8f9fa !important;
+        border: 1px solid #e2e8f0 !important;
+        color: #111111 !important;
+        padding: 10px 14px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .receipt-payment-box * {
+        color: #111111 !important;
+    }
+
+    /* Packaging & Verification footer */
+    .receipt-footer-pack {
+        border-top: 1px dashed #94a3b8 !important;
+        color: #475569 !important;
+        padding-top: 14px !important;
+        font-size: 11px !important;
+        text-align: center !important;
+    }
+
+    .receipt-footer-pack * {
+        color: #334155 !important;
     }
 }
 

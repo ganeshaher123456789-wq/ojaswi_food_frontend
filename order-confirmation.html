@@ -102,8 +102,27 @@
 
     <main class="container" style="padding: 50px 0 90px;">
         <div class="receipt-card">
-            <!-- Confirmation Hero Badge -->
-            <div style="text-align: center; margin-bottom: 25px;">
+            <!-- Prominent Ojaswi Foods Logo & Header -->
+            <div class="receipt-brand-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 22px; flex-wrap: wrap; gap: 16px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div class="receipt-logo-badge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
+                        <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
+                        <span style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
+                    </div>
+                    <div>
+                        <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">OJASWI FOODS</div>
+                        <div style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">Premium Authentic Spices • Malegaon Factory</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203, Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official Tax Invoice</span>
+                    <div id="confReceiptDate" style="color: #888; font-size: 12px; margin-top: 5px;"></div>
+                </div>
+            </div>
+
+            <!-- Confirmation Hero Badge (Screen only) -->
+            <div class="no-print" style="text-align: center; margin-bottom: 25px;">
                 <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(46, 204, 113, 0.15); border: 2px solid #2ecc71; color: #2ecc71; font-size: 36px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
                     ✓
                 </div>
@@ -117,7 +136,7 @@
             </div>
 
             <!-- Order Identification & Status -->
-            <div style="background: #181818; border-left: 4px solid var(--gold); border-radius: 4px; padding: 18px 22px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div class="receipt-order-bar" style="background: #181818; border-left: 4px solid var(--gold); border-radius: 4px; padding: 18px 22px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Official Order ID</span>
                     <div id="confOrderId" style="font-size: 22px; font-weight: 700; color: var(--gold-light); font-family: 'Cormorant Garamond', serif;">#OJ------</div>
@@ -127,9 +146,25 @@
                     <div id="confPaymentMethod" style="font-size: 14px; font-weight: 600; color: #fff;">--</div>
                 </div>
             </div>
+
+            <!-- Direct WhatsApp Order Confirmation Action Banner -->
+            <div class="no-print" style="background: rgba(37,211,102,0.12); border: 1.5px solid #25D366; border-radius: 8px; padding: 18px 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 46px; height: 46px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,211,102,0.35);">
+                        <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 26px; height: 26px; filter: brightness(0) invert(1);" onerror="this.src='./images/icon-whatsapp.svg'">
+                    </div>
+                    <div>
+                        <div style="font-size: 15px; font-weight: 700; color: #2ecc71;">Confirm Order Directly on WhatsApp</div>
+                        <div style="font-size: 12.5px; color: #ccc; margin-top: 2px;">Directly message website owner at <strong>+91 7620098478</strong> to verify and dispatch your spices.</div>
+                    </div>
+                </div>
+                <a id="btnHeroConfirmWhatsApp" href="#" target="_blank" class="primary-button" style="background: #25D366; color: #fff; font-size: 13.5px; font-weight: 700; padding: 12px 22px; border-radius: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                    <span>💬 Confirm on WhatsApp Now</span>
+                </a>
+            </div>
             
-            <!-- Live Tracking Stepper Preview -->
-            <div style="background: #141414; border: 1px solid rgba(217,164,65,0.3); border-radius: 6px; padding: 18px 20px; margin-bottom: 25px;">
+            <!-- Live Tracking Stepper Preview (Hidden on Print: Remove the track the order) -->
+            <div class="no-print" style="background: #141414; border: 1px solid rgba(217,164,65,0.3); border-radius: 6px; padding: 18px 20px; margin-bottom: 25px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
                     <span style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 700;">📦 Dispatch Tracking Status</span>
                     <span style="font-size: 12px; color: #2ecc71;">Estimated Delivery: 2-4 Days</span>
@@ -229,7 +264,7 @@
             </div>
 
             <!-- Packer Information -->
-            <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px; font-size: 11px; color: #666; line-height: 1.6;">
+            <div class="receipt-footer-pack" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px; font-size: 11px; color: #666; line-height: 1.6;">
                 <strong>Ojaswi Foods</strong> | 52/2, Malegaon - 423203, Nashik, Maharashtra, India<br>
                 FSSAI License: <strong>3025120612245599988</strong> | Support: <strong>+91 7620098478</strong>
             </div>
@@ -257,6 +292,14 @@
             try {
                 const res = await apiRequest(`/api/orders/${encodeURIComponent(orderId)}`);
                 const o = res.order;
+
+                const dateEl = document.getElementById("confReceiptDate");
+                if (dateEl) {
+                    const createdDate = new Date(o.created_at || Date.now());
+                    dateEl.textContent = `Placed on ${createdDate.toLocaleString("en-IN", {
+                        dateStyle: "medium", timeStyle: "short"
+                    })}`;
+                }
 
                 document.getElementById("confOrderId").textContent = o.id;
                 document.getElementById("confPaymentMethod").textContent = `${o.payment_method} (${o.payment_status})`;
@@ -305,28 +348,71 @@
                     `).join("");
                 }
 
-                // Format comprehensive order confirmation text
-                const itemsSummary = o.items.map((item, idx) => 
-                    `${idx + 1}. *${item.product_name}* x ${item.quantity} = ₹${item.total_price}`
-                ).join("\n");
+                // Format comprehensive, rich order confirmation message for website owner
+                const now = new Date(o.created_at || Date.now());
+                const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+                const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
 
-                const fullConfMsg = `Hello Ojaswi Foods,\n\nI want to confirm my order from the website.\n\n*Order ID:* ${o.id}\n*Customer:* ${o.customer_name}\n*Phone:* +91 ${o.customer_phone}${o.customer_email ? '\n*Email:* ' + o.customer_email : ''}\n\n*Ordered Items*:\n${itemsSummary}\n\n*Total Amount:* ₹${o.total_amount}\n*Payment:* ${o.payment_method} (${o.payment_status})\n\n*Delivery Address*:\n${fullAddressStr}\n\nPlease confirm dispatch from Malegaon unit. Thank you!`;
+                const itemsDetailed = o.items.map((i, idx) => 
+                    `  ${idx + 1}. *${i.product_name}* (500g)\n     Qty: ${i.quantity} pack(s) • Price: ₹${i.unit_price} • Total: ₹${i.total_price}`
+                ).join("\n\n");
 
-                // WhatsApp Confirmation Link
+                const richConfMsg = `🌶️ *NEW OJASWI FOODS ORDER* 🌶️
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📦 *ORDER INFORMATION*
+• *Order ID:* #${o.id.replace(/^#/, '')}
+• *Date & Time:* ${dateStr}, ${timeStr}
+• *Payment Method:* ${o.payment_method} (${o.payment_status || 'Pending'})
+• *Order Status:* Confirmed by Customer
+
+👤 *CUSTOMER INFORMATION*
+• *Customer Name:* ${o.customer_name}
+• *Mobile Number:* +91 ${o.customer_phone}${o.customer_email ? '\n• *Email:* ' + o.customer_email : ''}
+• *Delivery Address:* ${fullAddressStr}
+
+🛒 *ORDERED PRODUCTS*
+${itemsDetailed}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💰 *BILLING SUMMARY*
+• *Subtotal:* ₹${o.total_amount}
+• *Delivery Charges:* ₹0 (FREE Express Delivery)
+• *Total Payable Amount:* ₹${o.total_amount}
+
+🏭 *FACTORY & DISPATCH UNIT*
+• *Manufacturer:* Ojaswi Foods, 52/2, Malegaon - 423203, Nashik
+• *FSSAI License:* 3025120612245599988
+• *Official Care:* +91 7620098478
+
+_Hello Ojaswi Foods Team, I am confirming my order #${o.id.replace(/^#/, '')}. Please confirm dispatch from Malegaon. Thank you!_`;
+
+                const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(richConfMsg);
+
+                // WhatsApp Confirmation Links (Hero Button & Grid Card)
+                const waHeroBtn = document.getElementById("btnHeroConfirmWhatsApp");
+                if (waHeroBtn) waHeroBtn.href = waUrl;
+
                 const waBtn = document.getElementById("btnConfWhatsApp");
-                if (waBtn) waBtn.href = `https://wa.me/${OJASWI_PHONE}?text=${encodeURIComponent(fullConfMsg)}`;
+                if (waBtn) waBtn.href = waUrl;
+
+                // Auto-open WhatsApp if redirected from checkout with ?open_wa=1
+                if (urlParams.get("open_wa") === "1" || urlParams.get("open_wa") === "true") {
+                    setTimeout(() => {
+                        window.location.href = waUrl;
+                    }, 400);
+                }
 
                 // Email Confirmation Link
                 const emailBtn = document.getElementById("btnConfEmail");
                 if (emailBtn) {
                     const subject = `Order Confirmation #${o.id} - ${o.customer_name} (₹${o.total_amount})`;
-                    emailBtn.href = `mailto:${OJASWI_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullConfMsg)}`;
+                    emailBtn.href = `mailto:${OJASWI_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(richConfMsg)}`;
                 }
 
                 // SMS Confirmation Link
                 const smsBtn = document.getElementById("btnConfSMS");
                 if (smsBtn) {
-                    smsBtn.href = `sms:+${OJASWI_PHONE}?body=${encodeURIComponent(fullConfMsg)}`;
+                    smsBtn.href = `sms:+${OJASWI_PHONE}?body=${encodeURIComponent(richConfMsg)}`;
                 }
             } catch (err) {
                 showToast(err.message, "error");
@@ -344,23 +430,23 @@
 
     <!-- Mobile Bottom Navigation Dock (Phones Only) -->
     <nav class="mobile-bottom-nav">
-        <a href="/" class="nav-tab">
+        <a href="index.html" class="nav-tab">
             <span class="tab-icon">🏠</span>
             <span>Home</span>
         </a>
-        <a href="/#products" class="nav-tab">
+        <a href="index.html#products" class="nav-tab">
             <span class="tab-icon">🌶️</span>
             <span>Spices</span>
         </a>
-        <a href="/checkout" class="nav-tab">
+        <a href="checkout.html" class="nav-tab">
             <span class="tab-icon">🛒</span>
             <span>Checkout</span>
         </a>
-        <a href="/orders" class="nav-tab">
+        <a href="orders.html" class="nav-tab">
             <span class="tab-icon">📦</span>
             <span>Orders</span>
         </a>
-        <a href="/account" class="nav-tab" id="tabAccount">
+        <a href="account.html" class="nav-tab" id="tabAccount">
             <span class="tab-icon">👤</span>
             <span id="tabAccountLabel">Account</span>
         </a>

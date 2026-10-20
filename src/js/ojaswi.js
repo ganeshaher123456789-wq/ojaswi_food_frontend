@@ -12,6 +12,9 @@
       if (window.OJASWI_API_URL && typeof window.OJASWI_API_URL === "string" && window.OJASWI_API_URL.trim()) {
         return window.OJASWI_API_URL.trim().replace(/\/+$/, "");
       }
+      if (window.OJASWIAPIURL && typeof window.OJASWIAPIURL === "string" && window.OJASWIAPIURL.trim()) {
+        return window.OJASWIAPIURL.trim().replace(/\/+$/, "");
+      }
       if (window.VITE_API_URL && typeof window.VITE_API_URL === "string" && window.VITE_API_URL.trim()) {
         return window.VITE_API_URL.trim().replace(/\/+$/, "");
       }
@@ -31,16 +34,17 @@
     );
 
     if (isLocal) {
-      if (window.location.protocol === "file:" || (window.location.port && window.location.port !== "5000" && window.location.port !== "3000")) {
+      if (window.location.protocol === "file:" || (window.location.port !== "5000" && window.location.port !== "3000")) {
         return "http://localhost:5000";
       }
+      return "";
     }
 
-    return "";
+    return "https://ojaswi-food-backend.onrender.com";
   }
 
   const isAboutSrcdoc = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-  const isLocalFile = window.location.protocol === "file:" || isAboutSrcdoc || (window.location.pathname && window.location.pathname.endsWith(".html"));
+  const isLocalFile = window.location.protocol === "file:" || isAboutSrcdoc;
   const BASE_URL = resolveApiBaseUrl();
 
   // Safe Storage System (Resilient against sandboxed iframes, disabled storage, and private mode)
@@ -124,6 +128,74 @@
   }
   window.safeNavigate = safeNavigate;
 
+  // Universal Navigation & Target Resolution Helpers
+  function isStaticOrLocalMode() {
+    if (typeof window === "undefined") return false;
+    const proto = window.location.protocol;
+    const path = window.location.pathname || "";
+    const port = window.location.port || "";
+    const host = window.location.hostname || "";
+    return (
+      proto === "file:" ||
+      proto === "about:" ||
+      path.endsWith(".html") ||
+      path.includes(".html") ||
+      path.includes("/public/") ||
+      path.includes("/frontend/") ||
+      port === "5500" ||
+      port === "5501" ||
+      port === "8080" ||
+      port === "3000" ||
+      (port !== "5000" && (host === "localhost" || host === "127.0.0.1"))
+    );
+  }
+  window.isStaticOrLocalMode = isStaticOrLocalMode;
+
+  function resolveTargetUrl(page) {
+    if (!page || typeof page !== "string") return "index.html";
+    if (isStaticOrLocalMode()) {
+      return page;
+    }
+    const clean = "/" + page.replace(/\.html$/, "");
+    return clean === "/index" ? "/" : clean;
+  }
+  window.resolveTargetUrl = resolveTargetUrl;
+
+  function goToAccount(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const target = resolveTargetUrl("account.html");
+    safeNavigate(target, "#account");
+  }
+  window.goToAccount = goToAccount;
+
+  function goToStore(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const target = resolveTargetUrl("index.html");
+    safeNavigate(target, "");
+  }
+  window.goToStore = goToStore;
+
+  function goToLogin(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const target = resolveTargetUrl("login.html");
+    safeNavigate(target, "#login");
+  }
+  window.goToLogin = goToLogin;
+
+  function goToOrders(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const target = resolveTargetUrl("orders.html");
+    safeNavigate(target, "#orders");
+  }
+  window.goToOrders = goToOrders;
+
+  function goToCheckout(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const target = resolveTargetUrl("checkout.html");
+    safeNavigate(target, "#checkout");
+  }
+  window.goToCheckout = goToCheckout;
+
   // =========================================================
   // 1. TOAST NOTIFICATIONS
   // =========================================================
@@ -189,279 +261,19 @@
         ...defaultHeaders,
         ...options.headers
       },
-      credentials: "include"
+      credentials: isLocalFile ? "omit" : "include"
     };
 
     try {
       const res = await fetch(url, config);
       const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
-        throw new Error(data.error || `Request failed with status ${res.status}`);
+      if (!res.ok || data.success === false) {
+        throw new Error(data.error || data.message || `Request failed with status ${res.status}`);
       }
 
       return data;
     } catch (err) {
-      // Seamless simulation if running offline or local file:// without running server
-      if (isLocalFile || err.message.includes("Failed to fetch") || err.message.includes("NetworkError")) {
-        console.warn(`[Ojaswi Local/Offline Mode for ${endpoint}]:`, err.message);
-
-        // Phone OTP request
-        if (endpoint.includes("/request-phone-otp")) {
-          return {
-            success: true,
-            message: "Verification code sent! (Offline Dev Code: 762009)",
-            devOtp: "762009"
-          };
-        }
-
-        // Email OTP request
-        if (endpoint.includes("/request-email-otp")) {
-          return {
-            success: true,
-            message: "Verification code sent to email! (Offline Dev Code: 762009)",
-            devOtp: "762009"
-          };
-        }
-
-        // Verify Phone / Email OTP, Direct WhatsApp Login, or Fast Login
-        if (
-          endpoint.includes("/verify-phone-otp") ||
-          endpoint.includes("/verify-email-otp") ||
-          endpoint.includes("/whatsapp-login") ||
-          endpoint.includes("/fast-login")
-        ) {
-          const payload = options.body ? JSON.parse(options.body) : {};
-          const mockUser = {
-            id: 1,
-            name: payload.name || "Customer",
-            phone: payload.phone || "7620098478",
-            email: payload.email || "ojaswifoods@gmail.com",
-            role: "customer"
-          };
-          const mockToken = "ojaswi_token_" + Date.now();
-          localStorage.setItem("ojaswi_token", mockToken);
-          localStorage.setItem("ojaswi_user", JSON.stringify(mockUser));
-          if (mockUser.phone) localStorage.setItem("ojaswi_customer_phone", mockUser.phone);
-          if (mockUser.name) localStorage.setItem("ojaswi_customer_name", mockUser.name);
-          return {
-            success: true,
-            message: "Welcome back! Login successful.",
-            user: mockUser,
-            token: mockToken
-          };
-        }
-
-        // Admin Login Simulation for Offline / local file://
-        if (endpoint.includes("/admin-login")) {
-          const payload = options.body ? JSON.parse(options.body) : {};
-          const mockAdmin = {
-            id: 1,
-            username: payload.username || "admin",
-            email: "admin@ojaswifoods.com",
-            full_name: "Ojaswi Administrator",
-            role: "admin"
-          };
-          const mockToken = "ojaswi_admin_token_" + Date.now();
-          localStorage.setItem("ojaswi_token", mockToken);
-          localStorage.setItem("ojaswi_user", JSON.stringify(mockAdmin));
-          return {
-            success: true,
-            message: "Admin authentication successful.",
-            admin: mockAdmin,
-            token: mockToken
-          };
-        }
-
-        // Auth logout
-        if (endpoint.includes("/auth/logout")) {
-          localStorage.removeItem("ojaswi_token");
-          localStorage.removeItem("ojaswi_user");
-          return { success: true, message: "Logged out successfully." };
-        }
-
-        // Auth me check
-        if (endpoint.includes("/auth/me")) {
-          const stored = localStorage.getItem("ojaswi_user");
-          if (stored) {
-            return { isAuthenticated: true, user: JSON.parse(stored) };
-          }
-          return { isAuthenticated: false, user: null };
-        }
-
-        // Account addresses
-        if (endpoint.includes("/api/account/addresses") || endpoint.includes("/account/addresses")) {
-          let addresses = JSON.parse(localStorage.getItem("ojaswi_saved_addresses") || "[]");
-          const method = (options.method || "GET").toUpperCase();
-
-          if (method === "POST") {
-            const newAddr = options.body ? JSON.parse(options.body) : {};
-            newAddr.id = Date.now();
-            if (newAddr.is_default) {
-              addresses.forEach(a => a.is_default = 0);
-            }
-            addresses.unshift(newAddr);
-            localStorage.setItem("ojaswi_saved_addresses", JSON.stringify(addresses));
-            return { success: true, message: "Delivery address saved successfully.", address: newAddr };
-          }
-
-          if (method === "DELETE") {
-            const parts = endpoint.split("/");
-            const addrId = parseInt(parts[parts.length - 1], 10);
-            addresses = addresses.filter(a => a.id !== addrId);
-            localStorage.setItem("ojaswi_saved_addresses", JSON.stringify(addresses));
-            return { success: true, message: "Address removed successfully." };
-          }
-
-          if (method === "PUT") {
-            const parts = endpoint.split("/");
-            if (endpoint.endsWith("/default")) {
-              const addrId = parseInt(parts[parts.length - 2], 10);
-              addresses.forEach(a => a.is_default = (a.id === addrId ? 1 : 0));
-              localStorage.setItem("ojaswi_saved_addresses", JSON.stringify(addresses));
-              return { success: true, message: "Default address updated." };
-            } else {
-              const addrId = parseInt(parts[parts.length - 1], 10);
-              const updateData = options.body ? JSON.parse(options.body) : {};
-              const idx = addresses.findIndex(a => a.id === addrId);
-              if (idx !== -1) {
-                if (updateData.is_default) {
-                  addresses.forEach(a => a.is_default = 0);
-                }
-                addresses[idx] = { ...addresses[idx], ...updateData };
-                localStorage.setItem("ojaswi_saved_addresses", JSON.stringify(addresses));
-              }
-              return { success: true, message: "Address updated successfully." };
-            }
-          }
-
-          return { success: true, addresses };
-        }
-
-        // Customer Account profile & dashboard
-        if (endpoint.includes("/api/account") || endpoint.includes("/account")) {
-          const method = (options.method || "GET").toUpperCase();
-          const storedUser = localStorage.getItem("ojaswi_user");
-
-          if (!storedUser) {
-            throw new Error("Authentication required. Please log in.");
-          }
-
-          let user = JSON.parse(storedUser);
-
-          if (method === "PUT") {
-            const updateData = options.body ? JSON.parse(options.body) : {};
-            user = { ...user, ...updateData };
-            localStorage.setItem("ojaswi_user", JSON.stringify(user));
-            return { success: true, message: "Profile updated successfully.", user };
-          }
-
-          const addresses = JSON.parse(localStorage.getItem("ojaswi_saved_addresses") || "[]");
-          const recentOrders = JSON.parse(localStorage.getItem("ojaswi_recent_orders") || "[]");
-
-          return {
-            success: true,
-            profile: user,
-            addresses,
-            recentOrders
-          };
-        }
-
-        // Orders endpoints (POST order, GET order details, GET order list)
-        if (endpoint.includes("/api/orders") || endpoint.includes("/orders")) {
-          const method = (options.method || "GET").toUpperCase();
-          if (method === "POST") {
-            const body = options.body ? JSON.parse(options.body) : {};
-            const orderId = "#OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
-            const placedItems = body.items || [];
-            const subtotal = placedItems.reduce((s, it) => s + 199 * (it.quantity || 1), 0) || 199;
-            const newOrder = {
-              id: orderId,
-              customer_name: body.customer_name || "Valued Customer",
-              customer_phone: body.customer_phone || "7620098478",
-              customer_email: body.customer_email || "ojaswifoods@gmail.com",
-              total_amount: subtotal,
-              subtotal: subtotal,
-              delivery_charge: 0,
-              payment_method: body.payment_method || "Cash on Delivery",
-              payment_status: body.payment_method === "Online Payment" ? "Paid" : "COD Pending",
-              order_status: "Confirmed",
-              created_at: new Date().toISOString(),
-              delivery_address: body.delivery_address || {
-                flat_house: "Delivery Address",
-                area_street: "Camp Road",
-                city: "Malegaon",
-                state: "Maharashtra",
-                pincode: "423203"
-              },
-              items: placedItems.length > 0 ? placedItems : [{ product_name: "Ojaswi Spice Blend", quantity: 1, unit_price: 199, total_price: 199 }]
-            };
-
-            const existingOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
-            if (!existingOrders.includes(orderId)) {
-              existingOrders.unshift(orderId);
-              localStorage.setItem("ojaswi_customer_orders", JSON.stringify(existingOrders));
-            }
-            const recent = JSON.parse(localStorage.getItem("ojaswi_recent_orders") || "[]");
-            recent.unshift(newOrder);
-            localStorage.setItem("ojaswi_recent_orders", JSON.stringify(recent.slice(0, 20)));
-
-            const isOnline = body.payment_method === "Online Payment";
-            return {
-              success: true,
-              message: "Order placed successfully!",
-              orderId,
-              order: newOrder,
-              requiresOnlinePayment: isOnline,
-              razorpayOrder: isOnline ? { id: "order_dev_" + Date.now(), amount: subtotal * 100, simulated: true } : null
-            };
-          }
-
-          // Single order lookup (e.g. /api/orders/OJ...)
-          const segments = endpoint.split("?")[0].split("/");
-          const lastSeg = segments[segments.length - 1];
-          if (lastSeg && (lastSeg.startsWith("OJ") || lastSeg.startsWith("%23OJ") || lastSeg.startsWith("#OJ"))) {
-            const cleanId = decodeURIComponent(lastSeg);
-            const recent = JSON.parse(localStorage.getItem("ojaswi_recent_orders") || "[]");
-            const found = recent.find(o => o.id === cleanId || o.id === `#${cleanId}`);
-            if (found) {
-              return { success: true, order: found };
-            }
-            return {
-              success: true,
-              order: {
-                id: cleanId.startsWith("#") ? cleanId : `#${cleanId}`,
-                customer_name: "Valued Customer",
-                customer_phone: "7620098478",
-                total_amount: 199,
-                payment_method: "Cash on Delivery",
-                payment_status: "Confirmed",
-                order_status: "Confirmed",
-                created_at: new Date().toISOString(),
-                delivery_address: { flat_house: "Premises", area_street: "Camp Road", city: "Malegaon", state: "Maharashtra", pincode: "423203" },
-                items: [{ product_name: "Ojaswi Authentic Spice Blend", quantity: 1, unit_price: 199, total_price: 199 }]
-              }
-            };
-          }
-
-          // Order list
-          const recentOrders = JSON.parse(localStorage.getItem("ojaswi_recent_orders") || "[]");
-          return { success: true, orders: recentOrders };
-        }
-
-        // Payments verify
-        if (endpoint.includes("/payments/verify")) {
-          return { success: true, message: "Payment verified successfully!" };
-        }
-
-        // Auth logout
-        if (endpoint.includes("/auth/logout")) {
-          localStorage.removeItem("ojaswi_token");
-          localStorage.removeItem("ojaswi_user");
-          return { success: true, message: "Logged out successfully." };
-        }
-      }
-
       console.error(`[API Error] ${endpoint}:`, err.message);
       throw err;
     }
@@ -601,7 +413,7 @@
                 <span>Estimated Total:</span>
                 <span id="cartDrawerTotal">₹0</span>
               </div>
-              <button id="cartDrawerCheckoutBtn" class="cart-checkout-btn">⚡ Proceed to Checkout</button>
+              <a href="checkout.html" id="cartDrawerCheckoutBtn" class="cart-checkout-btn" style="display: block; text-decoration: none; text-align: center; box-sizing: border-box; cursor: pointer;">⚡ Proceed to Checkout</a>
             </div>
           </aside>
         `;
@@ -613,10 +425,9 @@
 
         overlay?.addEventListener("click", () => this.closeDrawer());
         closeBtn?.addEventListener("click", () => this.closeDrawer());
-        checkoutBtn?.addEventListener("click", () => {
+        checkoutBtn?.addEventListener("click", (e) => {
           this.closeDrawer();
-          const target = isLocalFile ? "checkout.html" : "/checkout";
-          safeNavigate(target, "#checkout");
+          goToCheckout(e);
         });
       }
 
@@ -682,11 +493,24 @@
         `;
         if (subtotalEl) subtotalEl.textContent = "₹0";
         if (totalEl) totalEl.textContent = "₹0";
-        if (checkoutBtn) checkoutBtn.disabled = true;
+        if (checkoutBtn) {
+          checkoutBtn.style.pointerEvents = "none";
+          checkoutBtn.style.opacity = "0.5";
+          checkoutBtn.setAttribute("aria-disabled", "true");
+        }
         return;
       }
 
-      if (checkoutBtn) checkoutBtn.disabled = false;
+      if (checkoutBtn) {
+        checkoutBtn.style.pointerEvents = "auto";
+        checkoutBtn.style.opacity = "1";
+        checkoutBtn.removeAttribute("aria-disabled");
+        checkoutBtn.setAttribute("href", resolveTargetUrl("checkout.html"));
+        checkoutBtn.onclick = (e) => {
+          this.closeDrawer();
+          goToCheckout(e);
+        };
+      }
       const subtotal = this.getSubtotal();
       if (subtotalEl) subtotalEl.textContent = `₹${subtotal}`;
       if (totalEl) totalEl.textContent = `₹${subtotal}`;
@@ -1339,34 +1163,42 @@
       const tabAccount = document.getElementById("tabAccount");
       const tabAccountLabel = document.getElementById("tabAccountLabel");
       const drawerLogin = document.getElementById("drawerLoginLink");
+      const btnNavAccount = document.getElementById("btnNavAccount");
+      const btnNavLogin = document.getElementById("btnNavLogin");
+      const btnNavLogout = document.getElementById("btnNavLogout");
 
-      const isLocal = isLocalFile || isAboutSrcdoc;
-      const loginLink = isLocal ? "login.html" : "/login";
-      const accountLink = isLocal ? "account.html" : "/account";
-      const adminLink = isLocal ? "admin.html" : "/admin";
+      const loginLink = resolveTargetUrl("login.html");
+      const accountLink = resolveTargetUrl("account.html");
 
       if (res && res.isAuthenticated && res.user) {
         const displayName = res.user.name ? res.user.name.split(" ")[0] : "Account";
-        const isAdmin = res.user.role === "admin";
-        const targetLink = isAdmin ? adminLink : accountLink;
 
         const html = `
-          <a href="${targetLink}" class="nav-order nav-auth-btn" title="${res.user.name || res.user.phone || res.user.email}">
-            <span>👤</span> <span class="nav-auth-label">${displayName} ${isAdmin ? "(Admin)" : ""}</span>
+          <a href="${accountLink}" onclick="window.goToAccount(event)" class="nav-order nav-auth-btn" title="${res.user.name || res.user.phone || res.user.email}">
+            <span>👤</span> <span class="nav-auth-label">${displayName}</span>
           </a>
         `;
         if (authNavContainer) authNavContainer.innerHTML = html;
         if (drawerLogin) {
-          drawerLogin.innerHTML = `<span>👤</span> ${displayName}'s Account ${isAdmin ? "(Admin)" : ""}`;
-          drawerLogin.setAttribute("href", targetLink);
+          drawerLogin.innerHTML = `<span>👤</span> ${displayName}'s Account`;
+          drawerLogin.setAttribute("href", accountLink);
+          drawerLogin.onclick = (e) => window.goToAccount(e);
         }
         if (tabAccount) {
-          tabAccount.setAttribute("href", targetLink);
+          tabAccount.setAttribute("href", accountLink);
+          tabAccount.onclick = (e) => window.goToAccount(e);
           if (tabAccountLabel) tabAccountLabel.textContent = displayName || "Account";
         }
+        if (btnNavAccount) {
+          btnNavAccount.textContent = "👤 " + displayName;
+          btnNavAccount.setAttribute("href", accountLink);
+          btnNavAccount.title = res.user.name || res.user.phone || res.user.email;
+        }
+        if (btnNavLogin) btnNavLogin.style.display = "none";
+        if (btnNavLogout) btnNavLogout.style.display = "inline-block";
       } else {
         const html = `
-          <a href="${loginLink}" class="nav-order nav-auth-btn" title="Customer Login / Account">
+          <a href="${loginLink}" onclick="window.goToLogin(event)" class="nav-order nav-auth-btn" title="Customer Login / Account">
             <span>👤</span> <span class="nav-auth-label">Login</span>
           </a>
         `;
@@ -1374,11 +1206,23 @@
         if (drawerLogin) {
           drawerLogin.innerHTML = `<span>👤</span> Customer Account / Login`;
           drawerLogin.setAttribute("href", loginLink);
+          drawerLogin.onclick = (e) => window.goToLogin(e);
         }
         if (tabAccount) {
-          tabAccount.setAttribute("href", loginLink);
-          if (tabAccountLabel) tabAccountLabel.textContent = "Login";
+          tabAccount.setAttribute("href", accountLink);
+          tabAccount.onclick = (e) => window.goToAccount(e);
+          if (tabAccountLabel) tabAccountLabel.textContent = "Account";
         }
+        if (btnNavAccount) {
+          btnNavAccount.textContent = "My Account";
+          btnNavAccount.setAttribute("href", accountLink);
+          btnNavAccount.title = "Customer Account Dashboard";
+        }
+        if (btnNavLogin) {
+          btnNavLogin.style.display = "inline-block";
+          btnNavLogin.setAttribute("href", loginLink);
+        }
+        if (btnNavLogout) btnNavLogout.style.display = "none";
       }
     } catch (err) {
       console.warn("[checkAuthStatus]:", err);
@@ -1404,8 +1248,7 @@
     try {
       safeSessionStorage.setItem("ojaswi_scroll_to_products", "true");
     } catch (err) {}
-    const isLocal = isLocalFile || isAboutSrcdoc;
-    const target = isLocal ? "index.html#products" : "/#products";
+    const target = isStaticOrLocalMode() ? "index.html#products" : "/#products";
     safeNavigate(target, "#products");
   }
   window.goToStoreProducts = goToStoreProducts;
@@ -1442,37 +1285,35 @@
       }
     });
 
-    // Fix absolute links when running from file:// or about:srcdoc preview
-    if (isLocalFile || isAboutSrcdoc) {
+    // Fix absolute links when running in local file, Live Server, or static preview
+    if (isStaticOrLocalMode()) {
       document.querySelectorAll("a[href]").forEach((link) => {
         const href = link.getAttribute("href");
         if (!href || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("tel:") || href.startsWith("mailto:") || href.startsWith("sms:") || href.startsWith("javascript:") || href.startsWith("#")) {
           return;
         }
 
-        if (href.startsWith("/login")) {
+        if (href === "/login" || href.startsWith("/login?")) {
           link.setAttribute("href", href.replace(/^\/login/, "login.html"));
-        } else if (href.startsWith("/account")) {
+        } else if (href === "/account" || href.startsWith("/account?")) {
           link.setAttribute("href", href.replace(/^\/account/, "account.html"));
-        } else if (href.startsWith("/checkout")) {
+        } else if (href === "/checkout" || href.startsWith("/checkout?")) {
           link.setAttribute("href", href.replace(/^\/checkout/, "checkout.html"));
-        } else if (href.startsWith("/orders")) {
+        } else if (href === "/orders" || href.startsWith("/orders?")) {
           link.setAttribute("href", href.replace(/^\/orders/, "orders.html"));
-        } else if (href.startsWith("/order-confirmation")) {
+        } else if (href === "/order-confirmation" || href.startsWith("/order-confirmation?")) {
           link.setAttribute("href", href.replace(/^\/order-confirmation/, "order-confirmation.html"));
-        } else if (href.startsWith("/admin")) {
-          link.setAttribute("href", href.replace(/^\/admin/, "admin.html"));
-        } else if (href.startsWith("/contact-us")) {
+        } else if (href === "/contact-us" || href.startsWith("/contact-us?")) {
           link.setAttribute("href", href.replace(/^\/contact-us/, "contact-us.html"));
-        } else if (href.startsWith("/privacy-policy")) {
+        } else if (href === "/privacy-policy" || href.startsWith("/privacy-policy?")) {
           link.setAttribute("href", href.replace(/^\/privacy-policy/, "privacy-policy.html"));
-        } else if (href.startsWith("/terms-and-conditions")) {
+        } else if (href === "/terms-and-conditions" || href.startsWith("/terms-and-conditions?")) {
           link.setAttribute("href", href.replace(/^\/terms-and-conditions/, "terms-and-conditions.html"));
-        } else if (href.startsWith("/refund-policy")) {
+        } else if (href === "/refund-policy" || href.startsWith("/refund-policy?")) {
           link.setAttribute("href", href.replace(/^\/refund-policy/, "refund-policy.html"));
-        } else if (href.startsWith("/shipping-policy")) {
+        } else if (href === "/shipping-policy" || href.startsWith("/shipping-policy?")) {
           link.setAttribute("href", href.replace(/^\/shipping-policy/, "shipping-policy.html"));
-        } else if (href.startsWith("/cancellation-policy")) {
+        } else if (href === "/cancellation-policy" || href.startsWith("/cancellation-policy?")) {
           link.setAttribute("href", href.replace(/^\/cancellation-policy/, "cancellation-policy.html"));
         } else if (href === "/#products" || href === "#products") {
           link.setAttribute("href", "index.html#products");

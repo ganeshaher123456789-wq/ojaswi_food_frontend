@@ -36,11 +36,6 @@ const CLEAN_ROUTES = {
   "/checkout": "checkout.html",
   "/order-confirmation": "order-confirmation.html",
   "/admin": "admin.html",
-  "/admin/login": "admin.html",
-  "/admin/dashboard": "admin.html",
-  "/admin/orders": "admin.html",
-  "/admin/products": "admin.html",
-  "/admin/customers": "admin.html",
   "/contact-us": "contact-us.html",
   "/privacy-policy": "privacy-policy.html",
   "/terms-and-conditions": "terms-and-conditions.html",
@@ -57,8 +52,8 @@ function resolveFilePath(reqUrl) {
     return path.join(__dirname, CLEAN_ROUTES[pathname]);
   }
 
-  // Admin subpath wildcard
-  if (pathname.startsWith("/admin/")) {
+  // Admin subpath wildcard routes to admin dashboard
+  if (pathname.startsWith("/admin/") || pathname === "/admin") {
     return path.join(__dirname, "admin.html");
   }
 
