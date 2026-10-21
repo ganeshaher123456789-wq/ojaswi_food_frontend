@@ -11,8 +11,6 @@
     { "source": "/orders", "destination": "/orders.html" },
     { "source": "/checkout", "destination": "/checkout.html" },
     { "source": "/order-confirmation", "destination": "/order-confirmation.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/admin/:match*", "destination": "/admin.html" },
     { "source": "/contact-us", "destination": "/contact-us.html" },
     { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
     { "source": "/terms-and-conditions", "destination": "/terms-and-conditions.html" },

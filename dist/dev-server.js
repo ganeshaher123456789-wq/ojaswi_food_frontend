@@ -35,7 +35,6 @@ const CLEAN_ROUTES = {
   "/orders": "orders.html",
   "/checkout": "checkout.html",
   "/order-confirmation": "order-confirmation.html",
-  "/admin": "admin.html",
   "/contact-us": "contact-us.html",
   "/privacy-policy": "privacy-policy.html",
   "/terms-and-conditions": "terms-and-conditions.html",
@@ -50,11 +49,6 @@ function resolveFilePath(reqUrl) {
   // Check direct clean route
   if (CLEAN_ROUTES[pathname]) {
     return path.join(__dirname, CLEAN_ROUTES[pathname]);
-  }
-
-  // Admin subpath wildcard routes to admin dashboard
-  if (pathname.startsWith("/admin/") || pathname === "/admin") {
-    return path.join(__dirname, "admin.html");
   }
 
   // Direct file inside frontend

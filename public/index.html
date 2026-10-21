@@ -9,7 +9,7 @@
 
     <!-- Open Graph & Social Meta -->
     <meta property="og:title" content="Ojaswi Premium | Authentic Indian Spices">
-    <meta property="og:description" content="Pure Flavours, Crafted for Everyday Royalty. Discover 11 authentic Ojaswi spice blends from Malegaon, Maharashtra.">
+    <meta property="og:description" content="Pure Flavours, Crafted for Everyday Royalty. Discover 15 authentic Ojaswi spice blends from Malegaon, Maharashtra.">
     <meta property="og:image" content="images/garam-masala.jpeg">
     <meta property="og:type" content="website">
 
@@ -1356,6 +1356,10 @@
                     <option value="Chole Masala">Chole Masala - ₹199</option>
                     <option value="Rasam Masala">Rasam Masala - ₹199</option>
                     <option value="Sambar Masala">Sambar Masala - ₹199</option>
+                    <option value="Tea Masala">Tea Masala (500g) - ₹199</option>
+                    <option value="Jaljeera Masala">Jaljeera Masala (500g) - ₹199</option>
+                    <option value="Kasuri Methi">Kasuri Methi (50g) - ₹99</option>
+                    <option value="Dry Ginger Powder">Dry Ginger Powder (500g) - ₹199</option>
                 </select>
             </div>
 
@@ -1373,26 +1377,20 @@
                 <strong id="orderTotal">₹199</strong>
             </div>
 
-            <!-- Payment Method Selection in Modal -->
+            <!-- Payment Method in Modal -->
             <div style="background: #181818; border: 1px solid rgba(217, 164, 65, 0.25); border-radius: 6px; padding: 12px 14px; margin-bottom: 15px;">
-                <div style="font-size: 11px; font-weight: 600; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">
-                    Select Payment Method:
+                <div style="font-size: 11px; font-weight: 600; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;">
+                    Payment Method:
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; cursor: pointer; font-size: 12px; color: #fff;">
-                        <input type="radio" name="modalPaymentMethod" value="Cash on Delivery" checked style="accent-color: var(--gold);">
-                        <span>💵 Cash on Delivery</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; cursor: pointer; font-size: 12px; color: #fff;">
-                        <input type="radio" name="modalPaymentMethod" value="Online Payment" style="accent-color: var(--gold);">
-                        <span>⚡ Online Payment</span>
-                    </label>
-                </div>
+                <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: #fff;">
+                    <input type="radio" name="modalPaymentMethod" value="Cash on Delivery" checked style="accent-color: var(--gold);">
+                    <span>💵 Cash on Delivery (Pay when order arrives at doorstep)</span>
+                </label>
             </div>
 
             <!-- 1-Click Direct Order Button & Checkout Button -->
             <button type="button" id="btnModalPlaceOrder" class="primary-button" style="width: 100%; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; padding: 14px;" onclick="placeOrderFromModal()">
-                ⚡ PLACE ORDER NOW (COD / ONLINE)
+                ⚡ PLACE ORDER NOW (CASH ON DELIVERY)
             </button>
             <button type="button" class="secondary-button" style="width: 100%; margin-bottom: 12px; font-size: 12px; padding: 9px;" onclick="proceedModalToCheckout()">
                 🛒 Open Full Checkout Page →
@@ -1701,6 +1699,86 @@
                         <div style="display: flex; gap: 6px;">
                             <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 11, name: 'Sambar Masala', price: 199, image: 'images/sambar-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
                             <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Sambar Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 12 -->
+            <article class="product-card" onclick="openProductDetail(12)">
+                <div class="product-image">
+                    <img src="images/tea-masala.jpeg" alt="Ojaswi Premium Tea Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">12 / PREMIUM</div>
+                    <h3 class="product-name">Tea Masala</h3>
+                    <p class="product-description">A fragrant royal blend of dry ginger, cardamom, cinnamon, cloves and nutmeg for authentic masala chai.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 12, name: 'Tea Masala', price: 199, image: 'images/tea-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Tea Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 13 -->
+            <article class="product-card" onclick="openProductDetail(13)">
+                <div class="product-image">
+                    <img src="images/jaljeera-masala.jpeg" alt="Ojaswi Premium Jaljeera Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">13 / PREMIUM</div>
+                    <h3 class="product-name">Jaljeera Masala</h3>
+                    <p class="product-description">A tangy, zesty blend of dry mint, roasted cumin, black salt and amchur for an invigorating summer cooler.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 13, name: 'Jaljeera Masala', price: 199, image: 'images/jaljeera-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Jaljeera Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 14 -->
+            <article class="product-card" onclick="openProductDetail(14)">
+                <div class="product-image">
+                    <img src="images/kasuri-methi.jpeg" alt="Ojaswi Premium Kasuri Methi" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">14 / PREMIUM</div>
+                    <h3 class="product-name">Kasuri Methi</h3>
+                    <p class="product-description">Handpicked, shade-dried aromatic fenugreek leaves for rich gourmet fragrance in gravies, dals and naans.</p>
+                    <div class="product-price">₹99</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 50g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 14, name: 'Kasuri Methi', price: 99, image: 'images/kasuri-methi.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Kasuri Methi')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 15 -->
+            <article class="product-card" onclick="openProductDetail(15)">
+                <div class="product-image">
+                    <img src="images/dry-ginger-powder.jpeg" alt="Ojaswi Premium Dry Ginger Powder" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">15 / PREMIUM</div>
+                    <h3 class="product-name">Dry Ginger Powder</h3>
+                    <p class="product-description">Pure stone-ground dried ginger (Saunth / Sonth) with potent natural zest and warming aroma for cooking and chai.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 15, name: 'Dry Ginger Powder', price: 199, image: 'images/dry-ginger-powder.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Dry Ginger Powder')">ORDER →</button>
                         </div>
                     </div>
                 </div>
@@ -2077,7 +2155,7 @@
     </div>
     <nav class="drawer-links">
         <a href="#home" onclick="toggleMobileDrawer()"><span>🏠</span> Home</a>
-        <a href="#products" onclick="toggleMobileDrawer()"><span>🌶️</span> All 11 Spice Blends</a>
+        <a href="#products" onclick="toggleMobileDrawer()"><span>🌶️</span> All 15 Spice Blends</a>
         <a href="#why" onclick="toggleMobileDrawer()"><span>👑</span> Why Choose Ojaswi</a>
         <a href="#about" onclick="toggleMobileDrawer()"><span>📖</span> Our Malegaon Story</a>
         <a href="#faq" onclick="toggleMobileDrawer()"><span>❓</span> FAQ &amp; Delivery Help</a>
@@ -2117,6 +2195,11 @@ const productPrices = {
     "Chole Masala": 199,
     "Rasam Masala": 199,
     "Sambar Masala": 199,
+    "Tea Masala": 199,
+    "Jaljeera Masala": 199,
+    "Kasuri Methi": 99,
+    "Dry Ginger Powder": 199,
+    "Day Ginger Powder": 199,
     "Premium Spice 08": 199,
     "Premium Spice 09": 199,
     "Premium Spice 10": 199,
@@ -2135,6 +2218,11 @@ const productImages = {
     "Chole Masala": "images/chole-masala.jpeg",
     "Rasam Masala": "images/rasam-masala.jpeg",
     "Sambar Masala": "images/sambar-masala.jpeg",
+    "Tea Masala": "images/tea-masala.jpeg",
+    "Jaljeera Masala": "images/jaljeera-masala.jpeg",
+    "Kasuri Methi": "images/kasuri-methi.jpeg",
+    "Dry Ginger Powder": "images/dry-ginger-powder.jpeg",
+    "Day Ginger Powder": "images/dry-ginger-powder.jpeg",
     "Premium Spice 08": "images/rajma-masala.jpeg",
     "Premium Spice 09": "images/chole-masala.jpeg",
     "Premium Spice 10": "images/rasam-masala.jpeg",
@@ -2166,6 +2254,11 @@ const fallbackImageMap = {
     "chole-masala.jpeg": ["./images/chole-masala.jpeg", "images/spice-09.jpeg", "../images/chole-masala.jpeg", "/images/chole-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.30 PM.jpeg"],
     "rasam-masala.jpeg": ["./images/rasam-masala.jpeg", "images/spice-10.jpeg", "../images/rasam-masala.jpeg", "/images/rasam-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.31 PM.jpeg"],
     "sambar-masala.jpeg": ["./images/sambar-masala.jpeg", "images/spice-11.jpeg", "../images/sambar-masala.jpeg", "/images/sambar-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.32 PM.jpeg"],
+    "tea-masala.jpeg": ["./images/tea-masala.jpeg", "../images/tea-masala.jpeg", "/images/tea-masala.jpeg"],
+    "jaljeera-masala.jpeg": ["./images/jaljeera-masala.jpeg", "../images/jaljeera-masala.jpeg", "/images/jaljeera-masala.jpeg"],
+    "kasuri-methi.jpeg": ["./images/kasuri-methi.jpeg", "../images/kasuri-methi.jpeg", "/images/kasuri-methi.jpeg"],
+    "dry-ginger-powder.jpeg": ["./images/dry-ginger-powder.jpeg", "../images/dry-ginger-powder.jpeg", "/images/dry-ginger-powder.jpeg", "./images/day-ginger-powder.jpeg"],
+    "day-ginger-powder.jpeg": ["./images/day-ginger-powder.jpeg", "./images/dry-ginger-powder.jpeg", "../images/dry-ginger-powder.jpeg"],
     "spice-08.jpeg": ["images/rajma-masala.jpeg", "./images/spice-08.jpeg", "../images/spice-08.jpeg"],
     "spice-09.jpeg": ["images/chole-masala.jpeg", "./images/spice-09.jpeg", "../images/spice-09.jpeg"],
     "spice-10.jpeg": ["images/rasam-masala.jpeg", "./images/spice-10.jpeg", "../images/spice-10.jpeg"],
@@ -2466,6 +2559,11 @@ function proceedModalToCheckout(selectedMethod) {
         "Chole Masala": 9,
         "Rasam Masala": 10,
         "Sambar Masala": 11,
+        "Tea Masala": 12,
+        "Jaljeera Masala": 13,
+        "Kasuri Methi": 14,
+        "Dry Ginger Powder": 15,
+        "Day Ginger Powder": 15,
         "Premium Spice 08": 8,
         "Premium Spice 09": 9,
         "Premium Spice 10": 10,
@@ -2519,13 +2617,7 @@ async function placeOrderFromModal() {
     const order = getOrderData();
     if (!order) return;
 
-    const paymentMethod = document.querySelector('input[name="modalPaymentMethod"]:checked')?.value || "Cash on Delivery";
-
-    // If online payment is selected, route immediately to checkout with Online Payment active
-    if (paymentMethod === "Online Payment") {
-        proceedModalToCheckout("Online Payment");
-        return;
-    }
+    const paymentMethod = "Cash on Delivery";
 
     const btn = document.getElementById("btnModalPlaceOrder");
     const originalText = btn ? btn.textContent : "";
@@ -2546,6 +2638,11 @@ async function placeOrderFromModal() {
         "Chole Masala": 9,
         "Rasam Masala": 10,
         "Sambar Masala": 11,
+        "Tea Masala": 12,
+        "Jaljeera Masala": 13,
+        "Kasuri Methi": 14,
+        "Dry Ginger Powder": 15,
+        "Day Ginger Powder": 15,
         "Premium Spice 08": 8,
         "Premium Spice 09": 9,
         "Premium Spice 10": 10,

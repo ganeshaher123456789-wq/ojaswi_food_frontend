@@ -1378,21 +1378,15 @@
                 <div style="font-size: 11px; font-weight: 600; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">
                     Select Payment Method:
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; cursor: pointer; font-size: 12px; color: #fff;">
-                        <input type="radio" name="modalPaymentMethod" value="Cash on Delivery" checked style="accent-color: var(--gold);">
-                        <span>💵 Cash on Delivery</span>
-                    </label>
-                    <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; cursor: pointer; font-size: 12px; color: #fff;">
-                        <input type="radio" name="modalPaymentMethod" value="Online Payment" style="accent-color: var(--gold);">
-                        <span>⚡ Online Payment</span>
-                    </label>
-                </div>
+                <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: #fff;">
+                    <input type="radio" name="modalPaymentMethod" value="Cash on Delivery" checked style="accent-color: var(--gold);">
+                    <span>💵 Cash on Delivery (Pay when order arrives at doorstep)</span>
+                </label>
             </div>
 
             <!-- 1-Click Direct Order Button & Checkout Button -->
             <button type="button" id="btnModalPlaceOrder" class="primary-button" style="width: 100%; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; padding: 14px;" onclick="placeOrderFromModal()">
-                ⚡ PLACE ORDER NOW (COD / ONLINE)
+                ⚡ PLACE ORDER NOW (CASH ON DELIVERY)
             </button>
             <button type="button" class="secondary-button" style="width: 100%; margin-bottom: 12px; font-size: 12px; padding: 9px;" onclick="proceedModalToCheckout()">
                 🛒 Open Full Checkout Page →

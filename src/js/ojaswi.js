@@ -665,6 +665,50 @@
       images: ["images/sambar-masala.jpeg", "images/spice-11.jpeg"],
       description: "An authentic South Indian blend of freshly roasted spices and dals for rich, aromatic and appetizing sambar. Elevates homestyle cooking to gourmet standards.",
       sku: "OJ-SM-11"
+    },
+    {
+      id: 12,
+      name: "Tea Masala",
+      price: 199,
+      mrp: 249,
+      weight: "NET WEIGHT 500g",
+      image: "images/tea-masala.jpeg",
+      images: ["images/tea-masala.jpeg"],
+      description: "An exotic aromatic blend of royal dry spices including green cardamom, cinnamon, cloves, dry ginger, black pepper and nutmeg. Brew the ultimate cup of authentic Indian masala chai.",
+      sku: "OJ-TM-12"
+    },
+    {
+      id: 13,
+      name: "Jaljeera Masala",
+      price: 199,
+      mrp: 249,
+      weight: "NET WEIGHT 500g",
+      image: "images/jaljeera-masala.jpeg",
+      images: ["images/jaljeera-masala.jpeg"],
+      description: "A refreshing zesty blend of dry mint, roasted cumin, black salt, amchur, ginger and hing. An instant digestive refresher and street-style thirst-quencher.",
+      sku: "OJ-JM-13"
+    },
+    {
+      id: 14,
+      name: "Kasuri Methi",
+      price: 99,
+      mrp: 149,
+      weight: "NET WEIGHT 50g",
+      image: "images/kasuri-methi.jpeg",
+      images: ["images/kasuri-methi.jpeg"],
+      description: "Handpicked, shade-dried aromatic fenugreek leaves from pristine harvest fields. Infuses restaurant-grade richness and lingering gourmet aroma into curries, dal makhani, and parathas.",
+      sku: "OJ-KM-14"
+    },
+    {
+      id: 15,
+      name: "Dry Ginger Powder",
+      price: 199,
+      mrp: 249,
+      weight: "NET WEIGHT 500g",
+      image: "images/dry-ginger-powder.jpeg",
+      images: ["images/dry-ginger-powder.jpeg"],
+      description: "Finely stone-ground premium sun-dried ginger (Saunth / Sonth) with potent natural gingerol. Imparts warming aroma and sharp zest to masala chai, ayurvedic brews, marinades and curries.",
+      sku: "OJ-GP-15"
     }
   ];
 

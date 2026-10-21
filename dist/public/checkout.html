@@ -64,8 +64,7 @@
         };
     })();
     </script>
-    <!-- Razorpay Official Checkout SDK -->
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
     <style>
     @media (max-width: 800px) {
@@ -190,20 +189,11 @@
 
                         <div style="display: flex; flex-direction: column; gap: 12px;">
                             <!-- Option 1: Cash on Delivery -->
-                            <label style="display: flex; align-items: flex-start; gap: 14px; background: #181818; border: 1px solid rgba(217,164,65,0.25); border-radius: 6px; padding: 16px; cursor: pointer;">
+                            <label style="display: flex; align-items: flex-start; gap: 14px; background: #181818; border: 1px solid rgba(217,164,65,0.35); border-radius: 6px; padding: 16px; cursor: pointer;">
                                 <input type="radio" name="paymentMethod" value="Cash on Delivery" checked style="margin-top: 4px; accent-color: var(--gold);">
                                 <div>
                                     <div style="font-weight: 700; color: #fff; font-size: 15px;">💵 Cash on Delivery (COD)</div>
-                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Pay with cash or UPI upon package arrival at your doorstep.</div>
-                                </div>
-                            </label>
-
-                            <!-- Option 2: Online Payment via Razorpay -->
-                            <label style="display: flex; align-items: flex-start; gap: 14px; background: #181818; border: 1px solid rgba(217,164,65,0.25); border-radius: 6px; padding: 16px; cursor: pointer;">
-                                <input type="radio" name="paymentMethod" value="Online Payment" style="margin-top: 4px; accent-color: var(--gold);">
-                                <div>
-                                    <div style="font-weight: 700; color: var(--gold-light); font-size: 15px;">⚡ Online Payment (UPI, Cards, NetBanking)</div>
-                                    <div style="font-size: 12px; color: #888; margin-top: 4px;">Instant secure checkout via Razorpay (Google Pay, PhonePe, Paytm, Cards).</div>
+                                    <div style="font-size: 12px; color: #aaa; margin-top: 4px;">Pay with cash or UPI upon package arrival at your doorstep. Zero advance payment required.</div>
                                 </div>
                             </label>
                         </div>
@@ -767,13 +757,13 @@
                 pincode: pincodeVal
             };
 
-            const payment_method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const payment_method = "Cash on Delivery";
             const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
             // Synchronously pre-open window on Desktop right within the user's click gesture
             // This 100% guarantees the browser popup blocker will NOT suppress WhatsApp!
             let waWindow = null;
-            if (!isMobile && payment_method !== "Online Payment (UPI, Cards, NetBanking)") {
+            if (!isMobile) {
                 try {
                     waWindow = window.open("", "_blank");
                     if (waWindow) {
@@ -835,37 +825,29 @@
                     console.warn("Could not save order to localStorage:", e);
                 }
 
-                if (res.requiresOnlinePayment && res.razorpayOrder) {
-                    if (waWindow && !waWindow.closed) {
-                        try { waWindow.close(); } catch (e) {}
+                cart.clear();
+                showToast("Order confirmed! Opening WhatsApp now to notify website owner...", "success");
+                showOrderSuccessModal(res.orderId, orderSummaryData);
+
+                // Directly open customer's WhatsApp to send full order details to website owner (+91 7620098478)
+                const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, res.orderId);
+                const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
+
+                if (isMobile) {
+                    // On mobile, window.location.href directly triggers the native WhatsApp app
+                    window.location.href = waUrl;
+                } else if (waWindow && !waWindow.closed) {
+                    // On desktop, redirect pre-opened window directly to WhatsApp
+                    try {
+                        const fallbackLink = waWindow.document.getElementById("waDirectFallbackLink");
+                        if (fallbackLink) fallbackLink.href = waUrl;
+                        waWindow.location.href = waUrl;
+                    } catch (e) {
+                        window.location.href = waUrl;
                     }
-                    btn.textContent = "OPENING SECURE PAYMENT...";
-                    launchRazorpay(res.orderId, res.razorpayOrder, customer_name, customer_email, customer_phone, orderSummaryData);
                 } else {
-                    cart.clear();
-                    showToast("Order confirmed! Opening WhatsApp now to notify website owner...", "success");
-                    showOrderSuccessModal(res.orderId, orderSummaryData);
-
-                    // Directly open customer's WhatsApp to send full order details to website owner (+91 7620098478)
-                    const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData, res.orderId);
-                    const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
-
-                    if (isMobile) {
-                        // On mobile, window.location.href directly triggers the native WhatsApp app
-                        window.location.href = waUrl;
-                    } else if (waWindow && !waWindow.closed) {
-                        // On desktop, redirect pre-opened window directly to WhatsApp
-                        try {
-                            const fallbackLink = waWindow.document.getElementById("waDirectFallbackLink");
-                            if (fallbackLink) fallbackLink.href = waUrl;
-                            waWindow.location.href = waUrl;
-                        } catch (e) {
-                            window.location.href = waUrl;
-                        }
-                    } else {
-                        // Fallback
-                        window.location.href = waUrl;
-                    }
+                    // Fallback
+                    window.location.href = waUrl;
                 }
             } catch (err) {
                 if (waWindow && !waWindow.closed) {
@@ -1057,100 +1039,6 @@ _Hello Ojaswi Foods Team, please confirm my order and arrange dispatch from Male
 
             await submitOrder();
         });
-
-        function launchRazorpay(orderId, razorpayOrder, name, email, phone, orderSummaryData) {
-            // Check if simulated dev mode OR if window.Razorpay is not loaded
-            if (razorpayOrder.simulated || typeof window.Razorpay === "undefined") {
-                console.log("[Checkout:Dev] Simulating online payment verification...");
-                setTimeout(async () => {
-                    try {
-                        const verifyRes = await apiRequest("/api/payments/verify", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                order_id: orderId,
-                                razorpay_order_id: razorpayOrder.id || "order_dev_" + Date.now(),
-                                razorpay_payment_id: "pay_simulated_" + Date.now(),
-                                razorpay_signature: "simulated_signature"
-                            })
-                        });
-                        cart.clear();
-                        showToast("Payment verified successfully! Opening WhatsApp...", "success");
-                        if (orderSummaryData) {
-                            showOrderSuccessModal(orderId, orderSummaryData);
-                        }
-                        const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData || { items: [], total: 0, paymentMethod: "Online Payment (Paid)" }, orderId);
-                        const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
-                        setTimeout(() => {
-                            window.location.href = waUrl;
-                        }, 500);
-                    } catch (e) {
-                        showToast(e.message, "error");
-                    }
-                }, 1000);
-                return;
-            }
-
-            // Real official Razorpay SDK
-            const options = {
-                key: razorpayOrder.keyId,
-                amount: razorpayOrder.amount,
-                currency: razorpayOrder.currency || "INR",
-                name: "Ojaswi Premium",
-                description: `Order ${orderId} - Authentic Spices`,
-                order_id: razorpayOrder.id,
-                prefill: {
-                    name,
-                    email,
-                    contact: phone.startsWith("+91") ? phone : `+91${phone}`
-                },
-                theme: {
-                    color: "#d9a441"
-                },
-                handler: async function (response) {
-                    try {
-                        const verifyRes = await apiRequest("/api/payments/verify", {
-                            method: "POST",
-                            body: JSON.stringify({
-                                order_id: orderId,
-                                razorpay_order_id: response.razorpay_order_id,
-                                razorpay_payment_id: response.razorpay_payment_id,
-                                razorpay_signature: response.razorpay_signature
-                            })
-                        });
-
-                        cart.clear();
-                        showToast("Payment verified successfully! Opening WhatsApp...", "success");
-                        if (orderSummaryData) {
-                            showOrderSuccessModal(orderId, orderSummaryData);
-                        }
-                        const waOrderMsg = buildCheckoutOrderMessage(orderSummaryData || { items: [], total: 0, paymentMethod: "Online Payment (Paid)" }, orderId);
-                        const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg);
-                        setTimeout(() => {
-                            window.location.href = waUrl;
-                        }, 500);
-                    } catch (err) {
-                        showToast(err.message || "Payment verification failed.", "error");
-                    }
-                },
-                modal: {
-                    ondismiss: function () {
-                        showToast("Payment cancelled. You can retry anytime.", "info");
-                        const btn = document.getElementById("btnPlaceOrder");
-                        btn.disabled = false;
-                        btn.textContent = "CONFIRM & PLACE ORDER";
-                    }
-                }
-            };
-
-            const rzp = new window.Razorpay(options);
-            rzp.on("payment.failed", function (response) {
-                showToast(`Payment failed: ${response.error.description}`, "error");
-                const btn = document.getElementById("btnPlaceOrder");
-                btn.disabled = false;
-                btn.textContent = "CONFIRM & PLACE ORDER";
-            });
-            rzp.open();
-        }
 
         initCheckout();
     </script>

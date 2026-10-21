@@ -34,7 +34,23 @@ const productPrices = {
 
     "Pav Bhaji Masala": 199,
 
-    "Misal Masala": 199
+    "Misal Masala": 199,
+
+    "Rajma Masala": 199,
+
+    "Chole Masala": 199,
+
+    "Rasam Masala": 199,
+
+    "Sambar Masala": 199,
+
+    "Tea Masala": 199,
+
+    "Jaljeera Masala": 199,
+
+    "Kasuri Methi": 99,
+
+    "Dry Ginger Powder": 199
 
 };
 
@@ -596,7 +612,23 @@ const productPrices = {
 
     "Pav Bhaji Masala": 199,
 
-    "Misal Masala": 199
+    "Misal Masala": 199,
+
+    "Rajma Masala": 199,
+
+    "Chole Masala": 199,
+
+    "Rasam Masala": 199,
+
+    "Sambar Masala": 199,
+
+    "Tea Masala": 199,
+
+    "Jaljeera Masala": 199,
+
+    "Kasuri Methi": 99,
+
+    "Dry Ginger Powder": 199
 
 };
 
