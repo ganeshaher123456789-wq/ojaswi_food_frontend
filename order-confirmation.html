@@ -279,166 +279,284 @@
         const OJASWI_PHONE = "917620098478";
         const OJASWI_EMAIL = "ojaswifoods@gmail.com";
 
-        async function initConfirmation() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get("id");
+        function renderOrderDetails(o) {
+            if (!o) return;
 
-            if (!orderId) {
-                if (typeof safeNavigate === "function") {
-                    safeNavigate(window.location.protocol === "file:" ? "index.html" : "/", "#home");
-                } else {
-                    window.location.href = "/";
-                }
-                return;
+            // 1. Order ID
+            const rawId = o.id || o.orderId || o.order_id || "";
+            const displayId = rawId ? (rawId.startsWith("#") ? rawId : `#${rawId}`) : "#OJ------";
+            const cleanId = displayId.replace(/^#/, "");
+            const orderIdEl = document.getElementById("confOrderId");
+            if (orderIdEl) orderIdEl.textContent = displayId;
+
+            // 2. Receipt Date
+            const dateEl = document.getElementById("confReceiptDate");
+            if (dateEl) {
+                const createdDate = new Date(o.created_at || o.createdAt || Date.now());
+                dateEl.textContent = `Placed on ${createdDate.toLocaleString("en-IN", {
+                    dateStyle: "medium", timeStyle: "short"
+                })}`;
             }
 
-            try {
-                const res = await apiRequest(`/api/orders/${encodeURIComponent(orderId)}`);
-                const o = res.order;
+            // 3. Customer Info
+            const custName = o.customer_name || o.name || "Valued Customer";
+            const rawPhone = String(o.customer_phone || o.phone || "").replace(/^\+?91/, "").trim();
+            const custPhone = rawPhone || "7620098478";
+            const custEmail = o.customer_email || o.email || "";
 
-                const dateEl = document.getElementById("confReceiptDate");
-                if (dateEl) {
-                    const createdDate = new Date(o.created_at || Date.now());
-                    dateEl.textContent = `Placed on ${createdDate.toLocaleString("en-IN", {
-                        dateStyle: "medium", timeStyle: "short"
-                    })}`;
+            const nameEl = document.getElementById("confCustName");
+            if (nameEl) nameEl.textContent = custName;
+            const phoneEl = document.getElementById("confCustPhone");
+            if (phoneEl) phoneEl.textContent = `+91 ${custPhone}`;
+            const emailEl = document.getElementById("confCustEmail");
+            if (emailEl) emailEl.textContent = custEmail || "support@ojaswifoods.com";
+
+            // 4. Delivery Address
+            const addr = o.delivery_address || {};
+            let fullAddressStr = "";
+            let htmlAddressStr = "";
+            if (typeof addr === "string") {
+                fullAddressStr = addr;
+                htmlAddressStr = addr.replace(/\n/g, "<br>");
+            } else {
+                const house = addr.flat_house || addr.address || "";
+                const street = addr.area_street || "";
+                const city = addr.city || "Malegaon";
+                const state = addr.state || "Maharashtra";
+                const pin = addr.pincode || "423203";
+                fullAddressStr = `${house ? house + ', ' : ''}${street ? street + ', ' : ''}${city}, ${state} - ${pin}`.trim();
+                htmlAddressStr = `
+                    ${house ? house + '<br>' : ''}
+                    ${street ? street + '<br>' : ''}
+                    ${city}, ${state} - <strong>${pin}</strong>
+                `;
+            }
+            const addrEl = document.getElementById("confCustAddress");
+            if (addrEl) addrEl.innerHTML = htmlAddressStr || "Plot 52/2, Malegaon - 423203, Nashik, Maharashtra";
+
+            // 5. Products / Items
+            let items = o.items;
+            if (!items || !Array.isArray(items) || items.length === 0) {
+                if (o.product || o.product_name) {
+                    const uPrice = parseFloat(o.price || o.unit_price) || 499;
+                    const uQty = parseInt(o.quantity || o.qty, 10) || 1;
+                    items = [{
+                        product_name: o.product || o.product_name,
+                        quantity: uQty,
+                        unit_price: uPrice,
+                        total_price: uPrice * uQty,
+                        sku: "OJASWI"
+                    }];
+                } else {
+                    items = [];
                 }
+            }
 
-                document.getElementById("confOrderId").textContent = o.id;
+            const itemsBody = document.getElementById("confItemsBody");
+            if (itemsBody) {
+                if (items.length > 0) {
+                    itemsBody.innerHTML = items.map(item => {
+                        const pName = item.product_name || item.name || item.title || "Authentic Ojaswi Spice";
+                        const pQty = parseInt(item.quantity || item.qty, 10) || 1;
+                        const pUnitPrice = parseFloat(item.unit_price || item.price || item.selling_price) || 0;
+                        const pTotal = parseFloat(item.total_price) || (pUnitPrice * pQty);
+                        const pSku = item.sku || `OJ-${item.product_id || item.id || "SPICE"}`;
+                        return `
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 12px 0;">
+                                    <strong style="color: #fff; font-size: 14px;">${pName}</strong>
+                                    <div style="font-size: 11px; color: #888; margin-top: 3px;">Origin: 52/2 Malegaon 423203 | SKU: ${pSku}</div>
+                                </td>
+                                <td style="padding: 12px; text-align: center; font-weight: 600; color: #fff;">${pQty}</td>
+                                <td style="padding: 12px; text-align: right; color: #ccc;">₹${pUnitPrice}</td>
+                                <td style="padding: 12px 0; text-align: right; color: var(--gold-light); font-weight: 700; font-size: 14px;">₹${pTotal}</td>
+                            </tr>
+                        `;
+                    }).join("");
+                } else {
+                    itemsBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" style="text-align: center; padding: 18px; color: #888;">Order items recorded and scheduled for dispatch.</td>
+                        </tr>
+                    `;
+                }
+            }
 
-                // Cash on Delivery & Payment Status Display
-                const isCOD = !o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod");
-                const methodStr = isCOD ? "CASH ON DELIVERY" : o.payment_method.toUpperCase();
-                const statusStr = (o.payment_status && o.payment_status.toLowerCase() === "paid") ? "PAID" : "PENDING";
-                const statusBadge = statusStr === "PAID" 
-                    ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>` 
-                    : `<span style="color: #f39c12; font-weight: 700;">PENDING</span> <span style="font-size: 11px; color: #aaa;">(Collect upon doorstep delivery)</span>`;
+            // 6. Total Amount
+            const calculatedTotal = items.reduce((sum, it) => {
+                const uPrice = parseFloat(it.unit_price || it.price || it.selling_price) || 0;
+                const uQty = parseInt(it.quantity || it.qty, 10) || 1;
+                return sum + (parseFloat(it.total_price) || (uPrice * uQty));
+            }, 0);
+            const finalAmount = parseFloat(o.total_amount || o.total || o.subtotal) || calculatedTotal || 0;
+            const totalEl = document.getElementById("confTotal");
+            if (totalEl) totalEl.textContent = `₹${finalAmount}`;
 
-                document.getElementById("confPaymentMethod").innerHTML = `
+            // 7. Payment Method & Status
+            const isCOD = !o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod");
+            const methodStr = isCOD ? "CASH ON DELIVERY" : o.payment_method.toUpperCase();
+            const statusStr = (o.payment_status && o.payment_status.toLowerCase() === "paid") ? "PAID" : "PENDING";
+            const statusBadge = statusStr === "PAID" 
+                ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>` 
+                : `<span style="color: #f39c12; font-weight: 700;">PENDING</span> <span style="font-size: 11px; color: #aaa;">(Collect upon doorstep delivery)</span>`;
+
+            const payEl = document.getElementById("confPaymentMethod");
+            if (payEl) {
+                payEl.innerHTML = `
                     <div>Payment Method: <strong>${methodStr}</strong></div>
                     <div style="font-size: 12px; margin-top: 3px;">Payment Status: ${statusBadge}</div>
-                    <div style="font-size: 12px; color: var(--gold-light); margin-top: 2px;">Amount Payable: <strong>₹${o.total_amount}</strong></div>
+                    <div style="font-size: 12px; color: var(--gold-light); margin-top: 2px;">Amount Payable: <strong>₹${finalAmount}</strong></div>
                 `;
+            }
 
-                // Official Receipt Link
-                const apiBase = (typeof resolveApiBaseUrl === "function" ? resolveApiBaseUrl() : "https://ojaswi-food-backend.onrender.com");
-                const receiptLink = `${apiBase}/api/orders/${encodeURIComponent(o.id)}/receipt?format=html`;
-                const receiptBtn = document.getElementById("btnDownloadReceipt");
-                if (receiptBtn) receiptBtn.href = receiptLink;
+            // 8. Official Receipt Download Link
+            const apiBase = (typeof resolveApiBaseUrl === "function" ? resolveApiBaseUrl() : "https://ojaswi-food-backend.onrender.com");
+            const receiptLink = `${apiBase}/api/orders/${encodeURIComponent(cleanId)}/receipt?format=html`;
+            const receiptBtn = document.getElementById("btnDownloadReceipt");
+            if (receiptBtn) receiptBtn.href = receiptLink;
 
-                document.getElementById("confCustName").textContent = o.customer_name;
-                document.getElementById("confCustPhone").textContent = `+91 ${o.customer_phone}`;
-                document.getElementById("confCustEmail").textContent = o.customer_email || "N/A";
+            // 9. Track Order Link
+            const isLocal = window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+            const ordersBase = isLocal ? "orders.html" : "/orders";
+            const trackBtn = document.getElementById("btnTrackOrder");
+            if (trackBtn) trackBtn.href = `${ordersBase}?id=${encodeURIComponent(cleanId)}`;
 
-                const addr = o.delivery_address || {};
-                const fullAddressStr = `${addr.flat_house ? addr.flat_house + ', ' : ''}${addr.area_street || ''}, ${addr.city || ''} - ${addr.pincode || ''}`;
-                document.getElementById("confCustAddress").innerHTML = `
-                    ${addr.flat_house ? addr.flat_house + ', ' : ''}${addr.area_street || ''}<br>
-                    ${addr.city || ''}, ${addr.state || ''} - <strong>${addr.pincode || ''}</strong>
-                `;
+            // 10. Live Tracking Stepper
+            const currentStatus = o.order_status || "Confirmed";
+            const stages = ["Confirmed", "Processing", "Packed", "Shipped", "Delivered"];
+            let activeIdx = stages.findIndex(s => s.toLowerCase() === currentStatus.toLowerCase());
+            if (activeIdx === -1) activeIdx = 0;
 
-                document.getElementById("confItemsBody").innerHTML = o.items.map(item => `
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <td style="padding: 10px 0;">
-                            <strong>${item.product_name}</strong>
-                            <div style="font-size: 11px; color: #777;">Origin: 52/2 Malegaon 423203 | SKU: ${item.sku || "OJASWI"}</div>
-                        </td>
-                        <td style="padding: 10px; text-align: center;">${item.quantity}</td>
-                        <td style="padding: 10px; text-align: right;">₹${item.unit_price}</td>
-                        <td style="padding: 10px 0; text-align: right; color: var(--gold-light); font-weight: 600;">₹${item.total_price}</td>
-                    </tr>
+            const stepperEl = document.getElementById("confTimelineStepper");
+            if (stepperEl) {
+                stepperEl.innerHTML = stages.map((st, idx) => `
+                    <div class="timeline-step ${idx < activeIdx ? 'completed' : (idx === activeIdx ? 'current' : '')}">
+                        <div class="timeline-dot">${idx < activeIdx ? '✓' : (idx === activeIdx ? '●' : '○')}</div>
+                        <div class="timeline-label">${st}</div>
+                    </div>
                 `).join("");
+            }
 
-                document.getElementById("confTotal").textContent = `₹${o.total_amount}`;
-                
-                const isLocal = window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
-                const ordersBase = isLocal ? "orders.html" : "/orders";
-                document.getElementById("btnTrackOrder").href = `${ordersBase}?id=${encodeURIComponent(o.id)}`;
+            // 11. WhatsApp, Email, SMS links
+            const now = new Date(o.created_at || o.createdAt || Date.now());
+            const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+            const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
 
-                // Render live tracking preview
-                const currentStatus = o.order_status || "Confirmed";
-                const stages = ["Confirmed", "Processing", "Packed", "Shipped", "Delivered"];
-                let activeIdx = stages.findIndex(s => s.toLowerCase() === currentStatus.toLowerCase());
-                if (activeIdx === -1) activeIdx = 0;
+            const itemsDetailed = items.map((i, idx) => {
+                const pName = i.product_name || i.name || "Ojaswi Spice";
+                const pQty = i.quantity || i.qty || 1;
+                const pUnitPrice = parseFloat(i.unit_price || i.price || i.selling_price) || 0;
+                const pTotal = parseFloat(i.total_price) || (pUnitPrice * pQty);
+                return `  ${idx + 1}. *${pName}* (500g)\n     Qty: ${pQty} pack(s) • Price: ₹${pUnitPrice} • Total: ₹${pTotal}`;
+            }).join("\n\n");
 
-                const stepperEl = document.getElementById("confTimelineStepper");
-                if (stepperEl) {
-                    stepperEl.innerHTML = stages.map((st, idx) => `
-                        <div class="timeline-step ${idx < activeIdx ? 'completed' : (idx === activeIdx ? 'current' : '')}">
-                            <div class="timeline-dot">${idx < activeIdx ? '✓' : (idx === activeIdx ? '●' : '○')}</div>
-                            <div class="timeline-label">${st}</div>
-                        </div>
-                    `).join("");
-                }
-
-                // Format comprehensive, rich order confirmation message for website owner
-                const now = new Date(o.created_at || Date.now());
-                const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
-                const timeStr = now.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit", hour12: true });
-
-                const itemsDetailed = o.items.map((i, idx) => 
-                    `  ${idx + 1}. *${i.product_name}* (500g)\n     Qty: ${i.quantity} pack(s) • Price: ₹${i.unit_price} • Total: ₹${i.total_price}`
-                ).join("\n\n");
-
-                const richConfMsg = `🌶️ *NEW OJASWI FOODS ORDER* 🌶️
+            const richConfMsg = `🌶️ *NEW OJASWI FOODS ORDER* 🌶️
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📦 *ORDER INFORMATION*
-• *Order ID:* #${o.id.replace(/^#/, '')}
+• *Order ID:* #${cleanId}
 • *Date & Time:* ${dateStr}, ${timeStr}
-• *Payment Method:* ${o.payment_method} (${o.payment_status || 'Pending'})
+• *Payment Method:* ${isCOD ? 'Cash on Delivery (Pending)' : 'Online Payment'}
 • *Order Status:* Confirmed by Customer
 
 👤 *CUSTOMER INFORMATION*
-• *Customer Name:* ${o.customer_name}
-• *Mobile Number:* +91 ${o.customer_phone}${o.customer_email ? '\n• *Email:* ' + o.customer_email : ''}
+• *Customer Name:* ${custName}
+• *Mobile Number:* +91 ${custPhone}${custEmail ? '\n• *Email:* ' + custEmail : ''}
 • *Delivery Address:* ${fullAddressStr}
 
 🛒 *ORDERED PRODUCTS*
-${itemsDetailed}
+${itemsDetailed || '  1. Authentic Ojaswi Spice Pack\n     Qty: 1 • Total: ₹' + finalAmount}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💰 *BILLING SUMMARY*
-• *Subtotal:* ₹${o.total_amount}
+• *Subtotal:* ₹${finalAmount}
 • *Delivery Charges:* ₹0 (FREE Express Delivery)
-• *Total Payable Amount:* ₹${o.total_amount}
+• *Total Payable Amount:* ₹${finalAmount}
 
 🏭 *FACTORY & DISPATCH UNIT*
 • *Manufacturer:* Ojaswi Foods, 52/2, Malegaon - 423203, Nashik
 • *FSSAI License:* 3025120612245599988
 • *Official Care:* +91 7620098478
 
-_Hello Ojaswi Foods Team, I am confirming my order #${o.id.replace(/^#/, '')}. Please confirm dispatch from Malegaon. Thank you!_`;
+_Hello Ojaswi Foods Team, I am confirming my order #${cleanId}. Please confirm dispatch from Malegaon. Thank you!_`;
 
-                const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(richConfMsg);
+            const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(richConfMsg);
 
-                // WhatsApp Confirmation Links (Hero Button & Grid Card)
-                const waHeroBtn = document.getElementById("btnHeroConfirmWhatsApp");
-                if (waHeroBtn) waHeroBtn.href = waUrl;
+            const waHeroBtn = document.getElementById("btnHeroConfirmWhatsApp");
+            if (waHeroBtn) waHeroBtn.href = waUrl;
 
-                const waBtn = document.getElementById("btnConfWhatsApp");
-                if (waBtn) waBtn.href = waUrl;
+            const waBtn = document.getElementById("btnConfWhatsApp");
+            if (waBtn) waBtn.href = waUrl;
 
-                // Auto-open WhatsApp if redirected from checkout with ?open_wa=1
-                if (urlParams.get("open_wa") === "1" || urlParams.get("open_wa") === "true") {
-                    setTimeout(() => {
-                        window.location.href = waUrl;
-                    }, 400);
+            const emailBtn = document.getElementById("btnConfEmail");
+            if (emailBtn) {
+                const subject = `Order Confirmation #${cleanId} - ${custName} (₹${finalAmount})`;
+                emailBtn.href = `mailto:${OJASWI_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(richConfMsg)}`;
+            }
+
+            const smsBtn = document.getElementById("btnConfSMS");
+            if (smsBtn) {
+                smsBtn.href = `sms:+${OJASWI_PHONE}?body=${encodeURIComponent(richConfMsg)}`;
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get("open_wa") === "1" || urlParams.get("open_wa") === "true") {
+                setTimeout(() => {
+                    window.location.href = waUrl;
+                }, 400);
+            }
+        }
+
+        async function initConfirmation() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let orderId = urlParams.get("id");
+
+            // 1. Check localStorage first for instant rendering
+            let cachedOrder = null;
+            try {
+                const raw = localStorage.getItem("ojaswi_last_order");
+                if (raw) {
+                    cachedOrder = JSON.parse(raw);
                 }
+            } catch (e) {
+                console.warn("Could not read ojaswi_last_order:", e);
+            }
 
-                // Email Confirmation Link
-                const emailBtn = document.getElementById("btnConfEmail");
-                if (emailBtn) {
-                    const subject = `Order Confirmation #${o.id} - ${o.customer_name} (₹${o.total_amount})`;
-                    emailBtn.href = `mailto:${OJASWI_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(richConfMsg)}`;
+            // If no orderId in query, fallback to cached order id
+            if (!orderId && cachedOrder && (cachedOrder.id || cachedOrder.orderId)) {
+                orderId = cachedOrder.id || cachedOrder.orderId;
+            }
+
+            // Immediately render cached order if available
+            if (cachedOrder) {
+                const cachedIdClean = String(cachedOrder.id || cachedOrder.orderId || "").replace(/^#/, "");
+                const queryIdClean = String(orderId || "").replace(/^#/, "");
+                if (!orderId || !queryIdClean || cachedIdClean === queryIdClean) {
+                    renderOrderDetails(cachedOrder);
                 }
+            }
 
-                // SMS Confirmation Link
-                const smsBtn = document.getElementById("btnConfSMS");
-                if (smsBtn) {
-                    smsBtn.href = `sms:+${OJASWI_PHONE}?body=${encodeURIComponent(richConfMsg)}`;
+            // If neither query param nor cache exists, show helpful fallback state
+            if (!orderId && !cachedOrder) {
+                const nameEl = document.getElementById("confCustName");
+                if (nameEl) nameEl.textContent = "No recent order found";
+                return;
+            }
+
+            // 2. Fetch authoritative live order data from backend
+            try {
+                const cleanId = String(orderId).replace(/^#/, "");
+                const res = await apiRequest(`/api/orders/${encodeURIComponent(cleanId)}`);
+                if (res && res.order) {
+                    renderOrderDetails(res.order);
+                    try {
+                        localStorage.setItem("ojaswi_last_order", JSON.stringify(res.order));
+                    } catch (_) {}
                 }
             } catch (err) {
-                showToast(err.message, "error");
+                console.warn("Remote order lookup note:", err.message);
+                if (!cachedOrder) {
+                    showToast(err.message, "error");
+                }
             }
         }
 

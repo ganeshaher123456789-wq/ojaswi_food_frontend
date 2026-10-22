@@ -2773,7 +2773,56 @@ async function placeOrderFromModal() {
     };
 
     const productId = productMapping[order.product] || 1;
-    const orderId = "OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    let orderId = "#OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const unitPrice = parseFloat(order.price) || 499;
+    const qty = parseInt(order.quantity, 10) || 1;
+    const totalAmount = unitPrice * qty;
+
+    const deliveryAddressObj = {
+        flat_house: order.address,
+        area_street: order.address,
+        city: "Malegaon",
+        district: "Nashik",
+        state: "Maharashtra",
+        pincode: "423203"
+    };
+
+    const fullOrderForStorage = {
+        id: orderId,
+        customer_name: order.name,
+        customer_phone: order.phone,
+        customer_email: order.email || "",
+        delivery_address: deliveryAddressObj,
+        items: [{
+            product_id: productId,
+            product_name: order.product,
+            quantity: qty,
+            unit_price: unitPrice,
+            total_price: totalAmount,
+            sku: `OJ-${productId}`
+        }],
+        subtotal: totalAmount,
+        delivery_charge: 0,
+        total_amount: totalAmount,
+        payment_method: "Cash on Delivery",
+        payment_status: "Pending",
+        order_status: "Confirmed",
+        created_at: new Date().toISOString()
+    };
+
+    // Save immediately to localStorage for instant order-confirmation rendering
+    try {
+        localStorage.setItem("ojaswi_last_order", JSON.stringify(fullOrderForStorage));
+        const savedOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
+        if (!savedOrders.includes(orderId)) {
+            savedOrders.unshift(orderId);
+            localStorage.setItem("ojaswi_customer_orders", JSON.stringify(savedOrders));
+        }
+        localStorage.setItem("ojaswi_customer_phone", order.phone);
+        if (order.name) localStorage.setItem("ojaswi_customer_name", order.name);
+    } catch (e) {
+        console.warn("Could not save direct order to localStorage:", e);
+    }
 
     // 1. Build rich WhatsApp message with all product details and customer info
     const waMsg = buildRichWhatsAppOrderMessage({ ...order, paymentMethod }, orderId);
@@ -2792,29 +2841,22 @@ async function placeOrderFromModal() {
             orderId: orderId,
             customer_name: order.name,
             customer_phone: order.phone,
-            delivery_address: {
-                flat_house: order.address,
-                area_street: order.address,
-                city: "Malegaon",
-                state: "Maharashtra",
-                pincode: "423203"
-            },
-            items: [{ productId: productId, quantity: order.quantity }],
+            delivery_address: deliveryAddressObj,
+            items: [{ productId: productId, quantity: qty }],
             payment_method: "Cash on Delivery"
         };
 
-        if (window.apiRequest) {
-            window.apiRequest("/api/orders", {
-                method: "POST",
-                body: JSON.stringify(payload)
-            }).catch(console.warn);
-        } else {
-            fetch("/api/orders", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-                keepalive: true
-            }).catch(console.warn);
+        const res = await (window.apiRequest 
+            ? window.apiRequest("/api/orders", { method: "POST", body: JSON.stringify(payload) })
+            : fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).then(r => r.json())
+        );
+
+        if (res && res.orderId) {
+            orderId = res.orderId;
+            fullOrderForStorage.id = res.orderId;
+            try {
+                localStorage.setItem("ojaswi_last_order", JSON.stringify(fullOrderForStorage));
+            } catch (_) {}
         }
     } catch (e) {
         console.warn("Background order save notice:", e);

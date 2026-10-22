@@ -827,8 +827,32 @@
                     paymentMethod: payment_method
                 };
 
-                // Persist order ID and customer phone to localStorage for cross-session order tracking
+                const fullOrderForStorage = {
+                    id: res.orderId,
+                    customer_name: customer_name,
+                    customer_phone: customer_phone,
+                    customer_email: customer_email,
+                    delivery_address: delivery_address,
+                    items: items.map(it => ({
+                        product_id: it.id,
+                        product_name: it.name,
+                        quantity: it.quantity,
+                        unit_price: it.selling_price || it.price,
+                        total_price: (it.selling_price || it.price) * it.quantity,
+                        sku: it.sku || `OJ-${it.id}`
+                    })),
+                    subtotal: placedTotal,
+                    delivery_charge: 0,
+                    total_amount: placedTotal,
+                    payment_method: payment_method,
+                    payment_status: "Pending",
+                    order_status: "Confirmed",
+                    created_at: new Date().toISOString()
+                };
+
+                // Persist full order object and customer phone to localStorage for instant order-confirmation rendering
                 try {
+                    localStorage.setItem("ojaswi_last_order", JSON.stringify(fullOrderForStorage));
                     const savedOrders = JSON.parse(localStorage.getItem("ojaswi_customer_orders") || "[]");
                     if (!savedOrders.includes(res.orderId)) {
                         savedOrders.unshift(res.orderId);
@@ -1000,14 +1024,16 @@ _Hello Ojaswi Foods Team, please confirm my order and arrange dispatch from Male
         }
 
         function showOrderSuccessModal(orderId, details) {
+            const isLocal = window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+            const targetUrl = isLocal ? `order-confirmation.html?id=${encodeURIComponent(orderId)}` : `/order-confirmation?id=${encodeURIComponent(orderId)}`;
             const modal = document.getElementById("orderSuccessModal");
             if (!modal) {
-                window.location.href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+                window.location.href = targetUrl;
                 return;
             }
 
             document.getElementById("successModalOrderId").textContent = orderId;
-            document.getElementById("btnSuccessReceipt").href = `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+            document.getElementById("btnSuccessReceipt").href = targetUrl;
 
             const msg = buildCheckoutOrderMessage(details, orderId);
 
