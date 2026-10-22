@@ -45,6 +45,11 @@ const prodApiUrl = process.env.VITE_API_URL ||
                    process.env.OJASWIAPIURL || 
                    "https://ojaswi-food-backend.onrender.com";
 
+const prodGoogleClientId = process.env.GOOGLE_CLIENT_ID || 
+                           process.env.VITE_GOOGLE_CLIENT_ID || 
+                           process.env.PUBLIC_GOOGLE_CLIENT_ID || 
+                           "";
+
 const prodConfigContent = `/**
  * Ojaswi Premium Spices - Frontend Production Configuration (Vercel Build)
  * Live Render Backend: ${prodApiUrl}
@@ -59,6 +64,7 @@ const prodConfigContent = `/**
   const resolved = window.OJASWI_API_URL || window.OJASWIAPIURL || window.VITE_API_URL || defaultApiUrl;
   window.OJASWI_API_URL = resolved;
   window.OJASWIAPIURL = resolved;
+  window.GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || "${prodGoogleClientId}";
 })();
 `;
 

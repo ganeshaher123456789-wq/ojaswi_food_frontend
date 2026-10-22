@@ -15,4 +15,5 @@
   window.OJASWI_API_URL = resolved;
   window.OJASWIAPIURL = resolved;
   window.OJASWI_PROD_API_URL = prodApiUrl;
+  window.GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || "";
 })();

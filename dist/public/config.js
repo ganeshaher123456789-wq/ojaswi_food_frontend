@@ -12,4 +12,5 @@
   const resolved = window.OJASWI_API_URL || window.OJASWIAPIURL || window.VITE_API_URL || defaultApiUrl;
   window.OJASWI_API_URL = resolved;
   window.OJASWIAPIURL = resolved;
+  window.GOOGLE_CLIENT_ID = window.GOOGLE_CLIENT_ID || "";
 })();

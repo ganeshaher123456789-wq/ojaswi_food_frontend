@@ -328,6 +328,7 @@
                         <div id="receiptPayment" style="color: #fff; font-weight: 600; font-size: 14px; margin-top: 2px;">--</div>
                     </div>
                     <div class="no-print" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <a id="btnDownloadReceiptOrder" href="#" target="_blank" class="primary-button" style="padding: 8px 16px; font-size: 12px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: #fff;">📄 Download Official Receipt</a>
                         <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;" onclick="window.print()">🖨️ Print Invoice</button>
                         <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;" onclick="closeSingleOrder()">← Back to All Orders</button>
                     </div>
@@ -589,7 +590,26 @@
                 }).join("");
 
                 document.getElementById("receiptTotal").textContent = `₹${o.total_amount}`;
-                document.getElementById("receiptPayment").textContent = `${o.payment_method || 'Cash on Delivery'} (${o.payment_status || 'Pending'})`;
+
+                // Cash on Delivery & Payment Status Display
+                const isCOD = !o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod");
+                const methodStr = isCOD ? "CASH ON DELIVERY" : o.payment_method.toUpperCase();
+                const statusStr = (o.payment_status && o.payment_status.toLowerCase() === "paid") ? "PAID" : "PENDING";
+                const statusBadge = statusStr === "PAID" 
+                    ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>` 
+                    : `<span style="color: #f39c12; font-weight: 700;">PENDING</span> <span style="font-size: 11px; color: #aaa;">(Collect upon doorstep delivery)</span>`;
+
+                document.getElementById("receiptPayment").innerHTML = `
+                    <div>Payment Method: <strong>${methodStr}</strong></div>
+                    <div style="font-size: 12px; margin-top: 3px;">Payment Status: ${statusBadge}</div>
+                    <div style="font-size: 12px; color: var(--gold-light); margin-top: 2px;">Amount Payable: <strong>₹${o.total_amount}</strong></div>
+                `;
+
+                // Wire receipt download button
+                const apiBase = (typeof resolveApiBaseUrl === "function" ? resolveApiBaseUrl() : "https://ojaswi-food-backend.onrender.com");
+                const receiptUrl = `${apiBase}/api/orders/${encodeURIComponent(o.id)}/receipt?format=html`;
+                const receiptBtn = document.getElementById("btnDownloadReceiptOrder");
+                if (receiptBtn) receiptBtn.href = receiptUrl;
 
                 // Scroll smoothly to receipt & live tracking
                 document.getElementById("singleOrderDetailSection").scrollIntoView({ behavior: "smooth" });

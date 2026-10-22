@@ -136,5 +136,70 @@ export function cleanPhoneNumber(input) {
  */
 export function isValidPhoneNumber(input) {
   const cleaned = cleanPhoneNumber(input);
-  return /^\d{10}$/.test(cleaned);
+  return /^[6-9]\d{9}$/.test(cleaned);
+}
+
+/**
+ * Decodes Google Identity Services JWT credential
+ */
+export function decodeGoogleJwt(token) {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch(e) {
+    console.warn("Could not decode Google JWT:", e);
+    return null;
+  }
+}
+
+/**
+ * Perform Google Sign-In / Registration API call
+ */
+export async function googleLogin(data) {
+  return await apiRequest("/api/auth/google", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+}
+
+/**
+ * Check current logged in user session
+ */
+export async function getCurrentUser() {
+  try {
+    return await apiRequest("/api/auth/me");
+  } catch(e) {
+    return { success: false, isAuthenticated: false, user: null };
+  }
+}
+
+/**
+ * Customer Logout
+ */
+export async function logoutCustomer() {
+  try {
+    await apiRequest("/api/auth/logout", { method: "POST" });
+  } catch(e) {}
+  try {
+    const storage = window.safeLocalStorage || window.localStorage;
+    if (storage) {
+      storage.removeItem("ojaswi_token");
+      storage.removeItem("ojaswi_user");
+    }
+  } catch(e) {}
+}
+
+if (typeof window !== "undefined") {
+  window.apiRequest = apiRequest;
+  window.showToast = showToast;
+  window.cleanPhoneNumber = cleanPhoneNumber;
+  window.isValidPhoneNumber = isValidPhoneNumber;
+  window.decodeGoogleJwt = decodeGoogleJwt;
+  window.googleLogin = googleLogin;
+  window.getCurrentUser = getCurrentUser;
+  window.logoutCustomer = logoutCustomer;
 }

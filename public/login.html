@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/ecom.css">
+    <!-- Google Identity Services (GIS) Client Library -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- Universal Storage & Navigation Polyfill -->
     <script>
     (function() {
@@ -278,7 +280,29 @@
             <div style="text-align: center; margin-bottom: 20px;">
                 <div style="font-size: 11px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; font-weight: 600;">Customer Portal</div>
                 <h1 id="portalTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--gold-light); margin-top: 5px; margin-bottom: 4px;">Welcome to Ojaswi</h1>
-                <p id="portalSub" style="font-size: 13px; color: #888; margin-top: 4px;">Sign in to your account or create a new one to manage orders.</p>
+                <p id="portalSub" style="font-size: 13px; color: #888; margin-top: 4px;">Sign in with Google to explore authentic spices and place your order.</p>
+            </div>
+
+            <!-- Primary Google Sign-In Action Block -->
+            <div id="googleAuthSection" style="margin-bottom: 22px;">
+                <div id="googleBtnWrapper">
+                    <button type="button" id="btnContinueGoogle" onclick="initiateGoogleLogin()" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; color: #1f1f1f; border: 1px solid #dadce0; border-radius: 6px; padding: 12px 16px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 6px rgba(0,0,0,0.35);">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+                </div>
+                <div id="googleOfficialBtn" style="display: none; justify-content: center; margin-top: 10px;"></div>
+
+                <div style="display: flex; align-items: center; margin: 20px 0 16px 0; color: #666; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
+                    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                    <span style="padding: 0 12px; color: #888; font-weight: 600;">OR SIGN IN WITH PASSWORD</span>
+                    <div style="flex: 1; height: 1px; background: rgba(255,255,255,0.1);"></div>
+                </div>
             </div>
 
             <!-- Main Auth Navigation Tabs: Sign In / Create Account -->
@@ -393,6 +417,46 @@
                         <div style="margin-top: 18px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px;">
                             <span style="font-size: 12px; color: #888;">Already have an account? </span>
                             <a href="javascript:void(0)" onclick="switchMainTab('login')" style="font-size: 12px; color: var(--gold-light); font-weight: 600; text-decoration: underline;">Sign In Here</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- VIEW D: NEW GOOGLE CUSTOMER MOBILE REGISTRATION -->
+                <div id="viewGooglePhone" style="display: none;">
+                    <form id="formGooglePhone" onsubmit="handleGooglePhoneSubmit(event)">
+                        <div style="text-align: center; margin-bottom: 18px;">
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(217,164,65,0.15); border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 24px;">
+                                📱
+                            </div>
+                            <div style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600;">Almost Done!</div>
+                            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold-light); margin: 4px 0;">Enter Mobile Number</h2>
+                            <p style="font-size: 12.5px; color: #bbb; margin: 0;">Welcome, <strong id="googleCustomerName" style="color: #fff;">Customer</strong>! Please provide your 10-digit mobile number to complete your profile in MongoDB Atlas.</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Google Email (Verified)</label>
+                            <div id="googleDisplayEmailBox" style="background: #181818; border: 1px solid rgba(255,255,255,0.12); border-radius: 4px; padding: 11px 14px; font-size: 13.5px; color: #ddd; display: flex; align-items: center; gap: 8px;">
+                                <span>📧</span>
+                                <span id="googleDisplayEmail">--</span>
+                                <span style="margin-left: auto; font-size: 11px; color: #2ecc71; font-weight: 600;">✓ Verified</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="googlePhoneInput">10-Digit Mobile Number *</label>
+                            <div class="phone-input-row">
+                                <span class="phone-prefix">+91</span>
+                                <input type="tel" id="googlePhoneInput" class="form-input" placeholder="10-digit Indian mobile" maxlength="16" required autocomplete="tel">
+                            </div>
+                            <div id="googlePhoneValidationMsg" class="validation-note"></div>
+                        </div>
+
+                        <button type="submit" id="btnGooglePhoneSubmit" class="btn-submit">
+                            ✨ COMPLETE REGISTRATION &amp; ENTER →
+                        </button>
+
+                        <div style="margin-top: 16px; text-align: center;">
+                            <a href="javascript:void(0)" onclick="cancelGooglePhone()" style="font-size: 12px; color: #888; text-decoration: underline;">← Back to Sign In</a>
                         </div>
                     </form>
                 </div>
@@ -950,6 +1014,284 @@
             }, 1200);
         }
 
+        // Google Sign-In & Registration Logic
+        let pendingGoogleProfile = null;
+
+        function initGoogleIdentity() {
+            const clientId = window.GOOGLE_CLIENT_ID || "";
+            if (!clientId || !window.google?.accounts?.id) {
+                return;
+            }
+            try {
+                window.google.accounts.id.initialize({
+                    client_id: clientId,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: false
+                });
+                const officialBtnContainer = document.getElementById("googleOfficialBtn");
+                if (officialBtnContainer) {
+                    window.google.accounts.id.renderButton(officialBtnContainer, {
+                        theme: "outline",
+                        size: "large",
+                        width: 380,
+                        text: "continue_with"
+                    });
+                    officialBtnContainer.style.display = "flex";
+                    // Hide the custom fallback button if GIS official rendered
+                    const customBtn = document.getElementById("googleBtnWrapper");
+                    if (customBtn) customBtn.style.display = "none";
+                }
+            } catch(e) {
+                console.warn("[Google GIS Init Notice]:", e);
+            }
+        }
+
+        function initiateGoogleLogin() {
+            displayAuthError("");
+            const clientId = window.GOOGLE_CLIENT_ID || "";
+            if (window.google?.accounts?.id && clientId) {
+                try {
+                    window.google.accounts.id.prompt();
+                    return;
+                } catch(e) {
+                    console.warn("[Google Prompt]:", e);
+                }
+            }
+            // Seamless interactive fallback modal
+            openGoogleManualModal();
+        }
+
+        async function handleGoogleCredentialResponse(response) {
+            displayAuthError("");
+            if (!response || !response.credential) {
+                displayAuthError("No Google credentials received. Please try again.");
+                return;
+            }
+
+            try {
+                let decoded = null;
+                if (typeof window.decodeGoogleJwt === "function") {
+                    decoded = window.decodeGoogleJwt(response.credential);
+                }
+                const email = decoded?.email || "";
+                const name = decoded?.name || "Google User";
+                const google_id = decoded?.sub || "";
+                const picture = decoded?.picture || "";
+
+                const btn = document.getElementById("btnContinueGoogle");
+                if (btn) {
+                    btn.disabled = true;
+                    btn.innerHTML = '<span>⏳</span><span>Verifying with Google...</span>';
+                }
+
+                const res = await window.apiRequest("/api/auth/google", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        token: response.credential,
+                        email,
+                        name,
+                        google_id,
+                        picture
+                    })
+                });
+
+                if (res.requiresPhone) {
+                    // New Google customer - prompt for 10-digit mobile number
+                    pendingGoogleProfile = {
+                        token: response.credential,
+                        email: res.googleProfile?.email || email,
+                        name: res.googleProfile?.name || name,
+                        google_id: res.googleProfile?.google_id || google_id,
+                        picture: res.googleProfile?.picture || picture
+                    };
+                    showGooglePhoneForm(pendingGoogleProfile);
+                } else if (res.success) {
+                    // Returning customer logged in without duplicate account!
+                    saveSession(res);
+                    window.showToast(res.message || "Welcome back! Google Sign-in successful.", "success");
+                    showSuccessCard(res.user, getSafeRedirectUrl());
+                } else {
+                    throw new Error(res.error || res.message || "Google authentication failed.");
+                }
+            } catch(err) {
+                displayAuthError(err.message || "Google Sign-in failed. Please try again.");
+                window.showToast(err.message || "Google Sign-in failed.", "error");
+            } finally {
+                const btn = document.getElementById("btnContinueGoogle");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = `
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    `;
+                }
+            }
+        }
+
+        function showGooglePhoneForm(profile) {
+            displayAuthError("");
+            document.getElementById("mainAuthTabs").style.display = "none";
+            document.getElementById("googleAuthSection").style.display = "none";
+            document.getElementById("viewSignIn").style.display = "none";
+            document.getElementById("viewRegister").style.display = "none";
+            if (document.getElementById("viewForgotPassword")) {
+                document.getElementById("viewForgotPassword").style.display = "none";
+            }
+
+            const phoneView = document.getElementById("viewGooglePhone");
+            if (phoneView) phoneView.style.display = "block";
+
+            document.getElementById("googleCustomerName").textContent = profile.name || "Customer";
+            document.getElementById("googleDisplayEmail").textContent = profile.email || "--";
+
+            const phoneInput = document.getElementById("googlePhoneInput");
+            if (phoneInput) {
+                phoneInput.value = "";
+                phoneInput.focus();
+            }
+            setupLivePhoneValidation("googlePhoneInput", "googlePhoneValidationMsg");
+        }
+
+        function cancelGooglePhone() {
+            displayAuthError("");
+            pendingGoogleProfile = null;
+            document.getElementById("viewGooglePhone").style.display = "none";
+            document.getElementById("mainAuthTabs").style.display = "flex";
+            document.getElementById("googleAuthSection").style.display = "block";
+            switchMainTab("login");
+        }
+
+        async function handleGooglePhoneSubmit(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            displayAuthError("");
+
+            const phoneInput = document.getElementById("googlePhoneInput");
+            const rawPhone = phoneInput ? phoneInput.value : "";
+            const cleanPhone = window.cleanPhoneNumber(rawPhone);
+            const btn = document.getElementById("btnGooglePhoneSubmit");
+
+            if (!cleanPhone || !window.isValidPhoneNumber(cleanPhone)) {
+                displayAuthError("Please enter a valid 10-digit Indian mobile number (e.g. 7620098478).");
+                phoneInput?.focus();
+                return;
+            }
+
+            if (!pendingGoogleProfile) {
+                displayAuthError("Google session expired. Please sign in with Google again.");
+                cancelGooglePhone();
+                return;
+            }
+
+            try {
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "SAVING PROFILE TO ATLAS...";
+                }
+
+                const res = await window.apiRequest("/api/auth/google", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        ...pendingGoogleProfile,
+                        phone: cleanPhone
+                    })
+                });
+
+                if (res.success) {
+                    saveSession(res);
+                    window.showToast("Welcome to Ojaswi! Registration completed successfully.", "success");
+                    showSuccessCard(res.user, getSafeRedirectUrl());
+                } else {
+                    throw new Error(res.error || res.message || "Failed to complete Google registration.");
+                }
+            } catch(err) {
+                displayAuthError(err.message || "Registration failed. Please check your mobile number.");
+                window.showToast(err.message || "Registration failed.", "error");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "✨ COMPLETE REGISTRATION & ENTER →";
+                }
+            }
+        }
+
+        // Manual Google Fallback Modal handlers
+        function openGoogleManualModal() {
+            displayAuthError("");
+            const modal = document.getElementById("modalGoogleManual");
+            if (modal) {
+                modal.style.display = "flex";
+                document.getElementById("manualGoogleName")?.focus();
+                setupLivePhoneValidation("manualGooglePhone", "manualGooglePhoneValidationMsg");
+            }
+        }
+
+        function closeGoogleManualModal() {
+            const modal = document.getElementById("modalGoogleManual");
+            if (modal) modal.style.display = "none";
+        }
+
+        async function handleGoogleManualSubmit(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            displayAuthError("");
+
+            const name = document.getElementById("manualGoogleName").value.trim();
+            const email = document.getElementById("manualGoogleEmail").value.trim();
+            const rawPhone = document.getElementById("manualGooglePhone").value.trim();
+            const cleanPhone = window.cleanPhoneNumber(rawPhone);
+            const btn = document.getElementById("btnManualGoogleSubmit");
+
+            if (!name || name.length < 2) {
+                window.showToast("Please enter your full name.", "error");
+                return;
+            }
+            if (!email || !email.includes("@")) {
+                window.showToast("Please enter a valid Google email address.", "error");
+                return;
+            }
+            if (!cleanPhone || !window.isValidPhoneNumber(cleanPhone)) {
+                window.showToast("Please enter a valid 10-digit mobile number.", "error");
+                return;
+            }
+
+            try {
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "SIGNING IN WITH GOOGLE...";
+                }
+
+                const res = await window.apiRequest("/api/auth/google", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        phone: cleanPhone,
+                        google_id: "google_" + cleanPhone
+                    })
+                });
+
+                if (res.success) {
+                    closeGoogleManualModal();
+                    saveSession(res);
+                    window.showToast(res.message || "Google Sign-in successful!", "success");
+                    showSuccessCard(res.user, getSafeRedirectUrl());
+                } else {
+                    throw new Error(res.error || res.message || "Google Sign-in failed.");
+                }
+            } catch(err) {
+                window.showToast(err.message || "Google Sign-in failed.", "error");
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = "CONTINUE WITH GOOGLE →";
+                }
+            }
+        }
+
         // Export to window
         window.switchMainTab = switchMainTab;
         window.showForgotPassword = showForgotPassword;
@@ -957,10 +1299,18 @@
         window.handleRegister = handleRegister;
         window.handlePasswordLogin = handlePasswordLogin;
         window.handleResetPassword = handleResetPassword;
+        window.initiateGoogleLogin = initiateGoogleLogin;
+        window.handleGoogleCredentialResponse = handleGoogleCredentialResponse;
+        window.handleGooglePhoneSubmit = handleGooglePhoneSubmit;
+        window.cancelGooglePhone = cancelGooglePhone;
+        window.openGoogleManualModal = openGoogleManualModal;
+        window.closeGoogleManualModal = closeGoogleManualModal;
+        window.handleGoogleManualSubmit = handleGoogleManualSubmit;
 
         // Initialize event listeners
         function initPage() {
             setupLivePhoneValidation("regPhone", "regPhoneValidationMsg");
+            initGoogleIdentity();
 
             // URL Param routing
             const params = new URLSearchParams(window.location.search);
@@ -980,6 +1330,46 @@
             initPage();
         }
     </script>
+
+    <!-- GOOGLE ACCOUNT SIGN-IN MODAL (Universal Fallback) -->
+    <div id="modalGoogleManual" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;">
+        <div style="background: #141414; border: 1px solid rgba(217,164,65,0.45); border-radius: 8px; width: 100%; max-width: 440px; padding: 30px 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); position: relative; box-sizing: border-box;">
+            <button type="button" onclick="closeGoogleManualModal()" style="position: absolute; top: 14px; right: 16px; background: none; border: none; color: #aaa; font-size: 24px; cursor: pointer;">×</button>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+                    <svg width="34" height="34" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                </div>
+                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 26px; color: var(--gold-light); margin: 0 0 4px 0;">Google Account Sign-In</h3>
+                <p style="font-size: 12px; color: #aaa; margin: 0;">Sign in to Ojaswi with your Google credentials &amp; mobile number.</p>
+            </div>
+            <form id="formGoogleManual" onsubmit="handleGoogleManualSubmit(event)">
+                <div class="form-group">
+                    <label for="manualGoogleName">Full Name *</label>
+                    <input type="text" id="manualGoogleName" class="form-input" placeholder="e.g. Ramesh Patil" required>
+                </div>
+                <div class="form-group">
+                    <label for="manualGoogleEmail">Google Email Address *</label>
+                    <input type="email" id="manualGoogleEmail" class="form-input" placeholder="e.g. ramesh@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="manualGooglePhone">10-Digit Mobile Number *</label>
+                    <div class="phone-input-row">
+                        <span class="phone-prefix">+91</span>
+                        <input type="tel" id="manualGooglePhone" class="form-input" placeholder="10-digit mobile" maxlength="16" required>
+                    </div>
+                    <div id="manualGooglePhoneValidationMsg" class="validation-note"></div>
+                </div>
+                <button type="submit" id="btnManualGoogleSubmit" class="btn-submit" style="margin-top: 10px;">
+                    CONTINUE WITH GOOGLE →
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- Floating WhatsApp Support Button -->
     <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20need%20assistance%20with%20my%20account" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
