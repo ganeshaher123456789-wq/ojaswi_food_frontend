@@ -213,7 +213,7 @@
                     <!-- Submit Button -->
                     <button type="submit" id="btnPlaceOrder" class="primary-button" style="width: 100%; padding: 16px; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <span>📦</span>
-                        <span>PLACE ORDER (CASH ON DELIVERY)</span>
+                        <span>PLACE ORDER NOW (CASH ON DELIVERY)</span>
                     </button>
 
                     <!-- Direct Confirmation Channels: WhatsApp, Email, SMS -->
@@ -332,7 +332,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(217,164,65,0.25); padding-top: 12px; margin-top: 12px;">
                         <div>
                             <div style="font-size: 11px; color: #f39c12; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Payment Status</div>
-                            <div style="font-size: 12px; color: #f39c12; font-weight: 600;">Payment Pending — Cash on Delivery</div>
+                            <div style="font-size: 12px; color: #f39c12; font-weight: 600;">CASH ON DELIVERY — PAYMENT PENDING</div>
                         </div>
                         <div style="text-align: right;">
                             <div style="font-size: 11px; color: #888;">Total Amount:</div>
@@ -344,7 +344,7 @@
                 <!-- Three Confirmation Options -->
                 <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
                     <!-- Option 1: WhatsApp -->
-                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('whatsapp')" style="background: #181818; border: 1px solid rgba(37,211,102,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#25D366'" onmouseleave="this.style.borderColor='rgba(37,211,102,0.35)'">
+                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('whatsapp', event)" style="background: #181818; border: 1px solid rgba(37,211,102,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#25D366'" onmouseleave="this.style.borderColor='rgba(37,211,102,0.35)'">
                         <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(37,211,102,0.15); border: 1px solid #25D366; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #25D366; flex-shrink: 0;">
                                 💬
@@ -359,34 +359,34 @@
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmWhatsAppOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('whatsapp')" style="background: #25D366; color: #fff; border: 1px solid #25D366; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
+                        <button type="button" id="btnConfirmWhatsAppOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('whatsapp', event)" style="background: #25D366; color: #fff; border: 1px solid #25D366; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
                             <span>Confirm via WhatsApp</span> <span>💬</span>
                         </button>
                     </div>
 
                     <!-- Option 2: Email -->
-                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('email')" style="background: #181818; border: 1px solid rgba(52,152,219,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#3498db'" onmouseleave="this.style.borderColor='rgba(52,152,219,0.35)'">
+                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('email', event)" style="background: #181818; border: 1px solid rgba(52,152,219,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#3498db'" onmouseleave="this.style.borderColor='rgba(52,152,219,0.35)'">
                         <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(52,152,219,0.15); border: 1px solid #3498db; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #3498db; flex-shrink: 0;">
                                 ✉️
                             </div>
                             <div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <strong style="color: #fff; font-size: 15px;">Email Confirmation</strong>
+                                    <strong style="color: #fff; font-size: 15px;">Gmail / Email Confirmation</strong>
                                     <span style="font-size: 10px; background: rgba(52,152,219,0.15); color: #3498db; border: 1px solid rgba(52,152,219,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">OFFICIAL INVOICE</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Opens your Email app with complete prefilled order invoice to ojaswifoods@gmail.com.
+                                    Opens your Email app or Gmail with complete prefilled order invoice to ojaswifoods@gmail.com.
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmEmailOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('email')" style="background: #2980b9; color: #fff; border: 1px solid #2980b9; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span>Confirm via Email</span> <span>✉️</span>
+                        <button type="button" id="btnConfirmEmailOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('email', event)" style="background: #2980b9; color: #fff; border: 1px solid #2980b9; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                            <span>Confirm via Gmail / Email</span> <span>✉️</span>
                         </button>
                     </div>
 
                     <!-- Option 3: SMS -->
-                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('sms')" style="background: #181818; border: 1px solid rgba(243,156,18,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#f39c12'" onmouseleave="this.style.borderColor='rgba(243,156,18,0.35)'">
+                    <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('sms', event)" style="background: #181818; border: 1px solid rgba(243,156,18,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#f39c12'" onmouseleave="this.style.borderColor='rgba(243,156,18,0.35)'">
                         <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(243,156,18,0.15); border: 1px solid #f39c12; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #f39c12; flex-shrink: 0;">
                                 📱
@@ -401,14 +401,65 @@
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmSMSOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('sms')" style="background: #d35400; color: #fff; border: 1px solid #d35400; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <button type="button" id="btnConfirmSMSOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('sms', event)" style="background: #d35400; color: #fff; border: 1px solid #d35400; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                             <span>Confirm via SMS</span> <span>📱</span>
                         </button>
                     </div>
                 </div>
 
                 <div style="text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 14px; font-size: 11.5px; color: #777;">
-                    🔒 All options securely save your order in our database. Payment is strictly <strong>Payment Pending — Cash on Delivery</strong>, collected at your doorstep.
+                    🔒 All options securely save your order in our database. Payment is strictly <strong>CASH ON DELIVERY — PAYMENT PENDING</strong>, collected at your doorstep.
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal: Awaiting Customer Confirmation (After Opening WhatsApp, Gmail, or SMS) -->
+        <div id="orderAwaitingConfirmationModal" class="modal" style="display: none; align-items: center; justify-content: center; z-index: 10000; position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); padding: 16px;">
+            <div style="background: #131313; border: 1px solid #f39c12; border-radius: 12px; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; padding: 28px 24px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.95); text-align: center;">
+                <button type="button" class="modal-close" onclick="closeOrderAwaitingConfirmationModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: #888; font-size: 24px; cursor: pointer;">&times;</button>
+                
+                <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(243,156,18,0.15); border: 2px solid #f39c12; color: #f39c12; font-size: 26px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                    ⏳
+                </div>
+                
+                <div style="font-size: 11px; letter-spacing: 2.5px; color: #f39c12; text-transform: uppercase; font-weight: 700;">Step 2 of 3: Message Submission</div>
+                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;" id="awaitingModalOrderId">#OJ...</h3>
+
+                <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
+                    <span style="font-size: 11px; color: #f39c12; font-weight: 700; background: rgba(243,156,18,0.15); border: 1px solid #f39c12; padding: 3px 10px; border-radius: 4px;">
+                        STATUS: AWAITING CONFIRMATION
+                    </span>
+                    <span style="font-size: 11px; color: #f39c12; font-weight: 700; background: rgba(243,156,18,0.15); border: 1px solid #f39c12; padding: 3px 10px; border-radius: 4px;">
+                        CASH ON DELIVERY — PAYMENT PENDING
+                    </span>
+                </div>
+
+                <div style="background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 20px; text-align: left; font-size: 13px; line-height: 1.6; color: #ccc;">
+                    <div style="margin-bottom: 8px;">
+                        📲 We opened <strong id="awaitingChannelLabel" style="color: #fff;">WhatsApp</strong> for you with your prefilled order details addressed to <strong id="awaitingRecipientLabel" style="color: var(--gold-light);">+91 7620098478</strong>.
+                    </div>
+                    <div style="margin-bottom: 8px; color: #ddd;">
+                        👉 Please <strong>review the prefilled order and press Send</strong> in your application to deliver your order details.
+                    </div>
+                    <div style="font-size: 11.5px; color: #aaa; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                        ⚠️ <em>Note:</em> Opening the application does not confirm your order. After sending your message, click the green button below to confirm submission and register your order for dispatch.
+                    </div>
+                </div>
+
+                <!-- Primary Action: Confirm Submission -->
+                <button type="button" id="btnConfirmSentMessage" class="primary-button" onclick="confirmOrderMessageSent()" style="width: 100%; padding: 15px; font-size: 15px; font-weight: 700; background: #2ecc71; border-color: #2ecc71; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(46,204,113,0.35); cursor: pointer;">
+                    <span>✅</span>
+                    <span>I HAVE SENT THE MESSAGE — CONFIRM ORDER</span>
+                </button>
+
+                <!-- Secondary Actions -->
+                <div style="display: flex; gap: 10px; margin-top: 12px;">
+                    <button type="button" id="btnAwaitingReopen" class="secondary-button" onclick="reopenCurrentChannel()" style="flex: 1; padding: 10px; font-size: 12px; cursor: pointer;">
+                        <span>🔄</span> <span>Re-open <span id="awaitingReopenChannelName">WhatsApp</span></span>
+                    </button>
+                    <button type="button" class="secondary-button" onclick="backToConfirmationOptions()" style="flex: 1; padding: 10px; font-size: 12px; cursor: pointer;">
+                        <span>⇄</span> <span>Change Channel</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -419,15 +470,20 @@
                 <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(46, 204, 113, 0.15); border: 2px solid #2ecc71; color: #2ecc71; font-size: 30px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
                     ✓
                 </div>
-                <div style="font-size: 11px; letter-spacing: 3px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">Order Placed Successfully</div>
+                <div style="font-size: 11px; letter-spacing: 3px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">Order Confirmed (Pending Dispatch)</div>
                 <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;" id="successModalOrderId"></h3>
                 
-                <div style="margin-bottom: 15px; font-size: 12px; color: #f39c12; font-weight: 600; background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); padding: 6px 12px; border-radius: 6px; display: inline-block;">
-                    Payment Pending — Cash on Delivery
+                <div style="margin-bottom: 15px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                    <span style="font-size: 12px; color: #2ecc71; font-weight: 700; background: rgba(46,204,113,0.15); border: 1px solid #2ecc71; padding: 4px 10px; border-radius: 4px;">
+                        ORDER CONFIRMED (PENDING DISPATCH)
+                    </span>
+                    <span style="font-size: 12px; color: #f39c12; font-weight: 700; background: rgba(243,156,18,0.15); border: 1px solid #f39c12; padding: 4px 10px; border-radius: 4px;">
+                        CASH ON DELIVERY — PAYMENT PENDING
+                    </span>
                 </div>
 
                 <p style="font-size: 13px; color: #bbb; margin-bottom: 18px; line-height: 1.5;" id="successModalMsg">
-                    Your spice order has been recorded for dispatch.
+                    Your spice order has been confirmed and recorded for dispatch from our Malegaon facility.
                 </p>
 
                 <!-- Primary Selected Channel Action Button (Large, high-contrast, one-tap trigger) -->
@@ -938,6 +994,31 @@ ${itemsText}
 _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm dispatch. Thank you!_`;
         }
 
+        // Universal Native & Web URL Launcher that bypasses browser popup blockers
+        function triggerAppUrl(url, preferNewTab = false) {
+            try {
+                const a = document.createElement("a");
+                a.href = url;
+                if (preferNewTab) {
+                    a.target = "_blank";
+                    a.rel = "noopener noreferrer";
+                }
+                a.style.display = "none";
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                    try { document.body.removeChild(a); } catch (_) {}
+                }, 400);
+            } catch (err) {
+                if (preferNewTab) {
+                    window.open(url, "_blank");
+                } else {
+                    window.location.href = url;
+                }
+            }
+        }
+        window.triggerAppUrl = triggerAppUrl;
+
         // 1. Universal WhatsApp Task Launcher (Opens WhatsApp app on mobile, WhatsApp Web on desktop)
         function openWhatsAppTask(orderSummaryData, activeOrderId) {
             const waMsg = buildCheckoutOrderMessage(orderSummaryData, activeOrderId);
@@ -945,15 +1026,17 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
             const isMobile = isMobileDevice();
 
             if (isMobile) {
-                // Direct navigation opens WhatsApp app natively on mobile devices
-                window.location.href = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encoded;
+                // Mobile (Android / iPhone): launch WhatsApp native application directly
+                const waNativeUrl = "whatsapp://send?phone=" + OJASWI_PHONE + "&text=" + encoded;
+                const waUniversalUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encoded;
+                triggerAppUrl(waNativeUrl);
+                setTimeout(() => {
+                    triggerAppUrl(waUniversalUrl, true);
+                }, 450);
             } else {
-                // Desktop: open WhatsApp Web in a new tab
+                // Desktop: open WhatsApp Web in a clean new tab
                 const waWebUrl = "https://web.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encoded;
-                const newWin = window.open(waWebUrl, "_blank");
-                if (!newWin || newWin.closed || typeof newWin.closed === "undefined") {
-                    window.location.href = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encoded;
-                }
+                triggerAppUrl(waWebUrl, true);
             }
         }
         window.openWhatsAppTask = openWhatsAppTask;
@@ -968,15 +1051,14 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
             const isMobile = isMobileDevice();
 
             if (isMobile) {
-                // Direct navigation triggers the native Email / Gmail app on phones
-                window.location.href = mailtoUrl;
+                // Mobile: launches phone's default Email / Gmail application
+                triggerAppUrl(mailtoUrl);
             } else {
-                // Desktop: open Gmail Web compose in a new tab (works reliably for browser users)
-                window.open(gmailUrl, "_blank");
-                // Also trigger mailto for native client users (Outlook/Mail)
+                // Desktop: opens Gmail Web compose in a new tab
+                triggerAppUrl(gmailUrl, true);
                 setTimeout(() => {
-                    try { window.location.href = mailtoUrl; } catch (_) {}
-                }, 250);
+                    try { triggerAppUrl(mailtoUrl); } catch (_) {}
+                }, 350);
             }
         }
         window.openEmailTask = openEmailTask;
@@ -987,12 +1069,12 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isMobile = isMobileDevice();
 
-            // iOS requires &body=, Android requires ?body=
+            // iOS requires '&body=', Android requires '?body='
             const smsUrl = isIOS
                 ? ("sms:+" + OJASWI_PHONE + "&body=" + encodeURIComponent(smsMsg))
                 : ("sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(smsMsg));
 
-            // Copy to clipboard as reliable backup
+            // Copy to clipboard immediately for guaranteed backup
             try {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(smsMsg);
@@ -1000,21 +1082,30 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
             } catch (_) {}
 
             if (isMobile) {
-                // Direct navigation opens native SMS Messages app on phones
-                window.location.href = smsUrl;
+                // Mobile: launches phone's native SMS Messages application
+                triggerAppUrl(smsUrl);
             } else {
-                try { window.location.href = smsUrl; } catch (_) {}
-                showToast("📱 Order SMS copied to clipboard! (On mobile, this opens your Messages app directly. To confirm on desktop, you can also send via WhatsApp or Email).", "info");
+                // Desktop: notify user and trigger system SMS handler
+                showToast("📱 Order SMS text copied to clipboard! (On mobile phones, this opens your Messages app directly. To confirm on desktop, you can also send via WhatsApp or Email).", "info");
+                try { triggerAppUrl(smsUrl); } catch (_) {}
             }
         }
         window.openSmsTask = openSmsTask;
 
-        async function executeOrderConfirmation(channel = "whatsapp") {
+        let _currentSelectedChannel = "whatsapp";
+
+        async function executeOrderConfirmation(channel = "whatsapp", ev) {
+            if (ev && typeof ev.stopPropagation === "function") ev.stopPropagation();
+            _currentSelectedChannel = channel;
+            window._currentSelectedChannel = channel;
+
             const data = window._currentCheckoutData || validateCheckoutInputs();
             if (!data) return;
 
             const activeOrderId = window._currentCheckoutOrderId || ("#OJ" + Math.floor(100000 + Math.random() * 900000));
+            window._currentCheckoutOrderId = activeOrderId;
             const cleanId = activeOrderId.startsWith("#") ? activeOrderId.slice(1) : activeOrderId;
+
             const orderSummaryData = window._currentOrderSummary || {
                 name: data.customer_name,
                 phone: data.customer_phone,
@@ -1024,8 +1115,9 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 total: data.total,
                 paymentMethod: data.payment_method
             };
+            window._currentOrderSummary = orderSummaryData;
 
-            // 1. Immediately launch the selected channel task!
+            // 1. Immediately launch the selected external task!
             if (channel === "whatsapp") {
                 showToast("Opening WhatsApp with your prefilled order...", "success");
                 openWhatsAppTask(orderSummaryData, activeOrderId);
@@ -1037,7 +1129,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 openSmsTask(orderSummaryData, activeOrderId);
             }
 
-            // 2. Persist order locally for instant receipt & persistence
+            // 2. Persist order locally with status 'Awaiting Confirmation'
             const fullOrderForStorage = {
                 id: activeOrderId,
                 customer_name: data.customer_name,
@@ -1056,8 +1148,9 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 delivery_charge: 0,
                 total_amount: data.total,
                 payment_method: data.payment_method,
-                payment_status: "Payment Pending — Cash on Delivery",
-                order_status: "Confirmed",
+                payment_status: "CASH ON DELIVERY — PAYMENT PENDING",
+                order_status: "Awaiting Confirmation",
+                confirmation_status: "Awaiting Customer Message / Confirmation",
                 preferred_channel: channel,
                 created_at: new Date().toISOString()
             };
@@ -1072,19 +1165,10 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 localStorage.setItem("ojaswi_customer_phone", data.customer_phone);
                 if (data.customer_name) localStorage.setItem("ojaswi_customer_name", data.customer_name);
             } catch (e) {
-                console.warn("Could not save order to localStorage:", e);
+                console.warn("Could not save order locally:", e);
             }
 
-            // 3. Clear the customer's cart
-            if (window.cart && typeof window.cart.clear === "function") {
-                window.cart.clear();
-            }
-
-            // 4. Close confirmation method modal and display success screen
-            closeOrderConfirmationMethodModal();
-            showOrderSuccessModal(activeOrderId, orderSummaryData, channel);
-
-            // 5. Asynchronously dispatch order to backend database (MongoDB Atlas & SQLite)
+            // 3. Asynchronously dispatch order to backend (MongoDB Atlas & SQLite)
             (async () => {
                 try {
                     const payload = {
@@ -1108,17 +1192,159 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                         const newId = res.orderId;
                         fullOrderForStorage.id = newId;
                         localStorage.setItem("ojaswi_last_order", JSON.stringify(fullOrderForStorage));
-                        const modalIdEl = document.getElementById("successModalOrderId");
-                        if (modalIdEl) modalIdEl.textContent = newId;
+                        const awaitingIdEl = document.getElementById("awaitingModalOrderId");
+                        if (awaitingIdEl) awaitingIdEl.textContent = newId;
+                        const successIdEl = document.getElementById("successModalOrderId");
+                        if (successIdEl) successIdEl.textContent = newId;
                         const receiptEl = document.getElementById("btnSuccessReceipt");
                         if (receiptEl) receiptEl.href = resolveReceiptUrl(newId);
                     }
                 } catch (apiErr) {
-                    console.warn("[Backend Sync] Order saved locally. Server sync note:", apiErr.message);
+                    console.warn("[Backend Sync] Order saved locally. Server note:", apiErr.message);
                 }
             })();
+
+            // 4. Transition to Step 2: Awaiting Customer Confirmation
+            if (typeof window.closeOrderConfirmationMethodModal === "function") {
+                window.closeOrderConfirmationMethodModal();
+            }
+            openOrderAwaitingConfirmationModal(activeOrderId, orderSummaryData, channel);
         }
         window.executeOrderConfirmation = executeOrderConfirmation;
+        window.confirmOrderViaChannel = executeOrderConfirmation;
+
+        function openOrderAwaitingConfirmationModal(orderId, details, channel = "whatsapp") {
+            _currentSelectedChannel = channel;
+            window._currentSelectedChannel = channel;
+
+            const modal = document.getElementById("orderAwaitingConfirmationModal");
+            if (!modal) return;
+
+            const idEl = document.getElementById("awaitingModalOrderId");
+            if (idEl) idEl.textContent = orderId.startsWith("#") ? orderId : `#${orderId}`;
+
+            const channelLabel = document.getElementById("awaitingChannelLabel");
+            const recipientLabel = document.getElementById("awaitingRecipientLabel");
+            const reopenChannelName = document.getElementById("awaitingReopenChannelName");
+
+            if (channel === "whatsapp") {
+                if (channelLabel) channelLabel.textContent = "WhatsApp";
+                if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
+                if (reopenChannelName) reopenChannelName.textContent = "WhatsApp";
+            } else if (channel === "email") {
+                if (channelLabel) channelLabel.textContent = "Gmail / Email";
+                if (recipientLabel) recipientLabel.textContent = "ojaswifoods@gmail.com";
+                if (reopenChannelName) reopenChannelName.textContent = "Email";
+            } else {
+                if (channelLabel) channelLabel.textContent = "SMS Messages";
+                if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
+                if (reopenChannelName) reopenChannelName.textContent = "SMS";
+            }
+
+            modal.style.display = "flex";
+        }
+        window.openOrderAwaitingConfirmationModal = openOrderAwaitingConfirmationModal;
+
+        function closeOrderAwaitingConfirmationModal() {
+            const modal = document.getElementById("orderAwaitingConfirmationModal");
+            if (modal) modal.style.display = "none";
+        }
+        window.closeOrderAwaitingConfirmationModal = closeOrderAwaitingConfirmationModal;
+
+        function reopenCurrentChannel() {
+            const channel = _currentSelectedChannel || "whatsapp";
+            const data = window._currentCheckoutData || validateCheckoutInputs();
+            const activeOrderId = window._currentCheckoutOrderId || "#OJ100000";
+            const orderSummaryData = window._currentOrderSummary || {
+                name: data?.customer_name || "Customer",
+                phone: data?.customer_phone || "",
+                email: data?.customer_email || "",
+                address: data?.fullAddress || "",
+                items: data?.items || (window.cart ? window.cart.getItems() : []),
+                total: data?.total || (window.cart ? window.cart.getSubtotal() : 0),
+                paymentMethod: "Cash on Delivery"
+            };
+
+            if (channel === "whatsapp") {
+                showToast("Re-opening WhatsApp...", "info");
+                openWhatsAppTask(orderSummaryData, activeOrderId);
+            } else if (channel === "email") {
+                showToast("Re-opening Email...", "info");
+                openEmailTask(orderSummaryData, activeOrderId);
+            } else {
+                showToast("Re-opening SMS...", "info");
+                openSmsTask(orderSummaryData, activeOrderId);
+            }
+        }
+        window.reopenCurrentChannel = reopenCurrentChannel;
+
+        function backToConfirmationOptions() {
+            closeOrderAwaitingConfirmationModal();
+            if (typeof window.openOrderConfirmationMethodModal === "function") {
+                window.openOrderConfirmationMethodModal();
+            }
+        }
+        window.backToConfirmationOptions = backToConfirmationOptions;
+
+        async function confirmOrderMessageSent() {
+            const btn = document.getElementById("btnConfirmSentMessage");
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<span>⏳</span> <span>CONFIRMING ORDER...</span>`;
+            }
+
+            const activeOrderId = window._currentCheckoutOrderId || ("#OJ" + Math.floor(100000 + Math.random() * 900000));
+            const cleanId = activeOrderId.startsWith("#") ? activeOrderId.slice(1) : activeOrderId;
+            const channel = _currentSelectedChannel || "whatsapp";
+            const data = window._currentCheckoutData || validateCheckoutInputs();
+
+            // 1. Update order in local storage to Confirmed (Pending Dispatch)
+            try {
+                const lastOrderStr = localStorage.getItem("ojaswi_last_order");
+                if (lastOrderStr) {
+                    const lastOrder = JSON.parse(lastOrderStr);
+                    lastOrder.order_status = "Confirmed (Pending Dispatch)";
+                    lastOrder.confirmation_status = "Confirmed by Customer";
+                    lastOrder.payment_status = "CASH ON DELIVERY — PAYMENT PENDING";
+                    lastOrder.confirmed_at = new Date().toISOString();
+                    localStorage.setItem("ojaswi_last_order", JSON.stringify(lastOrder));
+                }
+            } catch (_) {}
+
+            // 2. Clear shopping cart
+            if (window.cart && typeof window.cart.clear === "function") {
+                window.cart.clear();
+            }
+
+            // 3. Notify backend API of explicit confirmation
+            try {
+                await apiRequest(`/api/orders/${encodeURIComponent(cleanId)}/confirm`, {
+                    method: "POST",
+                    body: JSON.stringify({ channel })
+                });
+            } catch (err) {
+                console.warn("[Backend Confirm] Local confirmed. Backend note:", err.message);
+            }
+
+            // 4. Close awaiting modal and show final success modal
+            closeOrderAwaitingConfirmationModal();
+            const orderSummaryData = window._currentOrderSummary || {
+                name: data?.customer_name || "Customer",
+                phone: data?.customer_phone || "",
+                email: data?.customer_email || "",
+                address: data?.fullAddress || "",
+                items: data?.items || [],
+                total: data?.total || 0,
+                paymentMethod: "Cash on Delivery"
+            };
+            showOrderSuccessModal(activeOrderId, orderSummaryData, channel);
+
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `<span>✅</span> <span>I HAVE SENT THE MESSAGE — CONFIRM ORDER</span>`;
+            }
+        }
+        window.confirmOrderMessageSent = confirmOrderMessageSent;
 
         function resolveReceiptUrl(orderId) {
             const isLocal = typeof isStaticOrLocalMode === "function" ? isStaticOrLocalMode() : (window.location.protocol === "file:" || window.location.pathname.endsWith(".html"));
@@ -1170,7 +1396,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
 
             if (channel === "whatsapp") {
                 if (msgEl) {
-                    msgEl.innerHTML = `Your order has been recorded! WhatsApp is opening with your complete prefilled order.<br><strong style="color: #2ecc71; display: block; margin-top: 6px;">👉 Please press 'Send' in WhatsApp to confirm with Ojaswi Foods (+91 7620098478).</strong>`;
+                    msgEl.innerHTML = `Your order has been recorded! Message submitted via WhatsApp.<br><strong style="color: #2ecc71; display: block; margin-top: 6px;">Dispatch scheduled from our Malegaon unit.</strong>`;
                 }
                 if (primaryBtn) {
                     primaryBtn.href = waHref;
@@ -1178,23 +1404,23 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                     primaryBtn.style.borderColor = "#25D366";
                     primaryBtn.onclick = (e) => { e.preventDefault(); openWhatsAppTask(details, orderId); };
                     if (primaryIcon) primaryIcon.textContent = "💬";
-                    if (primaryText) primaryText.textContent = "Open WhatsApp (+91 7620098478)";
+                    if (primaryText) primaryText.textContent = "Re-open WhatsApp (+91 7620098478)";
                 }
                 if (sec1) {
                     sec1.href = mailtoHref;
                     sec1.onclick = (e) => { e.preventDefault(); openEmailTask(details, orderId); };
                     if (sec1Icon) sec1Icon.textContent = "✉️";
-                    if (sec1Text) sec1Text.textContent = "Confirm via Email";
+                    if (sec1Text) sec1Text.textContent = "Also Send Email";
                 }
                 if (sec2) {
                     sec2.href = smsHref;
                     sec2.onclick = (e) => { e.preventDefault(); openSmsTask(details, orderId); };
                     if (sec2Icon) sec2Icon.textContent = "📱";
-                    if (sec2Text) sec2Text.textContent = "Confirm via SMS";
+                    if (sec2Text) sec2Text.textContent = "Also Send SMS";
                 }
             } else if (channel === "email") {
                 if (msgEl) {
-                    msgEl.innerHTML = `Your order has been recorded! Your Email app is opening with your complete prefilled invoice.<br><strong style="color: #3498db; display: block; margin-top: 6px;">👉 Please press 'Send' in your Email app to send your order to ojaswifoods@gmail.com.</strong>`;
+                    msgEl.innerHTML = `Your order has been recorded! Order invoice sent to ojaswifoods@gmail.com.<br><strong style="color: #3498db; display: block; margin-top: 6px;">Dispatch scheduled from our Malegaon unit.</strong>`;
                 }
                 if (primaryBtn) {
                     primaryBtn.href = mailtoHref;
@@ -1202,24 +1428,23 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                     primaryBtn.style.borderColor = "#2980b9";
                     primaryBtn.onclick = (e) => { e.preventDefault(); openEmailTask(details, orderId); };
                     if (primaryIcon) primaryIcon.textContent = "✉️";
-                    if (primaryText) primaryText.textContent = "Open Email App (Send Invoice)";
+                    if (primaryText) primaryText.textContent = "Re-open Email App";
                 }
                 if (sec1) {
                     sec1.href = waHref;
                     sec1.onclick = (e) => { e.preventDefault(); openWhatsAppTask(details, orderId); };
                     if (sec1Icon) sec1Icon.textContent = "💬";
-                    if (sec1Text) sec1Text.textContent = "Confirm via WhatsApp";
+                    if (sec1Text) sec1Text.textContent = "Also Send WhatsApp";
                 }
                 if (sec2) {
                     sec2.href = smsHref;
                     sec2.onclick = (e) => { e.preventDefault(); openSmsTask(details, orderId); };
                     if (sec2Icon) sec2Icon.textContent = "📱";
-                    if (sec2Text) sec2Text.textContent = "Confirm via SMS";
+                    if (sec2Text) sec2Text.textContent = "Also Send SMS";
                 }
             } else {
-                // SMS
                 if (msgEl) {
-                    msgEl.innerHTML = `Your order has been recorded! Your Messages app is opening with your prefilled order text.<br><strong style="color: #f39c12; display: block; margin-top: 6px;">👉 Please press 'Send' in your Messages app to dispatch your alert to +91 7620098478.</strong>`;
+                    msgEl.innerHTML = `Your order has been recorded! SMS alert dispatched to +91 7620098478.<br><strong style="color: #f39c12; display: block; margin-top: 6px;">Dispatch scheduled from our Malegaon unit.</strong>`;
                 }
                 if (primaryBtn) {
                     primaryBtn.href = smsHref;
@@ -1227,26 +1452,27 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                     primaryBtn.style.borderColor = "#d35400";
                     primaryBtn.onclick = (e) => { e.preventDefault(); openSmsTask(details, orderId); };
                     if (primaryIcon) primaryIcon.textContent = "📱";
-                    if (primaryText) primaryText.textContent = "Open SMS App (Send Order Alert)";
+                    if (primaryText) primaryText.textContent = "Re-open SMS Messages";
                 }
                 if (sec1) {
                     sec1.href = waHref;
                     sec1.onclick = (e) => { e.preventDefault(); openWhatsAppTask(details, orderId); };
                     if (sec1Icon) sec1Icon.textContent = "💬";
-                    if (sec1Text) sec1Text.textContent = "Confirm via WhatsApp";
+                    if (sec1Text) sec1Text.textContent = "Also Send WhatsApp";
                 }
                 if (sec2) {
                     sec2.href = mailtoHref;
                     sec2.onclick = (e) => { e.preventDefault(); openEmailTask(details, orderId); };
                     if (sec2Icon) sec2Icon.textContent = "✉️";
-                    if (sec2Text) sec2Text.textContent = "Confirm via Email";
+                    if (sec2Text) sec2Text.textContent = "Also Send Email";
                 }
             }
 
             modal.style.display = "flex";
         }
+        window.showOrderSuccessModal = showOrderSuccessModal;
 
-        function confirmCheckoutViaWhatsApp() {
+        function confirmCheckoutViaWhatsApp(ev) {
             const data = validateCheckoutInputs();
             if (!data) return;
             window._currentCheckoutData = data;
@@ -1261,10 +1487,10 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 total: data.total,
                 paymentMethod: data.payment_method
             };
-            executeOrderConfirmation("whatsapp");
+            executeOrderConfirmation("whatsapp", ev);
         }
 
-        function confirmCheckoutViaEmail() {
+        function confirmCheckoutViaEmail(ev) {
             const data = validateCheckoutInputs();
             if (!data) return;
             window._currentCheckoutData = data;
@@ -1279,10 +1505,10 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 total: data.total,
                 paymentMethod: data.payment_method
             };
-            executeOrderConfirmation("email");
+            executeOrderConfirmation("email", ev);
         }
 
-        function confirmCheckoutViaSMS() {
+        function confirmCheckoutViaSMS(ev) {
             const data = validateCheckoutInputs();
             if (!data) return;
             window._currentCheckoutData = data;
@@ -1297,7 +1523,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 total: data.total,
                 paymentMethod: data.payment_method
             };
-            executeOrderConfirmation("sms");
+            executeOrderConfirmation("sms", ev);
         }
 
         window.confirmCheckoutViaWhatsApp = confirmCheckoutViaWhatsApp;
