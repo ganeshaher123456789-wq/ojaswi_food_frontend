@@ -42,8 +42,17 @@ export async function apiRequest(endpoint, options = {}) {
 
     let token = null;
     try {
-      const storage = window.safeLocalStorage || window.localStorage;
-      if (storage) token = storage.getItem("ojaswi_token");
+      if (typeof window !== "undefined" && window.ojaswiAuth && typeof window.ojaswiAuth.getSessionToken === "function") {
+        token = window.ojaswiAuth.getSessionToken();
+      }
+      if (!token && typeof window !== "undefined") {
+        const ss = window.safeSessionStorage || window.sessionStorage;
+        token = ss ? ss.getItem("ojaswi_token") : null;
+      }
+      if (!token && typeof window !== "undefined") {
+        const ls = window.safeLocalStorage || window.localStorage;
+        token = ls ? ls.getItem("ojaswi_token") : null;
+      }
     } catch (e) {}
     if (token) {
       defaultHeaders["Authorization"] = `Bearer ${token}`;
@@ -63,6 +72,17 @@ export async function apiRequest(endpoint, options = {}) {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
+      if (res.status === 401 && typeof window !== "undefined") {
+        if (window.ojaswiAuth && typeof window.ojaswiAuth.clearAuthSession === "function") {
+          window.ojaswiAuth.clearAuthSession();
+        }
+        const currentPath = (window.location.pathname || "").toLowerCase();
+        const isLogin = currentPath.includes("login.html") || currentPath.endsWith("/login");
+        if (!isLogin) {
+          const isLocal = window.location.protocol === "file:" || currentPath.endsWith(".html");
+          window.location.replace(isLocal ? "login.html" : "/login");
+        }
+      }
       const err = new Error(data.error || data.message || `Request failed with status ${res.status}`);
       err.status = res.status;
       throw err;

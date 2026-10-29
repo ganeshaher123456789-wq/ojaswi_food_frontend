@@ -647,26 +647,32 @@
         }
 
         function saveSession(data) {
-            const storage = window.safeLocalStorage || window.localStorage;
+            if (window.ojaswiAuth && typeof window.ojaswiAuth.setSession === "function") {
+                window.ojaswiAuth.setSession(data.token, data.user);
+            }
+            const ss = window.safeSessionStorage || window.sessionStorage;
+            const ls = window.safeLocalStorage || window.localStorage;
             if (data.token) {
-                try { storage.setItem("ojaswi_token", data.token); } catch (_) {}
-                try { window.localStorage.setItem("ojaswi_token", data.token); } catch (_) {}
+                try { ss.setItem("ojaswi_token", data.token); } catch (_) {}
+                try { ss.setItem("ojaswi_auth_active", "true"); } catch (_) {}
+                try { ls.setItem("ojaswi_token", data.token); } catch (_) {}
+                try { ls.setItem("ojaswi_auth_active", "true"); } catch (_) {}
             }
             if (data.user) {
-                try { storage.setItem("ojaswi_user", JSON.stringify(data.user)); } catch (_) {}
-                try { window.localStorage.setItem("ojaswi_user", JSON.stringify(data.user)); } catch (_) {}
+                try { ss.setItem("ojaswi_user", JSON.stringify(data.user)); } catch (_) {}
+                try { ls.setItem("ojaswi_user", JSON.stringify(data.user)); } catch (_) {}
                 if (data.user.phone) {
-                    try { storage.setItem("ojaswi_customer_phone", data.user.phone); } catch (_) {}
-                    try { window.localStorage.setItem("ojaswi_customer_phone", data.user.phone); } catch (_) {}
+                    try { ss.setItem("ojaswi_customer_phone", data.user.phone); } catch (_) {}
+                    try { ls.setItem("ojaswi_customer_phone", data.user.phone); } catch (_) {}
                 }
                 if (data.user.name) {
-                    try { storage.setItem("ojaswi_customer_name", data.user.name); } catch (_) {}
-                    try { window.localStorage.setItem("ojaswi_customer_name", data.user.name); } catch (_) {}
+                    try { ss.setItem("ojaswi_customer_name", data.user.name); } catch (_) {}
+                    try { ls.setItem("ojaswi_customer_name", data.user.name); } catch (_) {}
                 }
             }
             // Clear any lingering shared guest order IDs
-            try { storage.removeItem("ojaswi_customer_orders"); } catch (_) {}
-            try { window.localStorage.removeItem("ojaswi_customer_orders"); } catch (_) {}
+            try { ss.removeItem("ojaswi_customer_orders"); } catch (_) {}
+            try { ls.removeItem("ojaswi_customer_orders"); } catch (_) {}
 
             // Switch CartManager to authenticated customer profile
             if (window.cart && typeof window.cart.switchUser === "function") {
@@ -976,7 +982,7 @@
             }
 
             // Default: After successful Google sign-in or signup, open the existing homepage/store
-            return isLocal ? "index.html" : "/";
+            return "index.html";
         }
         window.getSafeRedirectUrl = getSafeRedirectUrl;
 
@@ -1317,6 +1323,20 @@
 
         // Initialize event listeners
         function initPage() {
+            try {
+                if (window.ojaswiAuth && typeof window.ojaswiAuth.clearAuthSession === "function") {
+                    window.ojaswiAuth.clearAuthSession();
+                }
+                const ss = window.safeSessionStorage || window.sessionStorage;
+                if (ss) ss.clear();
+                const ls = window.safeLocalStorage || window.localStorage;
+                if (ls) {
+                    ls.removeItem("ojaswi_token");
+                    ls.removeItem("ojaswi_user");
+                    ls.removeItem("ojaswi_auth_active");
+                }
+            } catch (_) {}
+
             setupLivePhoneValidation("regPhone", "regPhoneValidationMsg");
             initGoogleIdentity();
 

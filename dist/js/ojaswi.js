@@ -1361,20 +1361,21 @@
 
   async function handleLogoutGlobal() {
     try {
-      if (window.safeLocalStorage) {
-        window.safeLocalStorage.removeItem("ojaswi_user");
-        window.safeLocalStorage.removeItem("ojaswi_token");
-        window.safeLocalStorage.removeItem("ojaswi_customer_phone");
-        window.safeLocalStorage.removeItem("ojaswi_customer_name");
-        window.safeLocalStorage.removeItem("ojaswi_customer_orders");
-        window.safeLocalStorage.removeItem("ojaswi_last_order");
+      if (window.ojaswiAuth && typeof window.ojaswiAuth.clearAuthSession === "function") {
+        window.ojaswiAuth.clearAuthSession();
       }
-      localStorage.removeItem("ojaswi_user");
-      localStorage.removeItem("ojaswi_token");
-      localStorage.removeItem("ojaswi_customer_phone");
-      localStorage.removeItem("ojaswi_customer_name");
-      localStorage.removeItem("ojaswi_customer_orders");
-      localStorage.removeItem("ojaswi_last_order");
+      const ss = window.safeSessionStorage || window.sessionStorage;
+      if (ss) ss.clear();
+      const ls = window.safeLocalStorage || window.localStorage;
+      if (ls) {
+        ls.removeItem("ojaswi_user");
+        ls.removeItem("ojaswi_token");
+        ls.removeItem("ojaswi_auth_active");
+        ls.removeItem("ojaswi_customer_phone");
+        ls.removeItem("ojaswi_customer_name");
+        ls.removeItem("ojaswi_customer_orders");
+        ls.removeItem("ojaswi_last_order");
+      }
     } catch (_) {}
 
     try {
@@ -1389,7 +1390,11 @@
       showToast("Logged out successfully.", "info");
     }
 
-    checkAuthStatus();
+    const isLocal = typeof isStaticOrLocalMode === "function" ? isStaticOrLocalMode() : (window.location.protocol === "file:" || window.location.pathname.endsWith(".html"));
+    const loginTarget = isLocal ? "login.html" : "/login";
+    setTimeout(() => {
+      window.location.href = loginTarget;
+    }, 300);
   }
   window.handleLogoutGlobal = handleLogoutGlobal;
   if (!window.handleLogout) {
