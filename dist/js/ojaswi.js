@@ -274,6 +274,15 @@
 
       return data;
     } catch (err) {
+      if ((url.startsWith("http://localhost:5000") || url.startsWith("http://127.0.0.1:5000")) && !options._retried) {
+        try {
+          const fallbackUrl = "https://ojaswi-food-backend.onrender.com" + endpoint;
+          console.warn(`[API Fallback] Local server unreachable. Retrying with Render: ${fallbackUrl}`);
+          return await apiRequest(fallbackUrl, { ...options, _retried: true });
+        } catch (fallbackErr) {
+          console.warn("[API Fallback Error]:", fallbackErr.message);
+        }
+      }
       console.error(`[API Error] ${endpoint}:`, err.message);
       throw err;
     }
@@ -281,12 +290,22 @@
   window.apiRequest = apiRequest;
 
   // =========================================================
-  // 4. SHOPPING CART SYSTEM
+  // 4. SHOPPING CART SYSTEM (CUSTOMER-ISOLATED & BACKEND-SYNCED)
   // =========================================================
-  const CART_STORAGE_KEY = "ojaswi_cart_items";
+  function getCurrentAuthUser() {
+    try {
+      const raw = (window.safeLocalStorage ? window.safeLocalStorage.getItem("ojaswi_user") : localStorage.getItem("ojaswi_user"));
+      if (raw) {
+        const u = JSON.parse(raw);
+        if (u && u.id) return u;
+      }
+    } catch (_) {}
+    return null;
+  }
 
   class CartManager {
     constructor() {
+      this.currentUser = getCurrentAuthUser();
       this.items = this.load();
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", () => this.init());
@@ -295,23 +314,67 @@
       }
     }
 
+    getStorageKey() {
+      if (this.currentUser && this.currentUser.id) {
+        return `ojaswi_cart_items_user_${this.currentUser.id}`;
+      }
+      return "ojaswi_cart_items_guest";
+    }
+
     init() {
       this.initDrawer();
       this.updateBadges();
+      // If user is logged in and cart is empty, try hydrating from backend
+      if (this.currentUser && this.currentUser.id && this.items.length === 0) {
+        this.fetchBackendCart();
+      }
+    }
+
+    async fetchBackendCart() {
+      try {
+        const res = await apiRequest("/api/cart");
+        if (res && res.cart && Array.isArray(res.cart.items) && res.cart.items.length > 0) {
+          this.items = res.cart.items.map(it => ({
+            id: it.product_id || it.id,
+            name: it.product_name || it.name,
+            selling_price: it.selling_price || it.price,
+            price: it.price,
+            image: it.image || "images/garam-masala.jpeg",
+            weight: it.weight || "NET WEIGHT 500g",
+            sku: it.sku || `OJ-${it.product_id || it.id}`,
+            quantity: it.quantity || 1
+          }));
+          this.save();
+        }
+      } catch (_) {}
+    }
+
+    async switchUser(user) {
+      this.currentUser = user && user.id ? user : null;
+      this.items = this.load();
+      this.updateBadges();
+      this.renderDrawer();
+      window.dispatchEvent(new CustomEvent("cart:updated", { detail: { items: this.items } }));
+
+      if (this.currentUser && this.currentUser.id) {
+        await this.fetchBackendCart();
+      }
     }
 
     load() {
       try {
-        const stored = localStorage.getItem(CART_STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
-      } catch {
-        return [];
-      }
+        const stored = localStorage.getItem(this.getStorageKey());
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) return parsed;
+        }
+      } catch (_) {}
+      return [];
     }
 
     save() {
       try {
-        localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this.items));
+        localStorage.setItem(this.getStorageKey(), JSON.stringify(this.items));
       } catch (e) {
         console.warn("Cart save warning:", e);
       }
@@ -353,6 +416,12 @@
 
       this.save();
       showToast(`Added ${product.name} to cart.`, "success");
+
+      // Non-blocking sync with backend cart
+      apiRequest("/api/cart", {
+        method: "POST",
+        body: JSON.stringify({ productId: product.id, quantity: qty })
+      }).catch(() => {});
     }
 
     updateQty(productId, newQty) {
@@ -367,17 +436,33 @@
 
       item.quantity = Math.min(qty, 50);
       this.save();
+
+      // Non-blocking sync with backend cart
+      apiRequest("/api/cart", {
+        method: "PUT",
+        body: JSON.stringify({ productId, quantity: item.quantity })
+      }).catch(() => {});
     }
 
     removeItem(productId) {
       this.items = this.items.filter((i) => i.id !== productId);
       this.save();
       showToast("Item removed from cart.", "info");
+
+      // Non-blocking sync with backend cart
+      apiRequest(`/api/cart/${productId}`, {
+        method: "DELETE"
+      }).catch(() => {});
     }
 
     clear() {
       this.items = [];
       this.save();
+
+      // Non-blocking sync with backend cart
+      apiRequest("/api/cart", {
+        method: "DELETE"
+      }).catch(() => {});
     }
 
     updateBadges() {
@@ -1273,6 +1358,43 @@
     }
   }
   window.checkAuthStatus = checkAuthStatus;
+
+  async function handleLogoutGlobal() {
+    try {
+      if (window.safeLocalStorage) {
+        window.safeLocalStorage.removeItem("ojaswi_user");
+        window.safeLocalStorage.removeItem("ojaswi_token");
+        window.safeLocalStorage.removeItem("ojaswi_customer_phone");
+        window.safeLocalStorage.removeItem("ojaswi_customer_name");
+        window.safeLocalStorage.removeItem("ojaswi_customer_orders");
+        window.safeLocalStorage.removeItem("ojaswi_last_order");
+      }
+      localStorage.removeItem("ojaswi_user");
+      localStorage.removeItem("ojaswi_token");
+      localStorage.removeItem("ojaswi_customer_phone");
+      localStorage.removeItem("ojaswi_customer_name");
+      localStorage.removeItem("ojaswi_customer_orders");
+      localStorage.removeItem("ojaswi_last_order");
+    } catch (_) {}
+
+    try {
+      await apiRequest("/api/auth/logout", { method: "POST" });
+    } catch (_) {}
+
+    if (window.cart && typeof window.cart.switchUser === "function") {
+      window.cart.switchUser(null);
+    }
+
+    if (typeof showToast === "function") {
+      showToast("Logged out successfully.", "info");
+    }
+
+    checkAuthStatus();
+  }
+  window.handleLogoutGlobal = handleLogoutGlobal;
+  if (!window.handleLogout) {
+    window.handleLogout = handleLogoutGlobal;
+  }
 
   // =========================================================
   // 7. ORDER MORE SPICES NAVIGATION HELPER

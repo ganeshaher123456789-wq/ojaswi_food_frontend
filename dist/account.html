@@ -860,6 +860,7 @@
             localStorage.removeItem("ojaswi_customer_phone");
             localStorage.removeItem("ojaswi_customer_name");
             localStorage.removeItem("ojaswi_customer_orders");
+            localStorage.removeItem("ojaswi_last_order");
             if (window.safeLocalStorage) {
                 try {
                     window.safeLocalStorage.removeItem("ojaswi_token");
@@ -867,7 +868,11 @@
                     window.safeLocalStorage.removeItem("ojaswi_customer_phone");
                     window.safeLocalStorage.removeItem("ojaswi_customer_name");
                     window.safeLocalStorage.removeItem("ojaswi_customer_orders");
+                    window.safeLocalStorage.removeItem("ojaswi_last_order");
                 } catch (_) {}
+            }
+            if (window.cart && typeof window.cart.switchUser === "function") {
+                window.cart.switchUser(null);
             }
             showToast("Logged out successfully.", "info");
             loadAccount();

@@ -667,6 +667,11 @@
             // Clear any lingering shared guest order IDs
             try { storage.removeItem("ojaswi_customer_orders"); } catch (_) {}
             try { window.localStorage.removeItem("ojaswi_customer_orders"); } catch (_) {}
+
+            // Switch CartManager to authenticated customer profile
+            if (window.cart && typeof window.cart.switchUser === "function") {
+                window.cart.switchUser(data.user);
+            }
         }
 
         // Switch between "Sign In" and "Create Account"
