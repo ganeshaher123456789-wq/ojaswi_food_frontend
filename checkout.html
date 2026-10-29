@@ -225,7 +225,7 @@
 
                     <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 12px;">
                         <!-- Confirm via WhatsApp -->
-                        <button type="button" class="contact-option whatsapp" onclick="confirmCheckoutViaWhatsApp()" title="Confirm Order via WhatsApp" style="padding: 12px 6px; border: 1px solid rgba(46,204,113,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <button type="button" class="contact-option whatsapp" onclick="confirmCheckoutViaWhatsApp(event)" title="Confirm Order via WhatsApp" style="padding: 12px 6px; border: 1px solid rgba(46,204,113,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
                             <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
                                 <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-whatsapp.svg'">
                             </span>
@@ -233,22 +233,22 @@
                             <span style="font-size: 10px; color: #2ecc71; font-weight: 500;">Instant Confirm</span>
                         </button>
 
-                        <!-- Confirm via Email -->
-                        <button type="button" class="contact-option email" onclick="confirmCheckoutViaEmail()" title="Confirm Order via Email" style="padding: 12px 6px; border: 1px solid rgba(52,152,219,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <!-- Confirm via Gmail -->
+                        <button type="button" class="contact-option email" onclick="confirmCheckoutViaEmail(event)" title="Confirm Order via Gmail" style="padding: 12px 6px; border: 1px solid rgba(52,152,219,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
                             <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
-                                <img src="images/icon-email.svg" alt="Email" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-email.svg'">
+                                <img src="images/icon-email.svg" alt="Gmail" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-email.svg'">
                             </span>
-                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Email</span>
-                            <span style="font-size: 10px; color: #3498db; font-weight: 500;">Official Copy</span>
+                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Gmail</span>
+                            <span style="font-size: 10px; color: #3498db; font-weight: 500;">Official Invoice</span>
                         </button>
 
                         <!-- Confirm via SMS -->
-                        <button type="button" class="contact-option sms" onclick="confirmCheckoutViaSMS()" title="Confirm Order via SMS" style="padding: 12px 6px; border: 1px solid rgba(243,156,18,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <button type="button" class="contact-option sms" onclick="confirmCheckoutViaSMS(event)" title="Confirm Order via SMS" style="padding: 12px 6px; border: 1px solid rgba(243,156,18,0.3); background: #141414; border-radius: 8px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
                             <span class="contact-icon" style="display: flex; align-items: center; justify-content: center;">
-                                <img src="images/icon-sms.svg" alt="Send SMS" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-sms.svg'">
+                                <img src="images/icon-sms.svg" alt="SMS" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-sms.svg'">
                             </span>
-                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Send SMS</span>
-                            <span style="font-size: 10px; color: #f39c12; font-weight: 500;">Text Message</span>
+                            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">SMS</span>
+                            <span style="font-size: 10px; color: #f39c12; font-weight: 500;">Text Alert</span>
                         </button>
                     </div>
 
@@ -300,9 +300,9 @@
                 
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 11px; letter-spacing: 2.5px; color: var(--gold); text-transform: uppercase; font-weight: 700;">Order Final Step</div>
-                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 27px; color: var(--gold-light); margin: 6px 0;">How would you like to confirm your Ojaswi order?</h3>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;">Confirm Your Order</h3>
                     <p style="font-size: 13px; color: #aaa; margin: 0 auto; max-width: 480px; line-height: 1.5;">
-                        Review your order summary below and select your preferred method to complete confirmation and receive live dispatch updates.
+                        Review your order summary below and select your preferred method to send your order details:
                     </p>
                 </div>
 
@@ -341,69 +341,69 @@
                     </div>
                 </div>
 
-                <!-- Three Confirmation Options -->
+                <!-- Three Confirmation Options: WhatsApp, Gmail, and SMS -->
                 <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 20px;">
                     <!-- Option 1: WhatsApp -->
                     <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('whatsapp', event)" style="background: #181818; border: 1px solid rgba(37,211,102,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#25D366'" onmouseleave="this.style.borderColor='rgba(37,211,102,0.35)'">
-                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 220px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(37,211,102,0.15); border: 1px solid #25D366; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #25D366; flex-shrink: 0;">
                                 💬
                             </div>
                             <div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <strong style="color: #fff; font-size: 15px;">WhatsApp Confirmation</strong>
+                                    <strong style="color: #fff; font-size: 15px;">WhatsApp</strong>
                                     <span style="font-size: 10px; background: rgba(37,211,102,0.15); color: #2ecc71; border: 1px solid rgba(37,211,102,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">RECOMMENDED</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Direct to Ojaswi Owner (+91 7620098478). Opens WhatsApp with complete prefilled order. Press <em>Send</em> in WhatsApp to confirm.
+                                    Direct to Ojaswi (+91 7620098478). Opens WhatsApp with your prefilled order. Press <em>Send</em> in WhatsApp to confirm.
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmWhatsAppOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('whatsapp', event)" style="background: #25D366; color: #fff; border: 1px solid #25D366; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
-                            <span>Confirm via WhatsApp</span> <span>💬</span>
-                        </button>
+                        <a id="btnConfirmWhatsAppOption" href="#" target="_blank" rel="noopener noreferrer" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('whatsapp', event)" style="background: #25D366; color: #fff; border: 1px solid #25D366; border-radius: 6px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35); text-decoration: none;">
+                            <span>WhatsApp</span> <span>💬</span>
+                        </a>
                     </div>
 
-                    <!-- Option 2: Email -->
+                    <!-- Option 2: Gmail -->
                     <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('email', event)" style="background: #181818; border: 1px solid rgba(52,152,219,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#3498db'" onmouseleave="this.style.borderColor='rgba(52,152,219,0.35)'">
-                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 220px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(52,152,219,0.15); border: 1px solid #3498db; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #3498db; flex-shrink: 0;">
                                 ✉️
                             </div>
                             <div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <strong style="color: #fff; font-size: 15px;">Gmail / Email Confirmation</strong>
+                                    <strong style="color: #fff; font-size: 15px;">Gmail</strong>
                                     <span style="font-size: 10px; background: rgba(52,152,219,0.15); color: #3498db; border: 1px solid rgba(52,152,219,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">OFFICIAL INVOICE</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Opens your Email app or Gmail with complete prefilled order invoice to ojaswifoods@gmail.com.
+                                    Opens Gmail with complete prefilled order invoice to ojaswifoods@gmail.com. Review and send to confirm.
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmEmailOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('email', event)" style="background: #2980b9; color: #fff; border: 1px solid #2980b9; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span>Confirm via Gmail / Email</span> <span>✉️</span>
-                        </button>
+                        <a id="btnConfirmEmailOption" href="#" target="_blank" rel="noopener noreferrer" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('email', event)" style="background: #2980b9; color: #fff; border: 1px solid #2980b9; border-radius: 6px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
+                            <span>Gmail</span> <span>✉️</span>
+                        </a>
                     </div>
 
                     <!-- Option 3: SMS -->
                     <div class="confirmation-channel-card" onclick="window.executeOrderConfirmation('sms', event)" style="background: #181818; border: 1px solid rgba(243,156,18,0.35); border-radius: 8px; padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; transition: all 0.2s; cursor: pointer;" onmouseenter="this.style.borderColor='#f39c12'" onmouseleave="this.style.borderColor='rgba(243,156,18,0.35)'">
-                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 240px;">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 220px;">
                             <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(243,156,18,0.15); border: 1px solid #f39c12; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #f39c12; flex-shrink: 0;">
                                 📱
                             </div>
                             <div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                    <strong style="color: #fff; font-size: 15px;">SMS Confirmation</strong>
+                                    <strong style="color: #fff; font-size: 15px;">SMS</strong>
                                     <span style="font-size: 10px; background: rgba(243,156,18,0.15); color: #f39c12; border: 1px solid rgba(243,156,18,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">TEXT ALERT</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Opens your Messages app with concise prefilled order text ready to send to +91 7620098478.
+                                    Opens Messages app with prefilled order text ready to send to +91 7620098478. Review and send to confirm.
                                 </p>
                             </div>
                         </div>
-                        <button type="button" id="btnConfirmSMSOption" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('sms', event)" style="background: #d35400; color: #fff; border: 1px solid #d35400; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                            <span>Confirm via SMS</span> <span>📱</span>
-                        </button>
+                        <a id="btnConfirmSMSOption" href="#" class="primary-button" onclick="event.stopPropagation(); window.executeOrderConfirmation('sms', event)" style="background: #d35400; color: #fff; border: 1px solid #d35400; border-radius: 6px; padding: 11px 22px; font-size: 13.5px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none;">
+                            <span>SMS</span> <span>📱</span>
+                        </a>
                     </div>
                 </div>
 
@@ -449,7 +449,8 @@
                 <!-- Primary Action: Confirm Submission -->
                 <button type="button" id="btnConfirmSentMessage" class="primary-button" onclick="confirmOrderMessageSent()" style="width: 100%; padding: 15px; font-size: 15px; font-weight: 700; background: #2ecc71; border-color: #2ecc71; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 16px rgba(46,204,113,0.35); cursor: pointer;">
                     <span>✅</span>
-                    <span>I HAVE SENT THE MESSAGE — CONFIRM ORDER</span>
+                    <span>CONFIRM ORDER</span>
+                    <span style="font-size: 13px; font-weight: 500; opacity: 0.9;">(I Have Sent the Message)</span>
                 </button>
 
                 <!-- Secondary Actions -->
@@ -900,6 +901,14 @@
 
             window._currentUrls = { waUrl, mailtoUrl, gmailWebUrl, smsUrl, emailSubject, emailBody, smsMsg };
 
+            // Pre-assign live URLs to modal option buttons
+            const waBtn = document.getElementById("btnConfirmWhatsAppOption");
+            if (waBtn) waBtn.href = waUrl;
+            const emailBtn = document.getElementById("btnConfirmEmailOption");
+            if (emailBtn) emailBtn.href = isMobileDevice() ? mailtoUrl : gmailWebUrl;
+            const smsBtn = document.getElementById("btnConfirmSMSOption");
+            if (smsBtn) smsBtn.href = isMobileDevice() ? smsUrl : "#";
+
             openOrderConfirmationMethodModal();
         }
 
@@ -1023,25 +1032,17 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
         function openWhatsAppTask(orderSummaryData, activeOrderId) {
             const waMsg = buildCheckoutOrderMessage(orderSummaryData, activeOrderId);
             const encoded = encodeURIComponent(waMsg);
-            const isMobile = isMobileDevice();
-
-            if (isMobile) {
-                // Mobile (Android / iPhone): launch WhatsApp native application directly
-                const waNativeUrl = "whatsapp://send?phone=" + OJASWI_PHONE + "&text=" + encoded;
-                const waUniversalUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encoded;
-                triggerAppUrl(waNativeUrl);
-                setTimeout(() => {
-                    triggerAppUrl(waUniversalUrl, true);
-                }, 450);
-            } else {
-                // Desktop: open WhatsApp Web in a clean new tab
-                const waWebUrl = "https://web.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encoded;
-                triggerAppUrl(waWebUrl, true);
+            const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encoded;
+            
+            // Direct window.open on user action is completely trusted by browsers
+            const win = window.open(waUrl, "_blank");
+            if (!win || win.closed || typeof win.closed === "undefined") {
+                window.location.href = waUrl;
             }
         }
         window.openWhatsAppTask = openWhatsAppTask;
 
-        // 2. Universal Email Task Launcher (Opens Email app on mobile, Gmail Compose / mailto on desktop)
+        // 2. Universal Gmail / Email Task Launcher (Opens Email app on mobile, Gmail Compose on desktop)
         function openEmailTask(orderSummaryData, activeOrderId) {
             const cleanId = activeOrderId.startsWith("#") ? activeOrderId : `#${activeOrderId}`;
             const emailSubject = `Order Confirmation ${cleanId} - Ojaswi Foods (Rs.${orderSummaryData.total})`;
@@ -1052,13 +1053,13 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
 
             if (isMobile) {
                 // Mobile: launches phone's default Email / Gmail application
-                triggerAppUrl(mailtoUrl);
+                window.location.href = mailtoUrl;
             } else {
                 // Desktop: opens Gmail Web compose in a new tab
-                triggerAppUrl(gmailUrl, true);
-                setTimeout(() => {
-                    try { triggerAppUrl(mailtoUrl); } catch (_) {}
-                }, 350);
+                const win = window.open(gmailUrl, "_blank");
+                if (!win || win.closed || typeof win.closed === "undefined") {
+                    window.location.href = gmailUrl;
+                }
             }
         }
         window.openEmailTask = openEmailTask;
@@ -1069,11 +1070,6 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const isMobile = isMobileDevice();
 
-            // iOS requires '&body=', Android requires '?body='
-            const smsUrl = isIOS
-                ? ("sms:+" + OJASWI_PHONE + "&body=" + encodeURIComponent(smsMsg))
-                : ("sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(smsMsg));
-
             // Copy to clipboard immediately for guaranteed backup
             try {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1083,18 +1079,20 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
 
             if (isMobile) {
                 // Mobile: launches phone's native SMS Messages application
-                triggerAppUrl(smsUrl);
+                const smsUrl = isIOS
+                    ? ("sms:+" + OJASWI_PHONE + "&body=" + encodeURIComponent(smsMsg))
+                    : ("sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(smsMsg));
+                window.location.href = smsUrl;
             } else {
-                // Desktop: notify user and trigger system SMS handler
-                showToast("📱 Order SMS text copied to clipboard! (On mobile phones, this opens your Messages app directly. To confirm on desktop, you can also send via WhatsApp or Email).", "info");
-                try { triggerAppUrl(smsUrl); } catch (_) {}
+                // Desktop: notify user and explain clearly
+                showToast("📱 Order SMS text copied to clipboard! (On mobile phones, this opens your Messages app directly. To confirm on desktop, you can also send via WhatsApp or Gmail).", "info");
             }
         }
         window.openSmsTask = openSmsTask;
 
         let _currentSelectedChannel = "whatsapp";
 
-        async function executeOrderConfirmation(channel = "whatsapp", ev) {
+        function executeOrderConfirmation(channel = "whatsapp", ev) {
             if (ev && typeof ev.stopPropagation === "function") ev.stopPropagation();
             _currentSelectedChannel = channel;
             window._currentSelectedChannel = channel;
@@ -1122,7 +1120,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 showToast("Opening WhatsApp with your prefilled order...", "success");
                 openWhatsAppTask(orderSummaryData, activeOrderId);
             } else if (channel === "email") {
-                showToast("Opening your Email application...", "success");
+                showToast("Opening Gmail with your prefilled order...", "success");
                 openEmailTask(orderSummaryData, activeOrderId);
             } else if (channel === "sms") {
                 showToast("Opening your Messages app...", "success");
@@ -1232,9 +1230,9 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
                 if (reopenChannelName) reopenChannelName.textContent = "WhatsApp";
             } else if (channel === "email") {
-                if (channelLabel) channelLabel.textContent = "Gmail / Email";
+                if (channelLabel) channelLabel.textContent = "Gmail";
                 if (recipientLabel) recipientLabel.textContent = "ojaswifoods@gmail.com";
-                if (reopenChannelName) reopenChannelName.textContent = "Email";
+                if (reopenChannelName) reopenChannelName.textContent = "Gmail";
             } else {
                 if (channelLabel) channelLabel.textContent = "SMS Messages";
                 if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
@@ -1269,7 +1267,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 showToast("Re-opening WhatsApp...", "info");
                 openWhatsAppTask(orderSummaryData, activeOrderId);
             } else if (channel === "email") {
-                showToast("Re-opening Email...", "info");
+                showToast("Re-opening Gmail...", "info");
                 openEmailTask(orderSummaryData, activeOrderId);
             } else {
                 showToast("Re-opening SMS...", "info");
