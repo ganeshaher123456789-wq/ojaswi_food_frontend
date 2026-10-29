@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders &amp; Live Tracking | Ojaswi Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/ecom.css">
     <!-- Universal Storage & Navigation Sandbox Polyfill -->
     <script>
-    (function() {
-        const mem = { local: {}, session: {} };
-        function makeMockStorage(type) {
-            const store = mem[type];
-            return {
-                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
-                setItem: function(k, v) { store[k] = String(v); },
-                removeItem: function(k) { delete store[k]; },
-                clear: function() { for (let k in store) delete store[k]; },
-                key: function(i) { return Object.keys(store)[i] || null; },
-                get length() { return Object.keys(store).length; }
-            };
-        }
-        let ls, ss;
-        try {
-            window.localStorage.setItem("__test__", "1");
-            window.localStorage.removeItem("__test__");
-            ls = window.localStorage;
-        } catch(e) {
-            ls = makeMockStorage("local");
-            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
-        }
-        try {
-            window.sessionStorage.setItem("__test__", "1");
-            window.sessionStorage.removeItem("__test__");
-            ss = window.sessionStorage;
-        } catch(e) {
-            ss = makeMockStorage("session");
-            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
-        }
-        window.safeLocalStorage = ls;
-        window.safeSessionStorage = ss;
-        window.safeNavigate = function(url, fallbackHash) {
-            if (!url || typeof url !== "string" || !url.trim()) {
-                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
-                return;
+        (function () {
+            const mem = { local: {}, session: {} };
+            function makeMockStorage(type) {
+                const store = mem[type];
+                return {
+                    getItem: function (k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                    setItem: function (k, v) { store[k] = String(v); },
+                    removeItem: function (k) { delete store[k]; },
+                    clear: function () { for (let k in store) delete store[k]; },
+                    key: function (i) { return Object.keys(store)[i] || null; },
+                    get length() { return Object.keys(store).length; }
+                };
+            }
+            let ls, ss;
+            try {
+                window.localStorage.setItem("__test__", "1");
+                window.localStorage.removeItem("__test__");
+                ls = window.localStorage;
+            } catch (e) {
+                ls = makeMockStorage("local");
+                try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch (_) { }
             }
             try {
-                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-                if (isAbout) {
-                    if (window.top && window.top !== window) {
-                        try { window.top.location.href = url; return; } catch(_) {}
-                    }
-                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                window.sessionStorage.setItem("__test__", "1");
+                window.sessionStorage.removeItem("__test__");
+                ss = window.sessionStorage;
+            } catch (e) {
+                ss = makeMockStorage("session");
+                try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch (_) { }
+            }
+            window.safeLocalStorage = ls;
+            window.safeSessionStorage = ss;
+            window.safeNavigate = function (url, fallbackHash) {
+                if (!url || typeof url !== "string" || !url.trim()) {
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
                     return;
                 }
-                window.location.href = url;
-            } catch(e) {
-                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
-            }
-        };
-    })();
+                try {
+                    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                    if (isAbout) {
+                        if (window.top && window.top !== window) {
+                            try { window.top.location.href = url; return; } catch (_) { }
+                        }
+                        if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
+                        return;
+                    }
+                    window.location.href = url;
+                } catch (e) {
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
+                }
+            };
+        })();
     </script>
     <style>
         :root {
@@ -73,13 +76,66 @@
             --white: #ffffff;
             --border: rgba(217, 164, 65, 0.25);
         }
-        body { margin: 0; background: #080808; color: #fff; font-family: 'Inter', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
-        .receipt-card { background: #121212; border: 1px solid rgba(217,164,65,0.25); border-radius: 8px; padding: 28px; max-width: 820px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .receipt-header { text-align: center; border-bottom: 1px dashed rgba(255,255,255,0.15); padding-bottom: 20px; }
-        .receipt-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .primary-button { background: linear-gradient(135deg, #d9a441 0%, #b8860b 100%); color: #080808; font-weight: 700; border: none; border-radius: 4px; padding: 11px 20px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        .secondary-button { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; padding: 10px 18px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-        
+
+        body {
+            margin: 0;
+            background: #080808;
+            color: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .receipt-card {
+            background: #121212;
+            border: 1px solid rgba(217, 164, 65, 0.25);
+            border-radius: 8px;
+            padding: 28px;
+            max-width: 820px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .receipt-header {
+            text-align: center;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+            padding-bottom: 20px;
+        }
+
+        .receipt-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, #d9a441 0%, #b8860b 100%);
+            color: #080808;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            padding: 11px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 4px;
+            padding: 10px 18px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
         /* Live Tracking Visual Stepper */
         .live-tracking-panel {
             background: #161616;
@@ -88,16 +144,18 @@
             padding: 24px;
             margin-bottom: 25px;
         }
+
         .tracking-meta-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 14px;
             background: #0f0f0f;
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 6px;
             padding: 16px;
             margin-top: 20px;
         }
+
         .tracking-meta-item span {
             display: block;
             font-size: 11px;
@@ -106,22 +164,34 @@
             letter-spacing: 0.5px;
             margin-bottom: 4px;
         }
+
         .tracking-meta-item strong {
             font-size: 13.5px;
             color: #eee;
         }
-        
+
         /* Stepper Mobile Compatibility */
         @media (max-width: 680px) {
-            .receipt-details-grid { grid-template-columns: 1fr !important; gap: 14px; }
-            .receipt-card { padding: 18px 14px; }
-            .live-tracking-panel { padding: 16px 12px; }
+            .receipt-details-grid {
+                grid-template-columns: 1fr !important;
+                gap: 14px;
+            }
+
+            .receipt-card {
+                padding: 18px 14px;
+            }
+
+            .live-tracking-panel {
+                padding: 16px 12px;
+            }
+
             .timeline-tracker {
                 flex-direction: column;
                 align-items: flex-start;
                 padding-left: 20px;
                 gap: 18px;
             }
+
             .timeline-tracker::before {
                 top: 15px;
                 bottom: 15px;
@@ -130,6 +200,7 @@
                 height: auto;
                 right: auto;
             }
+
             .timeline-step {
                 display: flex;
                 align-items: center;
@@ -137,6 +208,7 @@
                 text-align: left;
                 width: 100%;
             }
+
             .timeline-dot {
                 margin: 0 !important;
                 flex-shrink: 0;
@@ -144,36 +216,46 @@
         }
     </style>
 </head>
+
 <body style="background: var(--black); color: var(--white); min-height: 100vh;">
 
     <!-- Top Navigation Header -->
-    <header style="position: relative; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.06);" class="no-print">
+    <header style="position: relative; background: #0a0a0a; border-bottom: 1px solid rgba(255,255,255,0.06);"
+        class="no-print">
         <div class="container navbar">
             <a href="index.html" onclick="goToStore(event)" class="brand">
                 <div class="brand-name">Ojaswi</div>
                 <div class="brand-subtitle">PREMIUM</div>
             </a>
             <div style="display: flex; gap: 12px; align-items: center;" id="orderHeaderAuth">
-                <a href="index.html" onclick="goToStore(event)" class="nav-order" style="border-radius: 4px;">← Store</a>
-                <a href="account.html" onclick="goToAccount(event)" id="btnNavAccount" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">My Account</a>
-                <a href="login.html" onclick="goToLogin(event)" id="btnNavLogin" class="secondary-button" style="padding: 9px 16px; font-size: 13px;">Login</a>
-                <button type="button" id="btnNavLogout" onclick="handleLogout()" class="secondary-button" style="padding: 9px 16px; font-size: 13px; color: #ff5252; border-color: rgba(255,82,82,0.3); display: none;">Logout</button>
+                <a href="index.html" onclick="goToStore(event)" class="nav-order" style="border-radius: 4px;">←
+                    Store</a>
+                <a href="account.html" onclick="goToAccount(event)" id="btnNavAccount" class="secondary-button"
+                    style="padding: 9px 16px; font-size: 13px;">My Account</a>
+                <a href="login.html" onclick="goToLogin(event)" id="btnNavLogin" class="secondary-button"
+                    style="padding: 9px 16px; font-size: 13px;">Login</a>
+                <button type="button" id="btnNavLogout" onclick="handleLogout()" class="secondary-button"
+                    style="padding: 9px 16px; font-size: 13px; color: #ff5252; border-color: rgba(255,82,82,0.3); display: none;">Logout</button>
             </div>
         </div>
     </header>
 
     <main class="container" style="padding: 40px 0 80px;">
         <!-- Page Title Header -->
-        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;" class="no-print">
+        <div style="margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px;"
+            class="no-print">
             <div>
                 <span class="section-label">Order Fulfillment &amp; Dispatch</span>
-                <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin-top: 5px; margin-bottom: 6px;">
+                <h1
+                    style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin-top: 5px; margin-bottom: 6px;">
                     Order History &amp; Live Tracking
                 </h1>
-                <p style="color: #888; font-size: 14px; margin: 0;">Track live courier dispatch of your authentic spices directly from Malegaon, Maharashtra.</p>
+                <p style="color: #888; font-size: 14px; margin: 0;">Track live courier dispatch of your authentic spices
+                    directly from Malegaon, Maharashtra.</p>
             </div>
             <div>
-                <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button" style="font-size: 13px;">
+                <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button"
+                    style="font-size: 13px;">
                     🌶️ Order More Spices
                 </a>
             </div>
@@ -182,50 +264,73 @@
         <!-- 1. LIVE ORDER TRACKING & RECEIPT SECTION (Active when ?id=... or when "Track" clicked) -->
         <div id="singleOrderDetailSection" style="display: none; margin-bottom: 45px;">
             <div class="receipt-card">
-                
+
                 <!-- Prominent Ojaswi Foods Logo & Header -->
-                <div class="receipt-brand-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+                <div class="receipt-brand-header"
+                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
                     <div style="display: flex; align-items: center; gap: 14px;">
-                        <div class="receipt-logo-badge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
-                            <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
-                            <span style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
+                        <div class="receipt-logo-badge"
+                            style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
+                            <span
+                                style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
+                            <span
+                                style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
                         </div>
                         <div>
-                            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">OJASWI FOODS</div>
-                            <div style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">Premium Authentic Spices • Malegaon Factory</div>
-                            <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203, Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
+                            <div
+                                style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">
+                                OJASWI FOODS</div>
+                            <div
+                                style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">
+                                Premium Authentic Spices • Malegaon Factory</div>
+                            <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203,
+                                Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
                         </div>
                     </div>
                     <div style="text-align: right;">
-                        <span style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official Tax Invoice</span>
+                        <span
+                            style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official
+                            Tax Invoice</span>
                         <div id="receiptDate" style="color: #888; font-size: 12px; margin-top: 5px;"></div>
                     </div>
                 </div>
 
                 <!-- Order ID & Status Header Bar -->
-                <div class="receipt-order-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #161616; padding: 12px 18px; border-radius: 6px; border-left: 4px solid var(--gold);">
+                <div class="receipt-order-bar"
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; background: #161616; padding: 12px 18px; border-radius: 6px; border-left: 4px solid var(--gold);">
                     <div>
-                        <span style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Official Order ID</span>
-                        <div id="receiptOrderId" style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 700; color: var(--gold-light); margin: 2px 0 0 0;">#OJ------</div>
+                        <span
+                            style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Official
+                            Order ID</span>
+                        <div id="receiptOrderId"
+                            style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 700; color: var(--gold-light); margin: 2px 0 0 0;"></div>
                     </div>
                     <div style="text-align: right;">
-                        <span style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order Status</span>
+                        <span
+                            style="color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Order
+                            Status</span>
                         <div style="margin-top: 2px;">
-                            <span id="receiptOrderStatusBadge" class="status-badge" style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 600;">Confirmed</span>
+                            <span id="receiptOrderStatusBadge" class="status-badge"
+                                style="display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 600;">Confirmed</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- LIVE DELIVERY TRACKING TIMELINE PANEL (Hidden on Print: Remove the track the order) -->
                 <div class="live-tracking-panel no-print">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px;">
                         <div>
-                            <span style="font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">Live Dispatch Progress</span>
-                            <h3 id="trackingCurrentStatusTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #fff; margin: 4px 0 0 0;">
+                            <span
+                                style="font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; font-weight: 700;">Live
+                                Dispatch Progress</span>
+                            <h3 id="trackingCurrentStatusTitle"
+                                style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #fff; margin: 4px 0 0 0;">
                                 Order Confirmed &amp; Processing
                             </h3>
                         </div>
-                        <a id="btnWhatsAppLiveTrack" href="#" target="_blank" class="primary-button" style="background: #25D366; color: #fff; font-size: 12.5px; padding: 8px 16px; border-radius: 4px; box-shadow: 0 4px 14px rgba(37,211,102,0.3);">
+                        <a id="btnWhatsAppLiveTrack" href="#" target="_blank" class="primary-button"
+                            style="background: #25D366; color: #fff; font-size: 12.5px; padding: 8px 16px; border-radius: 4px; box-shadow: 0 4px 14px rgba(37,211,102,0.3);">
                             💬 Track Live on WhatsApp
                         </a>
                     </div>
@@ -248,32 +353,47 @@
                         </div>
                         <div class="tracking-meta-item">
                             <span>AWB / Tracking No.</span>
-                            <strong id="trackingAwbNumber" style="font-family: monospace; color: var(--gold-light);">OJ-TRACKING</strong>
+                            <strong id="trackingAwbNumber"
+                                style="font-family: monospace; color: var(--gold-light);">OJ-TRACKING</strong>
                         </div>
                         <div class="tracking-meta-item">
                             <span>Current Delivery Spot</span>
-                            <strong id="trackingDeliverySpot" style="color: #3498db; font-size: 12.5px;">Local Delivery Hub</strong>
+                            <strong id="trackingDeliverySpot" style="color: #3498db; font-size: 12.5px;">Local Delivery
+                                Hub</strong>
                         </div>
                     </div>
 
                     <!-- Live Dispatch & Delivery Status Note Banner -->
-                    <div id="trackingLiveNoteCard" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 12px 16px; margin-top: 15px; display: flex; align-items: center; gap: 12px;">
+                    <div id="trackingLiveNoteCard"
+                        style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 12px 16px; margin-top: 15px; display: flex; align-items: center; gap: 12px;">
                         <span style="font-size: 22px;" id="trackingLiveNoteIcon">🚚</span>
                         <div style="flex: 1;">
-                            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 700;">Live Dispatch Update:</div>
-                            <div id="trackingLiveNoteText" style="font-size: 13px; color: #ddd; margin-top: 2px;">Order received & verified at 52/2 Malegaon.</div>
+                            <div
+                                style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: 700;">
+                                Live Dispatch Update:</div>
+                            <div id="trackingLiveNoteText" style="font-size: 13px; color: #ddd; margin-top: 2px;">Order
+                                received & verified at 52/2 Malegaon.</div>
                         </div>
                     </div>
 
                     <!-- Delivered Celebration & Review Banner (Shown when order is Delivered) -->
-                    <div id="deliveredReviewBanner" style="display: none; background: rgba(217, 164, 65, 0.12); border: 1px solid var(--gold); border-radius: 8px; padding: 18px 20px; margin-top: 18px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div id="deliveredReviewBanner"
+                        style="display: none; background: rgba(217, 164, 65, 0.12); border: 1px solid var(--gold); border-radius: 8px; padding: 18px 20px; margin-top: 18px;">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                             <div>
-                                <span style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #2ecc71; font-weight: 700;">✅ Package Delivered &amp; Received</span>
-                                <h4 style="font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; margin: 3px 0;">How was your cooking experience?</h4>
-                                <p style="font-size: 12.5px; color: #ccc; margin: 0;">Share your rating, authentic spice aroma review, and upload a photo of your spices or dish for other customers!</p>
+                                <span
+                                    style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #2ecc71; font-weight: 700;">✅
+                                    Package Delivered &amp; Received</span>
+                                <h4
+                                    style="font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #fff; margin: 3px 0;">
+                                    How was your cooking experience?</h4>
+                                <p style="font-size: 12.5px; color: #ccc; margin: 0;">Share your rating, authentic spice
+                                    aroma review, and upload a photo of your spices or dish for other customers!</p>
                             </div>
-                            <button type="button" class="primary-button" style="padding: 10px 20px; font-size: 12.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" onclick="openReviewModalFromCurrentOrder()">
+                            <button type="button" class="primary-button"
+                                style="padding: 10px 20px; font-size: 12.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;"
+                                onclick="openReviewModalFromCurrentOrder()">
                                 <span>⭐</span> Write a Review &amp; Add Photo
                             </button>
                         </div>
@@ -281,16 +401,24 @@
                 </div>
 
                 <!-- Customer Details & Delivery Address -->
-                <div class="receipt-details-grid" style="background: #161616; padding: 20px; border-radius: 6px; margin-bottom: 25px;">
+                <div class="receipt-details-grid"
+                    style="background: #161616; padding: 20px; border-radius: 6px; margin-bottom: 25px;">
                     <div>
-                        <span style="color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Customer Details</span>
-                        <div id="receiptCustomerName" style="color: #fff; font-weight: 600; font-size: 15px; margin-top: 4px;">--</div>
-                        <div id="receiptCustomerPhone" style="color: var(--gold-light); font-size: 13.5px; margin-top: 2px;">--</div>
+                        <span
+                            style="color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Customer
+                            Details</span>
+                        <div id="receiptCustomerName"
+                            style="color: #fff; font-weight: 600; font-size: 15px; margin-top: 4px;">--</div>
+                        <div id="receiptCustomerPhone"
+                            style="color: var(--gold-light); font-size: 13.5px; margin-top: 2px;">--</div>
                         <div id="receiptCustomerEmail" style="color: #aaa; font-size: 12.5px; margin-top: 2px;">--</div>
                     </div>
                     <div>
-                        <span style="color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Delivery Destination</span>
-                        <div id="receiptAddress" style="color: #ddd; font-size: 13.5px; line-height: 1.5; margin-top: 4px;">--</div>
+                        <span
+                            style="color: #777; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">Delivery
+                            Destination</span>
+                        <div id="receiptAddress"
+                            style="color: #ddd; font-size: 13.5px; line-height: 1.5; margin-top: 4px;">--</div>
                     </div>
                 </div>
 
@@ -298,7 +426,8 @@
                 <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 25px;">
                     <table style="width: 100%; min-width: 320px; border-collapse: collapse; font-size: 13.5px;">
                         <thead>
-                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gold-light); text-align: left;">
+                            <tr
+                                style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gold-light); text-align: left;">
                                 <th style="padding: 10px 0;">Item Details</th>
                                 <th style="padding: 10px; text-align: center;">Qty</th>
                                 <th style="padding: 10px; text-align: right;">Price</th>
@@ -310,61 +439,90 @@
                         </tbody>
                         <tfoot style="border-top: 1px solid rgba(255,255,255,0.1);">
                             <tr>
-                                <td colspan="3" style="padding: 10px 0; text-align: right; color: #888;">Delivery Fee:</td>
-                                <td style="padding: 10px 0; text-align: right; color: #2ecc71; font-weight: 600;">FREE</td>
+                                <td colspan="3" style="padding: 10px 0; text-align: right; color: #888;">Delivery Fee:
+                                </td>
+                                <td style="padding: 10px 0; text-align: right; color: #2ecc71; font-weight: 600;">FREE
+                                </td>
                             </tr>
                             <tr>
-                                <td colspan="3" style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 16px;">Final Total Amount:</td>
-                                <td id="receiptTotal" style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 19px;">₹0</td>
+                                <td colspan="3"
+                                    style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 16px;">
+                                    Final Total Amount:</td>
+                                <td id="receiptTotal"
+                                    style="padding: 12px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 19px;">
+                                    ₹0</td>
                             </tr>
                         </tfoot>
                     </table>
                 </div>
 
                 <!-- Payment Details & Print Actions -->
-                <div class="receipt-payment-box" style="background: #161616; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
+                <div class="receipt-payment-box"
+                    style="background: #161616; padding: 15px 20px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px;">
                     <div>
                         <span style="color: #777; font-size: 11px; text-transform: uppercase;">Payment Details</span>
-                        <div id="receiptPayment" style="color: #fff; font-weight: 600; font-size: 14px; margin-top: 2px;">--</div>
+                        <div id="receiptPayment"
+                            style="color: #fff; font-weight: 600; font-size: 14px; margin-top: 2px;">--</div>
                     </div>
                     <div class="no-print" style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <a id="btnDownloadReceiptOrder" href="#" target="_blank" class="primary-button" style="padding: 8px 16px; font-size: 12px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: #fff;">📄 Download Official Receipt</a>
-                        <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;" onclick="window.print()">🖨️ Print Invoice</button>
-                        <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;" onclick="closeSingleOrder()">← Back to All Orders</button>
+                        <a id="btnDownloadReceiptOrder" href="#" target="_blank" class="primary-button"
+                            style="padding: 8px 16px; font-size: 12px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: #fff;">📄
+                            Download Official Receipt</a>
+                        <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;"
+                            onclick="window.print()">🖨️ Print Invoice</button>
+                        <button class="secondary-button" style="padding: 8px 16px; font-size: 12px;"
+                            onclick="closeSingleOrder()">← Back to All Orders</button>
                     </div>
                 </div>
 
                 <!-- Packaging & Origin Verification -->
-                <div class="receipt-footer-pack" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; font-size: 11.5px; color: #666; line-height: 1.6;">
+                <div class="receipt-footer-pack"
+                    style="text-align: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 18px; font-size: 11.5px; color: #666; line-height: 1.6;">
                     Packed By: <strong>Ojaswi Foods, 52/2, Malegaon - 423203</strong><br>
-                    FSSAI Lic. <strong>3025120612245599988</strong> | WhatsApp Live Updates: <strong>+91 7620098478</strong>
+                    FSSAI Lic. <strong>3025120612245599988</strong> | WhatsApp Live Updates: <strong>+91
+                        7620098478</strong>
                 </div>
             </div>
         </div>
 
         <!-- 2. SEARCH & LIVE LOOKUP BAR -->
-        <div class="no-print" style="background: #141414; border: 1px solid rgba(217, 164, 65, 0.25); border-radius: 8px; padding: 22px 24px; margin-bottom: 30px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+        <div class="no-print"
+            style="background: #141414; border: 1px solid rgba(217, 164, 65, 0.25); border-radius: 8px; padding: 22px 24px; margin-bottom: 30px;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
                 <div>
-                    <span style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600;">Track Any Order</span>
-                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #fff; margin: 3px 0 0 0;">
+                    <span
+                        style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600;">Track
+                        Any Order</span>
+                    <h3
+                        style="font-family: 'Cormorant Garamond', serif; font-size: 24px; color: #fff; margin: 3px 0 0 0;">
                         Find Orders by Mobile Number or Order ID
                     </h3>
                 </div>
-                <div id="activeLookupFilter" style="display: none; align-items: center; gap: 8px; font-size: 12px; background: rgba(217,164,65,0.15); border: 1px solid rgba(217,164,65,0.3); border-radius: 20px; padding: 4px 14px; color: var(--gold-light);">
+                <div id="activeLookupFilter"
+                    style="display: none; align-items: center; gap: 8px; font-size: 12px; background: rgba(217,164,65,0.15); border: 1px solid rgba(217,164,65,0.3); border-radius: 20px; padding: 4px 14px; color: var(--gold-light);">
                     <span id="activeLookupText">Filtering orders</span>
-                    <button onclick="clearOrderSearch()" style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-weight: bold; font-size: 14px; line-height: 1; padding: 0 0 0 4px;" title="Clear Search">✕</button>
+                    <button onclick="clearOrderSearch()"
+                        style="background: none; border: none; color: #ff6b6b; cursor: pointer; font-weight: bold; font-size: 14px; line-height: 1; padding: 0 0 0 4px;"
+                        title="Clear Search">✕</button>
                 </div>
             </div>
 
-            <form id="orderLookupForm" onsubmit="handleOrderSearch(event)" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <form id="orderLookupForm" onsubmit="handleOrderSearch(event)"
+                style="display: flex; gap: 12px; flex-wrap: wrap;">
                 <div style="flex: 1; min-width: 260px;">
-                    <input type="text" id="orderSearchInput" placeholder="Enter 10-digit mobile (e.g. 7845121455) or Order ID (#OJ...)" style="width: 100%; box-sizing: border-box; padding: 13px 16px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
+                    <input type="text" id="orderSearchInput"
+                        placeholder="Enter 10-digit mobile number or Order ID"
+                        style="width: 100%; box-sizing: border-box; padding: 13px 16px; background: #0a0a0a; border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; color: #fff; font-size: 14px; outline: none; transition: border-color 0.2s;"
+                        onfocus="this.style.borderColor='var(--gold)'"
+                        onblur="this.style.borderColor='rgba(255,255,255,0.15)'">
                 </div>
-                <button type="submit" class="primary-button" style="padding: 13px 24px; font-size: 13px; font-weight: 700; white-space: nowrap;">
+                <button type="submit" class="primary-button"
+                    style="padding: 13px 24px; font-size: 13px; font-weight: 700; white-space: nowrap;">
                     🔍 Track Order
                 </button>
-                <button type="button" class="secondary-button" onclick="loadMyAccountOrders()" style="padding: 13px 18px; font-size: 13px; white-space: nowrap;">
+                <button type="button" class="secondary-button" onclick="loadMyAccountOrders()"
+                    style="padding: 13px 18px; font-size: 13px; white-space: nowrap;">
                     Reset / Show All
                 </button>
             </form>
@@ -388,13 +546,13 @@
         const OJASWI_PHONE = "917620098478";
 
         // Navigation helpers for seamless routing in file://, Live Server, and production
-        window.goToAccount = function(event) {
+        window.goToAccount = function (event) {
             if (event && event.preventDefault) event.preventDefault();
-            const isLocal = window.location.protocol === "file:" || 
-                            window.location.protocol === "about:" || 
-                            window.location.pathname.endsWith(".html") || 
-                            window.location.pathname.includes(".html") || 
-                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const isLocal = window.location.protocol === "file:" ||
+                window.location.protocol === "about:" ||
+                window.location.pathname.endsWith(".html") ||
+                window.location.pathname.includes(".html") ||
+                (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const target = isLocal ? "account.html" : "/account";
             if (window.safeNavigate) {
                 window.safeNavigate(target, "#account");
@@ -403,13 +561,13 @@
             }
         };
 
-        window.goToStore = function(event) {
+        window.goToStore = function (event) {
             if (event && event.preventDefault) event.preventDefault();
-            const isLocal = window.location.protocol === "file:" || 
-                            window.location.protocol === "about:" || 
-                            window.location.pathname.endsWith(".html") || 
-                            window.location.pathname.includes(".html") || 
-                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const isLocal = window.location.protocol === "file:" ||
+                window.location.protocol === "about:" ||
+                window.location.pathname.endsWith(".html") ||
+                window.location.pathname.includes(".html") ||
+                (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const target = isLocal ? "index.html" : "/";
             if (window.safeNavigate) {
                 window.safeNavigate(target, "");
@@ -418,13 +576,13 @@
             }
         };
 
-        window.goToLogin = function(event) {
+        window.goToLogin = function (event) {
             if (event && event.preventDefault) event.preventDefault();
-            const isLocal = window.location.protocol === "file:" || 
-                            window.location.protocol === "about:" || 
-                            window.location.pathname.endsWith(".html") || 
-                            window.location.pathname.includes(".html") || 
-                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const isLocal = window.location.protocol === "file:" ||
+                window.location.protocol === "about:" ||
+                window.location.pathname.endsWith(".html") ||
+                window.location.pathname.includes(".html") ||
+                (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const target = isLocal ? "login.html" : "/login";
             if (window.safeNavigate) {
                 window.safeNavigate(target, "#login");
@@ -433,13 +591,13 @@
             }
         };
 
-        window.goToCheckout = function(event) {
+        window.goToCheckout = function (event) {
             if (event && event.preventDefault) event.preventDefault();
-            const isLocal = window.location.protocol === "file:" || 
-                            window.location.protocol === "about:" || 
-                            window.location.pathname.endsWith(".html") || 
-                            window.location.pathname.includes(".html") || 
-                            (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
+            const isLocal = window.location.protocol === "file:" ||
+                window.location.protocol === "about:" ||
+                window.location.pathname.endsWith(".html") ||
+                window.location.pathname.includes(".html") ||
+                (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const target = isLocal ? "checkout.html" : "/checkout";
             if (window.safeNavigate) {
                 window.safeNavigate(target, "#checkout");
@@ -448,7 +606,7 @@
             }
         };
 
-        window.handleLogout = async function() {
+        window.handleLogout = async function () {
             try {
                 if (window.safeLocalStorage) {
                     window.safeLocalStorage.removeItem("ojaswi_user");
@@ -456,18 +614,23 @@
                     window.safeLocalStorage.removeItem("ojaswi_customer_phone");
                     window.safeLocalStorage.removeItem("ojaswi_customer_name");
                     window.safeLocalStorage.removeItem("ojaswi_customer_orders");
+                    window.safeLocalStorage.removeItem("ojaswi_last_order");
                 }
                 localStorage.removeItem("ojaswi_user");
                 localStorage.removeItem("ojaswi_token");
                 localStorage.removeItem("ojaswi_customer_phone");
                 localStorage.removeItem("ojaswi_customer_name");
                 localStorage.removeItem("ojaswi_customer_orders");
-            } catch(e) {}
+                localStorage.removeItem("ojaswi_last_order");
+            } catch (e) { }
             try {
                 if (typeof apiRequest === "function") {
                     await apiRequest("/api/auth/logout", { method: "POST" });
                 }
-            } catch(e) {}
+            } catch (e) { }
+            if (window.cart && typeof window.cart.switchUser === "function") {
+                window.cart.switchUser(null);
+            }
             if (typeof showToast === "function") {
                 showToast("Logged out successfully.", "info");
             }
@@ -480,7 +643,7 @@
             try {
                 const raw = (window.safeLocalStorage ? window.safeLocalStorage.getItem("ojaswi_user") : localStorage.getItem("ojaswi_user"));
                 if (raw) user = JSON.parse(raw);
-            } catch(e) {}
+            } catch (e) { }
 
             const btnAcc = document.getElementById("btnNavAccount");
             const btnLog = document.getElementById("btnNavLogin");
@@ -536,7 +699,7 @@
 
                 document.getElementById("singleOrderDetailSection").style.display = "block";
                 document.getElementById("receiptOrderId").textContent = o.id;
-                
+
                 const createdDate = new Date(o.created_at || Date.now());
                 document.getElementById("receiptDate").textContent = `Placed on ${createdDate.toLocaleString("en-IN", {
                     dateStyle: "medium", timeStyle: "short"
@@ -555,15 +718,18 @@
                 renderLiveTrackingTimeline(o);
 
                 // Customer info
-                document.getElementById("receiptCustomerName").textContent = o.customer_name || "Valued Customer";
-                document.getElementById("receiptCustomerPhone").textContent = `+91 ${o.customer_phone || ''}`;
-                document.getElementById("receiptCustomerEmail").textContent = o.customer_email || "Not specified";
+                document.getElementById("receiptCustomerName").textContent = (o.customer_name && o.customer_name.trim()) || "Customer";
+                document.getElementById("receiptCustomerPhone").textContent = o.customer_phone ? `+91 ${String(o.customer_phone).replace(/^\+?91/, '').trim()}` : "--";
+                document.getElementById("receiptCustomerEmail").textContent = o.customer_email || "--";
 
                 const addr = o.delivery_address || {};
-                document.getElementById("receiptAddress").innerHTML = `
-                    ${addr.flat_house || ''}, ${addr.area_street || ''}<br>
-                    ${addr.city || 'Malegaon'}, ${addr.state || 'Maharashtra'} - <strong>${addr.pincode || '423203'}</strong>
-                `;
+                const houseStreet = [addr.flat_house, addr.area_street].filter(Boolean).join(", ");
+                const cityState = [addr.city, addr.state].filter(Boolean).join(", ");
+                const pin = addr.pincode ? `PIN: ${addr.pincode}` : "";
+                document.getElementById("receiptAddress").innerHTML = (`
+                    ${houseStreet ? houseStreet + '<br>' : ''}
+                    ${cityState ? cityState : ''}${pin ? (cityState ? ' - <strong>' + pin + '</strong>' : '<strong>' + pin + '</strong>') : ''}
+                `).trim() || "--";
 
                 currentLoadedOrder = o;
 
@@ -594,10 +760,11 @@
                 // Cash on Delivery & Payment Status Display
                 const isCOD = !o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod");
                 const methodStr = isCOD ? "CASH ON DELIVERY" : o.payment_method.toUpperCase();
-                const statusStr = (o.payment_status && o.payment_status.toLowerCase() === "paid") ? "PAID" : "PENDING";
-                const statusBadge = statusStr === "PAID" 
-                    ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>` 
-                    : `<span style="color: #f39c12; font-weight: 700;">PENDING</span> <span style="font-size: 11px; color: #aaa;">(Collect upon doorstep delivery)</span>`;
+                const statusBadge = isCOD
+                    ? `<span style="color: #f39c12; font-weight: 700; text-transform: uppercase;">PAYMENT PENDING — CASH ON DELIVERY</span> <span style="font-size: 11px; color: #aaa;">(Pay upon doorstep delivery)</span>`
+                    : ((o.payment_status && o.payment_status.toLowerCase() === "paid")
+                        ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>`
+                        : `<span style="color: #f39c12; font-weight: 700;">PENDING</span>`);
 
                 document.getElementById("receiptPayment").innerHTML = `
                     <div>Payment Method: <strong>${methodStr}</strong></div>
@@ -798,7 +965,7 @@
                                 ${itemsSummary}
                             </p>
                             <span style="font-size: 12px; color: #777;">
-                                Placed on ${new Date(o.created_at).toLocaleDateString("en-IN", { dateStyle: "long" })} | Payment: ${o.payment_method} (${o.payment_status})${cityState}
+                                Placed on ${new Date(o.created_at).toLocaleDateString("en-IN", { dateStyle: "long" })} | Payment: ${o.payment_method || 'Cash on Delivery'} (${(!o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod")) ? 'PAYMENT PENDING — CASH ON DELIVERY' : (o.payment_status || 'Pending')})${cityState}
                             </span>
                         </div>
                         <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
@@ -826,9 +993,9 @@
                         ${showLoginOption ? 'Sign In to View Orders' : 'No order history found.'}
                     </h3>
                     <p style="font-size: 14px; max-width: 520px; margin: 0 auto 24px; line-height: 1.6; color: #aaa;">
-                        ${showLoginOption 
-                            ? 'Please sign in to your customer account to view your past orders and live tracking history.' 
-                            : 'You have not placed any spice orders yet. Explore our pure, stone-ground authentic spices from Malegaon.'}
+                        ${showLoginOption
+                    ? 'Please sign in to your customer account to view your past orders and live tracking history.'
+                    : 'You have not placed any spice orders yet. Explore our pure, stone-ground authentic spices from Malegaon.'}
                     </p>
                     <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
                         <a href="index.html#products" onclick="goToStoreProducts(event)" class="primary-button" style="display: inline-block; padding: 12px 24px;">Explore Spices</a>
@@ -852,7 +1019,7 @@
             }
         }
 
-        window.handleOrderSearch = function(e) {
+        window.handleOrderSearch = function (e) {
             if (e) e.preventDefault();
             const val = document.getElementById("orderSearchInput").value.trim();
             if (!val) {
@@ -863,17 +1030,17 @@
             searchOrders(val);
         };
 
-        window.clearOrderSearch = function() {
+        window.clearOrderSearch = function () {
             document.getElementById("orderSearchInput").value = "";
             updateFilterBadge("");
             loadOrdersList();
         };
 
-        window.loadMyAccountOrders = function() {
+        window.loadMyAccountOrders = function () {
             clearOrderSearch();
         };
 
-        window.viewReceipt = function(orderId) {
+        window.viewReceipt = function (orderId) {
             loadSpecificOrder(orderId);
             if (window.history && window.history.pushState) {
                 const isLocal = window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
@@ -882,7 +1049,7 @@
             }
         };
 
-        window.closeSingleOrder = function() {
+        window.closeSingleOrder = function () {
             document.getElementById("singleOrderDetailSection").style.display = "none";
             const isLocal = window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
             const base = isLocal ? "orders.html" : "/orders";
@@ -892,14 +1059,14 @@
         let currentLoadedOrder = null;
         let selectedReviewImageBase64 = null;
 
-        window.openReviewModalFromCurrentOrder = function() {
+        window.openReviewModalFromCurrentOrder = function () {
             if (!currentLoadedOrder) return;
             const items = currentLoadedOrder.items || [];
             const firstItem = items[0] || { product_id: 1, product_name: "Garam Masala" };
             openReviewModalForProduct(firstItem.product_id || 1, firstItem.product_name, currentLoadedOrder.id);
         };
 
-        window.openReviewModalForProduct = function(productId, productName, orderId) {
+        window.openReviewModalForProduct = function (productId, productName, orderId) {
             document.getElementById("revProductId").value = productId;
             document.getElementById("revOrderId").value = orderId || "";
             document.getElementById("reviewModalHeadline").textContent = `Review ${productName}`;
@@ -933,7 +1100,7 @@
                         const u = JSON.parse(storedUser);
                         if (u.name) document.getElementById("revCustomerName").value = u.name;
                         if (u.phone) document.getElementById("revCustomerPhone").value = u.phone;
-                    } catch (e) {}
+                    } catch (e) { }
                 }
             }
 
@@ -946,21 +1113,21 @@
             document.body.style.overflow = "hidden";
         };
 
-        window.closeReviewModal = function() {
+        window.closeReviewModal = function () {
             const modal = document.getElementById("customerReviewModal");
             modal.style.display = "none";
             modal.classList.remove("active");
             document.body.style.overflow = "";
         };
 
-        window.onReviewProductChange = function(productId) {
+        window.onReviewProductChange = function (productId) {
             document.getElementById("revProductId").value = productId;
             const select = document.getElementById("revProductSelect");
             const name = select.options[select.selectedIndex]?.text || "Spices";
             document.getElementById("reviewModalHeadline").textContent = `Review ${name}`;
         };
 
-        window.setReviewRating = function(rating) {
+        window.setReviewRating = function (rating) {
             document.getElementById("revRatingValue").value = rating;
             const stars = document.querySelectorAll("#starPicker span");
             stars.forEach((s, idx) => {
@@ -977,7 +1144,7 @@
             document.getElementById("ratingTextDesc").textContent = descMap[rating] || `${rating} Stars`;
         };
 
-        window.previewReviewImage = function(input) {
+        window.previewReviewImage = function (input) {
             if (!input.files || !input.files[0]) return;
             const file = input.files[0];
             if (file.size > 8 * 1024 * 1024) {
@@ -987,7 +1154,7 @@
             }
 
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 selectedReviewImageBase64 = e.target.result;
                 document.getElementById("revPreviewImg").src = selectedReviewImageBase64;
                 document.getElementById("revImagePreviewContainer").style.display = "block";
@@ -996,7 +1163,7 @@
             reader.readAsDataURL(file);
         };
 
-        window.removeReviewImage = function() {
+        window.removeReviewImage = function () {
             selectedReviewImageBase64 = null;
             const fileInput = document.getElementById("revImageFile");
             if (fileInput) fileInput.value = "";
@@ -1004,7 +1171,7 @@
             document.getElementById("revUploadPrompt").style.display = "block";
         };
 
-        window.submitCustomerReview = async function(e) {
+        window.submitCustomerReview = async function (e) {
             e.preventDefault();
             const btn = document.getElementById("btnSubmitReview");
             const productId = parseInt(document.getElementById("revProductId").value, 10);
@@ -1076,18 +1243,28 @@
 
                 <div class="order-field">
                     <label>Spice Blend Being Reviewed</label>
-                    <select id="revProductSelect" onchange="onReviewProductChange(this.value)" style="width: 100%; background: #1c1c1c; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px;">
+                    <select id="revProductSelect" onchange="onReviewProductChange(this.value)"
+                        style="width: 100%; background: #1c1c1c; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px;">
                         <!-- Options injected -->
                     </select>
                 </div>
 
                 <!-- Star Rating Interactive Selector -->
-                <div class="order-field" style="text-align: center; background: #141414; padding: 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
-                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #aaa;">Your Overall Rating</label>
-                    <div id="starPicker" style="font-size: 32px; color: var(--gold); cursor: pointer; user-select: none; letter-spacing: 6px;">
-                        <span data-star="1" onclick="setReviewRating(1)">★</span><span data-star="2" onclick="setReviewRating(2)">★</span><span data-star="3" onclick="setReviewRating(3)">★</span><span data-star="4" onclick="setReviewRating(4)">★</span><span data-star="5" onclick="setReviewRating(5)">★</span>
+                <div class="order-field"
+                    style="text-align: center; background: #141414; padding: 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.08);">
+                    <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #aaa;">Your Overall
+                        Rating</label>
+                    <div id="starPicker"
+                        style="font-size: 32px; color: var(--gold); cursor: pointer; user-select: none; letter-spacing: 6px;">
+                        <span data-star="1" onclick="setReviewRating(1)">★</span><span data-star="2"
+                            onclick="setReviewRating(2)">★</span><span data-star="3"
+                            onclick="setReviewRating(3)">★</span><span data-star="4"
+                            onclick="setReviewRating(4)">★</span><span data-star="5"
+                            onclick="setReviewRating(5)">★</span>
                     </div>
-                    <div id="ratingTextDesc" style="font-size: 12px; color: var(--gold-light); font-weight: 600; margin-top: 4px;">5 - Exceptional Authentic Taste!</div>
+                    <div id="ratingTextDesc"
+                        style="font-size: 12px; color: var(--gold-light); font-weight: 600; margin-top: 4px;">5 -
+                        Exceptional Authentic Taste!</div>
                     <input type="hidden" id="revRatingValue" value="5">
                 </div>
 
@@ -1109,28 +1286,38 @@
 
                 <div class="order-field">
                     <label>Review &amp; Cooking Experience *</label>
-                    <textarea id="revText" rows="3" placeholder="Tell us how the spices tasted in your curry, sabji or biryani..." required style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px; resize: vertical;"></textarea>
+                    <textarea id="revText" rows="3"
+                        placeholder="Tell us how the spices tasted in your curry, sabji or biryani..." required
+                        style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 12px; color: #fff; font-size: 14px; resize: vertical;"></textarea>
                 </div>
 
                 <!-- Product / Dish Photo Upload -->
                 <div class="order-field">
                     <label>Upload Spice / Dish Photo (Optional)</label>
-                    <div style="background: #141414; border: 1px dashed rgba(217,164,65,0.3); border-radius: 6px; padding: 14px; text-align: center;">
-                        <input type="file" id="revImageFile" accept="image/*" onchange="previewReviewImage(this)" style="display: none;">
+                    <div
+                        style="background: #141414; border: 1px dashed rgba(217,164,65,0.3); border-radius: 6px; padding: 14px; text-align: center;">
+                        <input type="file" id="revImageFile" accept="image/*" onchange="previewReviewImage(this)"
+                            style="display: none;">
                         <div id="revUploadPrompt">
-                            <button type="button" class="secondary-button" style="padding: 7px 14px; font-size: 12px;" onclick="document.getElementById('revImageFile').click()">
+                            <button type="button" class="secondary-button" style="padding: 7px 14px; font-size: 12px;"
+                                onclick="document.getElementById('revImageFile').click()">
                                 📷 Choose Photo or Take Picture
                             </button>
-                            <p style="font-size: 11px; color: #777; margin: 6px 0 0 0;">Upload a picture of the spice packet or your cooked dish</p>
+                            <p style="font-size: 11px; color: #777; margin: 6px 0 0 0;">Upload a picture of the spice
+                                packet or your cooked dish</p>
                         </div>
                         <div id="revImagePreviewContainer" style="display: none; margin-top: 10px; position: relative;">
-                            <img id="revPreviewImg" src="" style="max-height: 120px; max-width: 100%; border-radius: 6px; border: 1px solid var(--gold);">
-                            <button type="button" onclick="removeReviewImage()" style="display: block; margin: 6px auto 0; background: none; border: none; color: #ff5252; font-size: 11.5px; cursor: pointer;">Remove Photo ✕</button>
+                            <img id="revPreviewImg" src=""
+                                style="max-height: 120px; max-width: 100%; border-radius: 6px; border: 1px solid var(--gold);">
+                            <button type="button" onclick="removeReviewImage()"
+                                style="display: block; margin: 6px auto 0; background: none; border: none; color: #ff5252; font-size: 11.5px; cursor: pointer;">Remove
+                                Photo ✕</button>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="btnSubmitReview" class="primary-button" style="width: 100%; padding: 13px; font-weight: 700; margin-top: 6px;">
+                <button type="submit" id="btnSubmitReview" class="primary-button"
+                    style="width: 100%; padding: 13px; font-weight: 700; margin-top: 6px;">
                     POST VERIFIED REVIEW
                 </button>
             </form>
@@ -1138,7 +1325,8 @@
     </div>
 
     <!-- Floating WhatsApp Support Button -->
-    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20have%20an%20order%20tracking%20inquiry" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
+    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20have%20an%20order%20tracking%20inquiry"
+        target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
         <span style="font-size: 16px;">💬</span>
         <span>WhatsApp</span>
     </a>
@@ -1167,4 +1355,5 @@
         </a>
     </nav>
 </body>
+
 </html>

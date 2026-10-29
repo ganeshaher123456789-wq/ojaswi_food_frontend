@@ -1675,7 +1675,7 @@
                     <div class="order-field" style="margin-bottom: 12px;">
                         <label style="display: block; font-size: 12px; color: #aaa; margin-bottom: 4px;">Full Name
                             *</label>
-                        <input type="text" id="visitorManualName" class="form-input" placeholder="e.g. Ramesh Patil"
+                        <input type="text" id="visitorManualName" class="form-input" placeholder="Enter your full name"
                             required
                             style="width: 100%; background: #191919; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 10px 12px; color: #fff; font-size: 14px; box-sizing: border-box;">
                     </div>
@@ -1683,7 +1683,7 @@
                         <label style="display: block; font-size: 12px; color: #aaa; margin-bottom: 4px;">Google Email
                             Address *</label>
                         <input type="email" id="visitorManualEmail" class="form-input"
-                            placeholder="e.g. ramesh@gmail.com" required
+                            placeholder="Enter Google email address" required
                             style="width: 100%; background: #191919; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 10px 12px; color: #fff; font-size: 14px; box-sizing: border-box;">
                     </div>
                     <div class="order-field" style="margin-bottom: 16px;">
@@ -1692,7 +1692,7 @@
                         <div style="display: flex; gap: 8px;">
                             <span
                                 style="background: #1e1e1e; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 10px 12px; color: var(--gold-light); font-weight: 600; font-size: 13.5px; display: flex; align-items: center;">+91</span>
-                            <input type="tel" id="visitorManualPhone" class="form-input" placeholder="10-digit mobile"
+                            <input type="tel" id="visitorManualPhone" class="form-input" placeholder="Enter 10-digit mobile number"
                                 maxlength="16" required
                                 style="flex: 1; background: #191919; border: 1px solid rgba(217,164,65,0.3); border-radius: 4px; padding: 10px 12px; color: #fff; font-size: 14px;">
                         </div>
@@ -3074,7 +3074,7 @@
 👤 *CUSTOMER INFORMATION*
 • *Customer Name:* ${order.name}
 • *Mobile Number:* +91 ${order.phone}
-• *Delivery Address:* ${order.address}, Malegaon, Maharashtra - 423203
+• *Delivery Address:* ${order.address}
 
 🛒 *ORDERED PRODUCT DETAILS*
 • *Product Name:* ${order.product}
@@ -3254,10 +3254,10 @@ _Hello Ojaswi Foods Team, please confirm my order and arrange dispatch to my add
             const deliveryAddressObj = {
                 flat_house: order.address,
                 area_street: order.address,
-                city: "Malegaon",
-                district: "Nashik",
-                state: "Maharashtra",
-                pincode: "423203"
+                city: "",
+                district: "",
+                state: "",
+                pincode: ""
             };
 
             const fullOrderForStorage = {

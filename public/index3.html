@@ -1,0 +1,2571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ojaswi Premium - Authentic Indian Spices stone-ground to perfection. Packed by Ojaswi Foods, 52/2 Malegaon 423203. FSSAI Lic. 3025120612245599988. Free shipping across India.">
+    <meta name="theme-color" content="#080808">
+
+    <!-- Open Graph & Social Meta -->
+    <meta property="og:title" content="Ojaswi Premium | Authentic Indian Spices">
+    <meta property="og:description" content="Pure Flavours, Crafted for Everyday Royalty. Discover 11 authentic Ojaswi spice blends from Malegaon, Maharashtra.">
+    <meta property="og:image" content="images/garam-masala.jpeg">
+    <meta property="og:type" content="website">
+
+    <title>Ojaswi Premium | Authentic Indian Spices | Malegaon</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets: External Links + Embedded Standalone Mobile-First CSS (Immune to OneDrive preview & offline path issues) -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/ecom.css">
+
+    <script>
+    // Universal Storage & Navigation Sandbox Polyfill
+    // Completely guards against "The document is sandboxed and lacks the 'allow-same-origin' flag"
+    // and "Failed to set the 'href' property on 'Location': '' is not a valid URL" in iframe/previewers
+    (function() {
+        const mem = { local: {}, session: {} };
+        function makeMockStorage(type) {
+            const store = mem[type];
+            return {
+                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                setItem: function(k, v) { store[k] = String(v); },
+                removeItem: function(k) { delete store[k]; },
+                clear: function() { for (let k in store) delete store[k]; },
+                key: function(i) { return Object.keys(store)[i] || null; },
+                get length() { return Object.keys(store).length; }
+            };
+        }
+
+        let ls, ss;
+        try {
+            window.localStorage.setItem("__test__", "1");
+            window.localStorage.removeItem("__test__");
+            ls = window.localStorage;
+        } catch(e) {
+            ls = makeMockStorage("local");
+            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
+        }
+
+        try {
+            window.sessionStorage.setItem("__test__", "1");
+            window.sessionStorage.removeItem("__test__");
+            ss = window.sessionStorage;
+        } catch(e) {
+            ss = makeMockStorage("session");
+            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
+        }
+
+        window.safeLocalStorage = ls;
+        window.safeSessionStorage = ss;
+
+        // Safe Navigation function
+        window.safeNavigate = function(url, fallbackHash) {
+            if (!url || typeof url !== "string" || !url.trim()) {
+                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                return;
+            }
+            try {
+                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                if (isAbout) {
+                    console.warn("[Ojaswi Sandbox Navigation] Navigating in about:srcdoc:", url);
+                    if (window.top && window.top !== window) {
+                        try { window.top.location.href = url; return; } catch(_) {}
+                    }
+                    if (fallbackHash) {
+                        try { window.location.hash = fallbackHash; } catch(_) {}
+                    }
+                    return;
+                }
+                window.location.href = url;
+            } catch(e) {
+                console.warn("[Ojaswi Navigation Fallback]:", e);
+                if (fallbackHash) {
+                    try { window.location.hash = fallbackHash; } catch(_) {}
+                }
+            }
+        };
+    })();
+
+    // Early Image Fallback: executes immediately if image fails to load in preview
+    function showImageError(image) {
+        if (!image) return;
+        const altText = image.getAttribute("alt") || "Ojaswi Premium Spice";
+        image.onerror = null;
+        image.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="100%" height="100%" fill="%23141414" stroke="%23d9a441" stroke-width="3"/><rect x="20" y="20" width="360" height="360" fill="none" stroke="rgba(217,164,65,0.3)" stroke-width="1"/><circle cx="200" cy="130" r="45" fill="none" stroke="%23d9a441" stroke-width="2"/><text x="200" y="138" fill="%23d9a441" font-size="28" font-family="serif" text-anchor="middle" font-weight="bold">OJ</text><text x="200" y="210" fill="%23d9a441" font-size="18" font-family="serif" text-anchor="middle" font-weight="bold" letter-spacing="2">OJASWI PREMIUM</text><text x="200" y="245" fill="%23ffffff" font-size="16" font-family="sans-serif" text-anchor="middle" font-weight="600">${encodeURIComponent(altText)}</text><text x="200" y="280" fill="%232ecc71" font-size="14" font-family="sans-serif" text-anchor="middle" font-weight="bold">NET WEIGHT 500g • ₹199</text><text x="200" y="340" fill="%23888888" font-size="11" font-family="sans-serif" text-anchor="middle">52/2 Malegaon - 423203 | FSSAI Lic. 3025120612245599988</text></svg>`;
+    }
+    window.showImageError = showImageError;
+    </script>
+
+    <style>
+    /* =========================================================
+       OJASWI PREMIUM - COMPREHENSIVE EMBEDDED MOBILE-FIRST CSS
+       Ensures 100% royal appearance in OneDrive, Local File & Web
+       ========================================================= */
+    :root {
+        --black: #080808;
+        --dark: #121212;
+        --dark2: #181818;
+        --dark3: #222222;
+        --gold: #d9a441;
+        --gold-light: #f0c86b;
+        --gold-dark: #b88228;
+        --white: #ffffff;
+        --muted: #999999;
+        --border: rgba(217,164,65,0.25);
+        --border-light: rgba(255,255,255,0.08);
+        --green: #2ecc71;
+    }
+    *, *::before, *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+    body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--black);
+        color: var(--white);
+        overflow-x: hidden;
+        line-height: 1.6;
+        padding-bottom: 74px;
+    }
+    @media (min-width: 769px) {
+        body { padding-bottom: 0; }
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+    button, input, textarea, select {
+        font-family: inherit;
+    }
+    .container {
+        width: min(1200px, 92%);
+        margin: 0 auto;
+    }
+
+    /* Fixed Header & Navigation */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(8, 8, 8, 0.94);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-bottom: 1px solid rgba(217, 164, 65, 0.2);
+    }
+    .navbar {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .brand {
+        display: flex;
+        flex-direction: column;
+        line-height: 0.85;
+    }
+    .brand-name {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--gold-light);
+        letter-spacing: 0.5px;
+    }
+    .brand-subtitle {
+        font-size: 7.5px;
+        letter-spacing: 4px;
+        text-align: center;
+        color: #bbb;
+        margin-top: 4px;
+    }
+    #mainNav {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+    #mainNav a {
+        font-size: 13px;
+        color: #ddd;
+        transition: color 0.2s;
+        font-weight: 500;
+    }
+    #mainNav a:hover {
+        color: var(--gold-light);
+    }
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .cart-btn {
+        position: relative;
+        background: rgba(217, 164, 65, 0.12);
+        border: 1px solid var(--border);
+        color: var(--gold-light);
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .cart-btn:hover {
+        background: rgba(217, 164, 65, 0.22);
+        border-color: var(--gold);
+    }
+    .cart-badge {
+        background: var(--gold);
+        color: #080808;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 50%;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .nav-order {
+        padding: 8px 14px;
+        border: 1px solid var(--gold);
+        color: var(--gold-light);
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+    .nav-order:hover {
+        background: var(--gold);
+        color: #080808;
+    }
+    .menu-button {
+        display: none;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(217, 164, 65, 0.3);
+        color: var(--gold-light);
+        font-size: 20px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    @media (max-width: 768px) {
+        #mainNav { display: none !important; }
+        .menu-button { display: inline-flex !important; padding: 6px 10px !important; font-size: 18px !important; }
+        .brand-name { font-size: 24px; }
+        .brand-subtitle { font-size: 7px; letter-spacing: 3px; margin-top: 3px; }
+        .navbar { height: 60px; padding: 0 12px; }
+        .nav-actions { gap: 6px; }
+        .nav-wa-text { display: none !important; }
+        .nav-wa-pill { padding: 6px 9px !important; }
+        .cart-btn { padding: 6px 9px !important; }
+        .cart-btn-text { display: none !important; }
+        .nav-order { padding: 6px 10px !important; font-size: 11px !important; white-space: nowrap !important; }
+        .nav-auth-btn { display: inline-flex !important; align-items: center; gap: 4px; }
+    }
+    @media (max-width: 420px) {
+        .brand-name { font-size: 20px; }
+        .nav-wa-pill { display: none !important; }
+        .navbar { padding: 0 8px; }
+        .nav-actions { gap: 5px; }
+        .nav-order { padding: 5px 8px !important; font-size: 10.5px !important; }
+    }
+
+    /* Mobile Bottom Navigation Dock */
+    .mobile-bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: rgba(14, 14, 14, 0.96);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-top: 1px solid rgba(217, 164, 65, 0.3);
+        z-index: 1500;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (max-width: 768px) {
+        .mobile-bottom-nav { display: grid !important; }
+    }
+    .nav-tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        color: #aaa;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 6px 0;
+        position: relative;
+        transition: color 0.2s;
+    }
+    .nav-tab .tab-icon {
+        font-size: 18px;
+        line-height: 1;
+    }
+    .nav-tab.active, .nav-tab:hover {
+        color: var(--gold-light);
+    }
+    .nav-tab .tab-badge {
+        position: absolute;
+        top: 3px;
+        right: calc(50% - 15px);
+        background: var(--gold);
+        color: #080808;
+        font-size: 9px;
+        font-weight: 700;
+        border-radius: 50%;
+        min-width: 15px;
+        height: 15px;
+        padding: 0 3px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Mobile Off-Canvas Drawer */
+    .mobile-drawer-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.82);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        z-index: 2500;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .mobile-drawer-overlay.active {
+        display: block !important;
+        opacity: 1;
+        visibility: visible;
+    }
+    .mobile-drawer {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(320px, 85vw);
+        background: #111;
+        border-left: 1px solid var(--border);
+        z-index: 2501;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        flex-direction: column;
+        padding: 22px;
+        overflow-y: auto;
+    }
+    .mobile-drawer.active {
+        display: flex !important;
+        transform: translateX(0);
+    }
+    @media (min-width: 769px) {
+        .mobile-drawer,
+        .mobile-drawer-overlay,
+        #mobileDrawer,
+        #mobileDrawerOverlay {
+            display: none !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+            width: 0 !important;
+            height: 0 !important;
+            opacity: 0 !important;
+        }
+    }
+    .drawer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 18px;
+    }
+    .drawer-close {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 28px;
+        cursor: pointer;
+        padding: 4px 8px;
+    }
+    .drawer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .drawer-links a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 11px 14px;
+        color: #eee;
+        font-size: 14.5px;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+    .drawer-links a:hover, .drawer-links a:active {
+        background: rgba(217,164,65,0.12);
+        color: var(--gold-light);
+    }
+
+    /* Floating WhatsApp Button */
+    .floating-wa-btn {
+        position: fixed;
+        bottom: 80px;
+        right: 18px;
+        z-index: 1400;
+        background: #25d366;
+        color: #fff;
+        padding: 10px 16px;
+        border-radius: 50px;
+        font-size: 12.5px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+        text-decoration: none;
+        transition: all 0.25s;
+    }
+    .floating-wa-btn:hover {
+        background: #20ba5a;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.6);
+        color: #fff;
+    }
+    @media (min-width: 769px) {
+        .floating-wa-btn {
+            bottom: 26px;
+            right: 26px;
+        }
+    }
+
+    /* Hero Section */
+    .hero {
+        min-height: 85vh;
+        display: flex;
+        align-items: center;
+        padding-top: 110px;
+        padding-bottom: 60px;
+        position: relative;
+        background: radial-gradient(circle at 75% 35%, rgba(217,164,65,0.14), transparent 40%), linear-gradient(135deg, #050505, #141414 65%, #080808);
+    }
+    .hero-content {
+        max-width: 760px;
+    }
+    .eyebrow {
+        color: var(--gold-light);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 3.5px;
+        text-transform: uppercase;
+        margin-bottom: 18px;
+        display: inline-block;
+    }
+    .hero h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(38px, 6.5vw, 80px);
+        line-height: 1.02;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+    .hero h1 span {
+        color: var(--gold-light);
+    }
+    .hero-description {
+        color: #aaa;
+        font-size: clamp(14px, 2vw, 17px);
+        line-height: 1.7;
+        margin-bottom: 28px;
+        max-width: 580px;
+    }
+    .hero-buttons {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+    }
+    .primary-button, .secondary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 13px 24px;
+        font-size: 12.5px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+    .primary-button {
+        background: var(--gold);
+        color: #080808;
+        border: 1px solid var(--gold);
+    }
+    .primary-button:hover {
+        background: var(--gold-light);
+        transform: translateY(-2px);
+    }
+    .secondary-button {
+        background: transparent;
+        color: var(--gold-light);
+        border: 1px solid var(--gold);
+    }
+    .secondary-button:hover {
+        background: rgba(217, 164, 65, 0.15);
+    }
+    .hero-trust-bar {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding-top: 22px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: #bbb;
+    }
+    .trust-item span:first-child {
+        font-size: 15px;
+    }
+
+    /* Section Headings */
+    section {
+        padding: 80px 0;
+    }
+    @media (max-width: 768px) {
+        section { padding: 50px 0; }
+    }
+    .section-heading {
+        margin-bottom: 40px;
+    }
+    .section-label {
+        font-size: 10.5px;
+        letter-spacing: 3px;
+        color: var(--gold);
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+    .section-heading h2 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: clamp(30px, 4.5vw, 50px);
+        color: #fff;
+        line-height: 1.1;
+    }
+    .section-heading p {
+        color: #888;
+        font-size: 14px;
+        margin-top: 8px;
+    }
+
+    /* Product Grid & Cards */
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 24px;
+    }
+    @media (max-width: 600px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+    }
+    .product-card {
+        background: linear-gradient(145deg, #161616, #0c0c0c);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(217,164,65,0.4);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.65);
+    }
+    .product-image {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle, #242424, #121212 70%, #080808);
+        overflow: hidden;
+        position: relative;
+    }
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 16px;
+        transition: transform 0.4s;
+    }
+    .product-card:hover .product-image img {
+        transform: scale(1.04);
+    }
+    .product-info {
+        padding: 18px 20px 22px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    .product-number {
+        color: var(--gold);
+        font-size: 9px;
+        letter-spacing: 2.5px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    .product-name {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 25px;
+        margin-bottom: 6px;
+        color: #fff;
+    }
+    .product-description {
+        color: #888;
+        font-size: 12px;
+        line-height: 1.6;
+        min-height: 38px;
+        margin-bottom: 12px;
+        flex: 1;
+    }
+    .product-price {
+        color: var(--gold-light);
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+    .product-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 14px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .weight {
+        color: #2ecc71;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+    .order-link {
+        background: rgba(217, 164, 65, 0.12);
+        border: 1px solid var(--gold);
+        color: var(--gold-light);
+        padding: 7px 12px;
+        font-size: 11.5px;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .order-link:hover {
+        background: var(--gold);
+        color: #080808;
+    }
+
+    /* Direct Order Modal (Center on Desktop, Bottom Sheet on Mobile) */
+    .order-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 20px;
+        overflow-y: auto;
+        align-items: center;
+        justify-content: center;
+    }
+    .order-modal.active {
+        display: flex !important;
+    }
+    .order-box {
+        margin: auto;
+        width: 100%;
+        max-width: 540px;
+        border-radius: 12px;
+        background: linear-gradient(145deg, #181818, #0e0e0e);
+        border: 1px solid var(--border);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.85);
+        padding: 26px;
+        position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    @media (max-width: 600px) {
+        .order-modal {
+            padding: 0;
+            align-items: flex-end;
+        }
+        .order-box {
+            max-height: 94vh;
+            border-radius: 20px 20px 0 0;
+            padding: 20px;
+            margin: 0;
+        }
+    }
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 14px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid var(--border-light);
+    }
+    .order-small-title {
+        color: var(--gold);
+        font-size: 9px;
+        letter-spacing: 3px;
+        font-weight: 700;
+    }
+    .order-header h2 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 28px;
+        color: var(--gold-light);
+        margin-top: 2px;
+    }
+    .close-order {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 30px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 2px 6px;
+    }
+    .close-order:hover {
+        color: var(--gold-light);
+    }
+    .order-field {
+        margin-bottom: 13px;
+    }
+    .order-field label {
+        display: block;
+        font-size: 11.5px;
+        color: #bbb;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+    .order-field input, .order-field textarea, .order-field select {
+        width: 100%;
+        padding: 12px 14px;
+        background: #111;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 6px;
+        color: #fff;
+        font-size: 15px;
+        font-family: inherit;
+        transition: border-color 0.2s;
+    }
+    .order-field input:focus, .order-field textarea:focus, .order-field select:focus {
+        outline: none;
+        border-color: var(--gold);
+    }
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .quantity-button {
+        width: 44px;
+        height: 44px;
+        background: #202020;
+        border: 1px solid var(--border);
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+    .quantity-control input {
+        text-align: center;
+        width: 70px;
+        height: 44px;
+    }
+    .order-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: rgba(217,164,65,0.08);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        margin: 14px 0 16px;
+        font-size: 15px;
+    }
+    .order-summary strong {
+        font-size: 22px;
+        color: var(--gold-light);
+    }
+    .order-contact-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+    @media (max-width: 500px) {
+        .order-contact-buttons {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    .contact-option {
+        background: #121212;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        padding: 10px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        color: #fff;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+    .contact-option:hover {
+        border-color: var(--gold);
+        background: rgba(217,164,65,0.08);
+    }
+
+    /* Cart Drawer */
+    .cart-drawer-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.78);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .cart-drawer-overlay.active {
+        display: block !important;
+        opacity: 1;
+        visibility: visible;
+    }
+    .cart-drawer {
+        display: none;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(440px, 100vw);
+        background: #111;
+        border-left: 1px solid var(--border);
+        z-index: 2001;
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        flex-direction: column;
+        box-shadow: -10px 0 35px rgba(0, 0, 0, 0.85);
+    }
+    .cart-drawer.active {
+        display: flex !important;
+        transform: translateX(0);
+    }
+    .cart-drawer-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid var(--border-light);
+    }
+    .cart-drawer-header h3 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 26px;
+        color: var(--gold-light);
+    }
+    .cart-close-btn {
+        background: none;
+        border: none;
+        color: #aaa;
+        font-size: 28px;
+        cursor: pointer;
+    }
+    .cart-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .cart-item {
+        display: flex;
+        gap: 12px;
+        background: #161616;
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 8px;
+        padding: 12px;
+        align-items: center;
+    }
+    .cart-item-img {
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+    }
+    .cart-item-details {
+        flex: 1;
+    }
+    .cart-item-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #fff;
+    }
+    .cart-item-price {
+        font-size: 13px;
+        color: var(--gold-light);
+        font-weight: 700;
+        margin: 2px 0 6px;
+    }
+    .cart-qty-ctrl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .cart-qty-btn {
+        width: 26px;
+        height: 26px;
+        background: #252525;
+        border: 1px solid var(--border);
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .cart-qty-value {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .cart-remove-btn {
+        background: none;
+        border: none;
+        color: #ff5252;
+        font-size: 11px;
+        margin-left: auto;
+        cursor: pointer;
+    }
+    .cart-drawer-footer {
+        padding: 20px;
+        border-top: 1px solid var(--border-light);
+        background: #0d0d0d;
+    }
+    .cart-subtotal-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #aaa;
+        margin-bottom: 6px;
+    }
+    .cart-total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--gold-light);
+        margin: 10px 0 16px;
+    }
+
+    /* FAQ Section */
+    .faq-container {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .faq-item {
+        background: #131313;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .faq-question {
+        padding: 16px 20px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #eee;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        list-style: none;
+    }
+    .faq-question::-webkit-details-marker {
+        display: none;
+    }
+    .faq-item[open] .faq-question {
+        color: var(--gold-light);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .faq-answer {
+        padding: 16px 20px;
+        font-size: 13.5px;
+        color: #aaa;
+        line-height: 1.7;
+    }
+
+    /* Why & Story Grids */
+    .why-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    @media (max-width: 900px) {
+        .why-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 550px) {
+        .why-grid { grid-template-columns: 1fr; }
+    }
+    .why-card {
+        background: #121212;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 8px;
+        padding: 26px 20px;
+        text-align: center;
+    }
+    .why-number {
+        font-size: 12px;
+        color: var(--gold);
+        letter-spacing: 2px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+    .why-card h3 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 24px;
+        color: #fff;
+        margin-bottom: 8px;
+    }
+    .why-card p {
+        font-size: 12px;
+        color: #888;
+        line-height: 1.6;
+    }
+    .story-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+    @media (max-width: 800px) {
+        .story-grid { grid-template-columns: 1fr; gap: 30px; }
+    }
+    .feature-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin: 25px 0;
+    }
+    .feature {
+        background: #141414;
+        border-left: 3px solid var(--gold);
+        padding: 12px 14px;
+        border-radius: 0 6px 6px 0;
+    }
+    .feature strong {
+        display: block;
+        color: #fff;
+        font-size: 13px;
+    }
+    .feature span {
+        color: #888;
+        font-size: 11px;
+    }
+
+    /* Contact Section */
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 40px;
+    }
+    @media (max-width: 800px) {
+        .contact-grid { grid-template-columns: 1fr; }
+    }
+    .contact-items {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 25px;
+    }
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .contact-form {
+        background: #131313;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 10px;
+        padding: 26px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+    }
+    @media (max-width: 500px) {
+        .form-row { grid-template-columns: 1fr; }
+    }
+    .contact-form input, .contact-form textarea {
+        width: 100%;
+        padding: 12px 14px;
+        background: #0c0c0c;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 6px;
+        color: #fff;
+        font-size: 14px;
+    }
+    .contact-form textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    /* Footer */
+    footer {
+        background: #050505;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 35px 0;
+    }
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-brand {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 32px;
+        color: var(--gold-light);
+    }
+    .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px 20px;
+        justify-content: center;
+        font-size: 11.5px;
+        color: #888;
+    }
+    .footer-links a:hover {
+        color: var(--gold);
+    }
+
+    /* Toast Notification System */
+    .toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+    }
+    .toast-container .toast {
+        padding: 12px 20px;
+        background: #181818;
+        color: #fff;
+        border-left: 4px solid var(--gold);
+        border-radius: 6px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        font-size: 13.5px;
+        pointer-events: auto;
+    }
+    @media (max-width: 600px) {
+        .toast-container {
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+        }
+    }
+    </style>
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FoodEstablishment",
+      "name": "Ojaswi Foods",
+      "brand": "Ojaswi Premium",
+      "description": "Authentic Indian Spices & Traditional Masalas",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "52/2, Malegaon",
+        "addressLocality": "Malegaon",
+        "addressRegion": "Maharashtra",
+        "postalCode": "423203",
+        "addressCountry": "IN"
+      },
+      "telephone": "+917620098478",
+      "email": "ojaswifoods@gmail.com",
+      "fssaiNumber": "3025120612245599988"
+    }
+    </script>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+<header>
+    <div class="container navbar">
+        <a href="#home" class="brand">
+            <div class="brand-name">Ojaswi</div>
+            <div class="brand-subtitle">PREMIUM</div>
+        </a>
+
+        <nav id="mainNav">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#about">About</a>
+            <a href="#why">Why Ojaswi</a>
+            <a href="#faq">FAQ</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+            <!-- Quick WhatsApp on Mobile & Desktop -->
+            <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods" target="_blank" class="nav-wa-pill" aria-label="WhatsApp Us" style="display: inline-flex; align-items: center; gap: 5px; padding: 7px 12px; background: rgba(37,211,102,0.15); border: 1px solid rgba(37,211,102,0.35); border-radius: 6px; color: #2ecc71; font-size: 12px; font-weight: 600; text-decoration: none;">
+                <span>💬</span>
+                <span class="nav-wa-text">WhatsApp</span>
+            </a>
+
+            <!-- Shopping Cart Button with Dynamic Badge -->
+            <button class="cart-btn cart-toggle-btn" aria-label="Open Shopping Cart">
+                <span>🛒</span>
+                <span class="cart-btn-text">Cart</span>
+                <span class="cart-badge cart-count-badge" style="display: none;">0</span>
+            </button>
+
+            <!-- Authentication Pill: Dynamically injected (LOGIN or ACCOUNT) -->
+            <div id="authNavContainer">
+                <a href="/login" class="nav-order">LOGIN</a>
+            </div>
+
+            <!-- Hamburger Button for Mobile -->
+            <button type="button" class="menu-button" id="menuButton" onclick="toggleMobileDrawer()" aria-label="Open navigation menu">☰</button>
+        </div>
+    </div>
+</header>
+
+
+<!-- =========================================================
+     PRESERVED DIRECT ORDER MODAL (Upgraded with Checkout)
+========================================================= -->
+<div class="order-modal" id="orderModal" style="display: none;">
+    <div class="order-box">
+        <div class="order-header">
+            <div>
+                <span class="order-small-title">OJASWI PREMIUM</span>
+                <h2>Place Your Order</h2>
+            </div>
+            <button type="button" class="close-order" onclick="closeOrderModal()" aria-label="Close modal">×</button>
+        </div>
+
+        <!-- Product Image & Live Details Preview Card -->
+        <div id="orderProductPreviewCard" style="display: flex; gap: 14px; align-items: center; background: #131313; border: 1px solid rgba(217, 164, 65, 0.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 18px;">
+            <img id="orderProductImg" src="images/garam-masala.jpeg" alt="Selected Spice" style="width: 64px; height: 64px; object-fit: cover; border-radius: 6px; border: 1px solid rgba(217, 164, 65, 0.4); box-shadow: 0 4px 10px rgba(0,0,0,0.5);" onerror="this.src='images/garam-masala.jpeg'">
+            <div style="flex: 1;">
+                <div id="orderProductTitle" style="font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: #fff;">Garam Masala</div>
+                <div style="display: flex; gap: 8px; align-items: center; font-size: 11px; color: #aaa; margin-top: 3px;">
+                    <span style="color: var(--gold-light); font-weight: 600;">NET WEIGHT 500g</span>
+                    <span>•</span>
+                    <span id="orderProductUnitBadge" style="color: #2ecc71; font-weight: 700;">₹199 / pack</span>
+                </div>
+                <div style="font-size: 10px; color: #777; margin-top: 2px;">📍 Handcrafted in 52/2 Malegaon 423203</div>
+            </div>
+        </div>
+
+        <form id="orderForm">
+            <div class="order-field">
+                <label for="orderName">Full Name</label>
+                <input type="text" id="orderName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="order-field">
+                <label for="orderPhone">Phone Number</label>
+                <input type="tel" id="orderPhone" placeholder="10-digit mobile number (e.g. 7620098478)" maxlength="16" required>
+                <div id="orderPhoneValidationMsg" style="font-size: 11px; min-height: 16px; margin-top: 4px; color: #888;"></div>
+            </div>
+
+            <div class="order-field">
+                <label for="orderAddress">Delivery Address</label>
+                <textarea id="orderAddress" placeholder="Flat, Street, City, State, PIN code" required></textarea>
+            </div>
+
+            <div class="order-field">
+                <label for="orderProduct">Select Product</label>
+                <select id="orderProduct" onchange="updateOrderTotal()">
+                    <option value="Garam Masala">Garam Masala - ₹199</option>
+                    <option value="Kitchen King Masala">Kitchen King Masala - ₹199</option>
+                    <option value="Sabji Masala">Sabji Masala - ₹199</option>
+                    <option value="Chaat Masala">Chaat Masala - ₹199</option>
+                    <option value="Biryani Masala">Biryani Masala - ₹199</option>
+                    <option value="Pav Bhaji Masala">Pav Bhaji Masala - ₹199</option>
+                    <option value="Misal Masala">Misal Masala - ₹199</option>
+                    <option value="Rajma Masala">Rajma Masala - ₹199</option>
+                    <option value="Chole Masala">Chole Masala - ₹199</option>
+                    <option value="Rasam Masala">Rasam Masala - ₹199</option>
+                    <option value="Sambar Masala">Sambar Masala - ₹199</option>
+                </select>
+            </div>
+
+            <div class="order-field">
+                <label for="orderQuantity">Quantity</label>
+                <div class="quantity-control">
+                    <button type="button" class="quantity-button" onclick="changeQuantity(-1)">-</button>
+                    <input type="number" id="orderQuantity" value="1" min="1" max="50" onchange="updateOrderTotal()">
+                    <button type="button" class="quantity-button" onclick="changeQuantity(1)">+</button>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <span>Total Amount:</span>
+                <strong id="orderTotal">₹199</strong>
+            </div>
+
+            <!-- Payment Method Selection in Modal -->
+            <div style="background: #181818; border: 1px solid rgba(217, 164, 65, 0.25); border-radius: 6px; padding: 12px 14px; margin-bottom: 15px;">
+                <div style="font-size: 11px; font-weight: 600; color: var(--gold-light); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;">
+                    Select Payment Method:
+                </div>
+                <label style="display: flex; align-items: center; gap: 8px; background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: #fff;">
+                    <input type="radio" name="modalPaymentMethod" value="Cash on Delivery" checked style="accent-color: var(--gold);">
+                    <span>💵 Cash on Delivery (Pay when order arrives at doorstep)</span>
+                </label>
+            </div>
+
+            <!-- 1-Click Direct Order Button & Checkout Button -->
+            <button type="button" id="btnModalPlaceOrder" class="primary-button" style="width: 100%; margin-bottom: 8px; font-weight: 700; letter-spacing: 0.5px; padding: 14px;" onclick="placeOrderFromModal()">
+                ⚡ PLACE ORDER NOW (CASH ON DELIVERY)
+            </button>
+            <button type="button" class="secondary-button" style="width: 100%; margin-bottom: 12px; font-size: 12px; padding: 9px;" onclick="proceedModalToCheckout()">
+                🛒 Open Full Checkout Page →
+            </button>
+
+            <!-- Direct Contact Ordering Channels with Brand Images / Icons -->
+            <div class="contact-title" style="text-align: center; color: #aaa; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin: 18px 0 10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span style="height: 1px; width: 30px; background: rgba(255,255,255,0.15);"></span>
+                <span>Choose How You Want To Order</span>
+                <span style="height: 1px; width: 30px; background: rgba(255,255,255,0.15);"></span>
+            </div>
+
+            <div class="order-contact-buttons">
+                <!-- Order via WhatsApp -->
+                <button type="button" class="contact-option whatsapp" onclick="orderThroughWhatsApp()" title="Order via WhatsApp">
+                    <span class="contact-icon">
+                        <img src="images/icon-whatsapp.svg" alt="Order via WhatsApp" style="width: 32px; height: 32px; display: block;" onerror="this.src='./images/icon-whatsapp.svg'">
+                    </span>
+                    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">WhatsApp</span>
+                </button>
+
+                <!-- Order via Email -->
+                <button type="button" class="contact-option email" onclick="orderThroughEmail()" title="Order via Email">
+                    <span class="contact-icon">
+                        <img src="images/icon-email.svg" alt="Order via Email" style="width: 32px; height: 32px; display: block;" onerror="this.src='./images/icon-email.svg'">
+                    </span>
+                    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Email</span>
+                </button>
+
+                <!-- Call Us -->
+                <button type="button" class="contact-option call" onclick="orderThroughCall()" title="Call Us directly">
+                    <span class="contact-icon">
+                        <img src="images/icon-call.svg" alt="Call Us" style="width: 32px; height: 32px; display: block;" onerror="this.src='./images/icon-call.svg'">
+                    </span>
+                    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Call Us</span>
+                </button>
+
+                <!-- Send SMS -->
+                <button type="button" class="contact-option sms" onclick="orderThroughSMS()" title="Send SMS message">
+                    <span class="contact-icon">
+                        <img src="images/icon-sms.svg" alt="Send SMS" style="width: 32px; height: 32px; display: block;" onerror="this.src='./images/icon-sms.svg'">
+                    </span>
+                    <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.3px;">Send SMS</span>
+                </button>
+            </div>
+
+            <p class="order-note" style="color: #777; font-size: 10px; line-height: 1.5; text-align: center; margin-top: 14px;">
+                🔒 Instant direct ordering with pre-filled product &amp; customer details.<br>
+                Authentic spices freshly packed at Ojaswi Foods, 52/2 Malegaon - 423203.
+            </p>
+        </form>
+    </div>
+</div>
+
+<main>
+
+<!-- =========================================================
+     HERO SECTION
+========================================================= -->
+<section class="hero" id="home">
+    <div class="container">
+        <div class="hero-content">
+            <div class="eyebrow">Premium Indian Spices</div>
+            <h1>The Taste<br>of <span>Tradition.</span></h1>
+            <p class="hero-description">
+                Discover Ojaswi Premium — carefully crafted spice blends made to bring authentic Indian flavour, aroma and richness to every meal. Handcrafted with pride in Malegaon.
+            </p>
+            <div class="hero-buttons">
+                <a href="#products" class="primary-button">Explore Collection</a>
+                <a href="#products" class="secondary-button" onclick="openOrderModal();">Place an Order</a>
+            </div>
+        </div>
+
+        <div class="hero-product">
+            <img src="images/garam-masala.jpeg" alt="Ojaswi Premium Spice" onerror="showImageError(this)">
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     PRODUCTS SECTION
+========================================================= -->
+<section id="products">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-label">Our Collection</div>
+            <h2>Crafted for Every Kitchen</h2>
+            <p>Premium spice blends created to make everyday cooking richer, more aromatic and unforgettable.</p>
+        </div>
+
+        <div class="product-grid">
+
+            <!-- PRODUCT 1 -->
+            <article class="product-card" onclick="openProductDetail(1)">
+                <div class="product-image">
+                    <img src="images/garam-masala.jpeg" alt="Ojaswi Premium Garam Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">01 / PREMIUM</div>
+                    <h3 class="product-name">Garam Masala</h3>
+                    <p class="product-description">A rich aromatic blend of traditional whole spices for deeply flavourful Indian dishes.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 1, name: 'Garam Masala', price: 199, image: 'images/garam-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Garam Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 2 -->
+            <article class="product-card" onclick="openProductDetail(2)">
+                <div class="product-image">
+                    <img src="images/kitchen-king.jpeg" alt="Ojaswi Premium Kitchen King Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">02 / PREMIUM</div>
+                    <h3 class="product-name">Kitchen King Masala</h3>
+                    <p class="product-description">A versatile masala blend designed to add colour, warmth and character to everyday vegetables and gravies.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 2, name: 'Kitchen King Masala', price: 199, image: 'images/kitchen-king.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Kitchen King Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 3 -->
+            <article class="product-card" onclick="openProductDetail(3)">
+                <div class="product-image">
+                    <img src="images/sabji-masala.jpeg" alt="Ojaswi Premium Sabji Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">03 / PREMIUM</div>
+                    <h3 class="product-name">Sabji Masala</h3>
+                    <p class="product-description">A balanced spice blend for delicious everyday vegetable preparations.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 3, name: 'Sabji Masala', price: 199, image: 'images/sabji-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Sabji Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 4 -->
+            <article class="product-card" onclick="openProductDetail(4)">
+                <div class="product-image">
+                    <img src="images/chaat-masala.jpeg" alt="Ojaswi Premium Chaat Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">04 / PREMIUM</div>
+                    <h3 class="product-name">Chaat Masala</h3>
+                    <p class="product-description">A tangy, aromatic blend that gives snacks, fruits and salads an irresistible finishing touch.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 4, name: 'Chaat Masala', price: 199, image: 'images/chaat-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Chaat Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 5 -->
+            <article class="product-card" onclick="openProductDetail(5)">
+                <div class="product-image">
+                    <img src="images/biryani-masala.jpeg" alt="Ojaswi Premium Biryani Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">05 / PREMIUM</div>
+                    <h3 class="product-name">Biryani Masala</h3>
+                    <p class="product-description">An aromatic combination of exotic spices crafted for rich, fragrant and flavourful biryani.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 5, name: 'Biryani Masala', price: 199, image: 'images/biryani-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Biryani Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 6 -->
+            <article class="product-card" onclick="openProductDetail(6)">
+                <div class="product-image">
+                    <img src="images/pav-bhaji.jpeg" alt="Ojaswi Premium Pav Bhaji Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">06 / PREMIUM</div>
+                    <h3 class="product-name">Pav Bhaji Masala</h3>
+                    <p class="product-description">A bold, flavour-packed blend made for rich, buttery and authentic street-style pav bhaji.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 6, name: 'Pav Bhaji Masala', price: 199, image: 'images/pav-bhaji.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Pav Bhaji Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 7 -->
+            <article class="product-card" onclick="openProductDetail(7)">
+                <div class="product-image">
+                    <img src="images/misal-masala.jpeg" alt="Ojaswi Premium Misal Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">07 / PREMIUM</div>
+                    <h3 class="product-name">Misal Masala</h3>
+                    <p class="product-description">A vibrant spice blend for authentic, flavour-packed Maharashtrian misal.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 7, name: 'Misal Masala', price: 199, image: 'images/misal-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Misal Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 8 -->
+            <article class="product-card" onclick="openProductDetail(8)">
+                <div class="product-image">
+                    <img src="images/rajma-masala.jpeg" alt="Ojaswi Premium Rajma Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">08 / PREMIUM</div>
+                    <h3 class="product-name">Rajma Masala</h3>
+                    <p class="product-description">A deeply aromatic, North Indian spice blend specially crafted for rich and luscious Punjabi rajma curry.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 8, name: 'Rajma Masala', price: 199, image: 'images/rajma-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Rajma Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 9 -->
+            <article class="product-card" onclick="openProductDetail(9)">
+                <div class="product-image">
+                    <img src="images/chole-masala.jpeg" alt="Ojaswi Premium Chole Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">09 / PREMIUM</div>
+                    <h3 class="product-name">Chole Masala</h3>
+                    <p class="product-description">A tangy, robustly spiced masala crafted for authentic Amritsari and Punjabi chole with irresistible aroma.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 9, name: 'Chole Masala', price: 199, image: 'images/chole-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Chole Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 10 -->
+            <article class="product-card" onclick="openProductDetail(10)">
+                <div class="product-image">
+                    <img src="images/rasam-masala.jpeg" alt="Ojaswi Premium Rasam Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">10 / PREMIUM</div>
+                    <h3 class="product-name">Rasam Masala</h3>
+                    <p class="product-description">A fragrant South Indian blend of roasted lentils, pepper, cumin and spices for comforting traditional rasam.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 10, name: 'Rasam Masala', price: 199, image: 'images/rasam-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Rasam Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- PRODUCT 11 -->
+            <article class="product-card" onclick="openProductDetail(11)">
+                <div class="product-image">
+                    <img src="images/sambar-masala.jpeg" alt="Ojaswi Premium Sambar Masala" loading="lazy" onerror="showImageError(this)">
+                </div>
+                <div class="product-info">
+                    <div class="product-number">11 / PREMIUM</div>
+                    <h3 class="product-name">Sambar Masala</h3>
+                    <p class="product-description">An authentic South Indian blend of freshly roasted spices and dals for rich, aromatic and appetizing sambar.</p>
+                    <div class="product-price">₹199</div>
+                    <div class="product-bottom">
+                        <span class="weight">NET WEIGHT 500g</span>
+                        <div style="display: flex; gap: 6px;">
+                            <button class="order-link" onclick="event.stopPropagation(); window.cart.addItem({id: 11, name: 'Sambar Masala', price: 199, image: 'images/sambar-masala.jpeg'}); window.cart.openDrawer();">+ CART</button>
+                            <button class="order-link" onclick="event.stopPropagation(); openOrderModal('Sambar Masala')">ORDER →</button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     ABOUT / STORY SECTION
+========================================================= -->
+<section class="story" id="about">
+    <div class="container">
+        <div class="story-grid">
+            <div class="story-image">
+                <img src="images/garam-masala.jpeg" alt="Ojaswi Premium Packaging" loading="lazy" onerror="showImageError(this)">
+            </div>
+            <div class="story-content">
+                <div class="section-label">The Ojaswi Story</div>
+                <h2>Tradition in <span>Every Blend.</span></h2>
+                <p>Ojaswi Premium is built around a simple idea — great food begins with great spices.</p>
+                <p>Our carefully selected spice blends are designed to deliver the familiar aroma, warmth and depth of authentic Indian cooking.</p>
+                <p>From everyday sabjis to festive biryanis, every Ojaswi blend is created to make cooking easier and every meal more memorable.</p>
+
+                <div class="feature-list">
+                    <div class="feature">
+                        <strong>Carefully Crafted</strong>
+                        <span>Balanced spice combinations</span>
+                    </div>
+                    <div class="feature">
+                        <strong>Rich Aroma</strong>
+                        <span>Designed for deep flavour</span>
+                    </div>
+                    <div class="feature">
+                        <strong>Everyday Versatility</strong>
+                        <span>Made for Indian kitchens</span>
+                    </div>
+                    <div class="feature">
+                        <strong>Premium Range</strong>
+                        <span>Signature Ojaswi quality</span>
+                    </div>
+                </div>
+
+                <!-- Verified Business Details -->
+                <div class="business-details">
+                    <div class="business-detail">
+                        <span class="business-detail-label">FSSAI License</span>
+                        <div class="business-detail-text">3025120612245599988</div>
+                    </div>
+                    <div class="business-detail">
+                        <span class="business-detail-label">Packed By</span>
+                        <div class="business-detail-text">Ojaswi Foods, 52/2, Malegaon - 423203</div>
+                    </div>
+                </div>
+
+                <!-- Google Maps Embed for Malegaon 423203 -->
+                <div class="business-map" style="margin-top: 20px;">
+                    <iframe src="https://www.google.com/maps?q=Ojaswi%20Foods%2C%2052%2F2%2C%20Malegaon%2C%20423203&output=embed"
+                            loading="lazy"
+                            allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                            title="Ojaswi Foods Location - 52/2 Malegaon 423203"
+                            style="width: 100%; height: 220px; border: 1px solid rgba(217,164,65,0.3); border-radius: 6px;">
+                    </iframe>
+                    <div style="margin-top: 10px;">
+                        <a href="https://www.google.com/maps?q=Ojaswi%20Foods%2C%2052%2F2%2C%20Malegaon%2C%20423203" target="_blank" rel="noopener noreferrer" class="secondary-button" style="display: inline-block; padding: 8px 16px; font-size: 12px;">
+                            📍 Open in Google Maps ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     WHY OJASWI SECTION
+========================================================= -->
+<section class="why-us" id="why">
+    <div class="container">
+        <div class="section-heading">
+            <div class="section-label">Why Choose Us</div>
+            <h2>Crafted Without Compromise</h2>
+            <p>Every step of our process is focused on flavour, freshness, aroma and authenticity.</p>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-number">01</div>
+                <h3>Selected Ingredients</h3>
+                <p>Whole spices chosen for their natural essential oils, depth of aroma and distinctive regional character.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-number">02</div>
+                <h3>Balanced Blends</h3>
+                <p>Carefully measured proportions to give you consistent results every time you cook.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-number">03</div>
+                <h3>Sealed Freshness</h3>
+                <p>Quality packaging that keeps the spices protected, fragrant and ready for your kitchen.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-number">04</div>
+                <h3>Everyday Luxury</h3>
+                <p>Gourmet Indian spice combinations made accessible for everyday family meals.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     CTA BANNER
+========================================================= -->
+<section class="cta">
+    <div class="container">
+        <h2>Bring Royal Aroma to Your Kitchen</h2>
+        <p>Order your favourite Ojaswi spice pack today and experience the difference of authentic, aromatic spices.</p>
+        <a href="#products" class="primary-button">Order Now</a>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     FREQUENTLY ASKED QUESTIONS (FAQ) SECTION - OJASWI FOODS
+========================================================= -->
+<section class="faq-section" id="faq">
+    <div class="container">
+        <div class="section-heading" style="text-align: center; margin-bottom: 45px;">
+            <div class="section-label">Help &amp; Answers</div>
+            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 48px); color: var(--gold-light); margin: 6px 0 12px;">Frequently Asked Questions</h2>
+            <p style="color: #999; font-size: 14px; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+                Everything you need to know about Ojaswi stone-ground spices, Malegaon manufacturing, FSSAI licensing, orders, and free home delivery.
+            </p>
+        </div>
+
+        <div class="faq-container">
+            <!-- FAQ 1 -->
+            <details class="faq-item" open>
+                <summary class="faq-question">
+                    <span>What makes Ojaswi Spices authentic and pure?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Ojaswi Spices are <strong>100% stone-ground in traditional small batches</strong> at our dedicated manufacturing unit located at <strong>52/2, Malegaon - 423203, Nashik, Maharashtra</strong>. Our cold stone-grinding process preserves the natural essential oils and aromas that high-speed industrial grinding usually burns away. We never add artificial colors, synthetic flavors, chemical preservatives, or MSG.
+                </div>
+            </details>
+
+            <!-- FAQ 2 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>What is the FSSAI license number of Ojaswi Foods?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Ojaswi Foods is fully registered and compliant with the Food Safety and Standards Authority of India under Central FSSAI License No. <strong>3025120612245599988</strong>. Each batch is meticulously tested for moisture content, aroma purity, and cleanliness before packing.
+                </div>
+            </details>
+
+            <!-- FAQ 3 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>What is the shelf life and proper storage method for Ojaswi spice packs?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    All our spice packs have a shelf life of <strong>12 months</strong> from the date of packaging. Once opened, transfer the spices into an airtight glass or stainless-steel container and store in a cool, dry place away from direct sunlight and stove heat to maintain peak fragrance and pungency.
+                </div>
+            </details>
+
+            <!-- FAQ 4 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>Do you offer Cash on Delivery (COD) and Free Home Delivery?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Yes! We provide <strong>100% Free Shipping across all pin codes in India</strong> on every spice order with no minimum order value. You can pay securely online via UPI, Credit/Debit Cards, and Net Banking, or choose <strong>Cash on Delivery (COD)</strong> to pay directly upon courier delivery at your doorstep.
+                </div>
+            </details>
+
+            <!-- FAQ 5 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>How can I track my spice order after placing it?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Once your order is confirmed, our Malegaon unit dispatches it within <strong>24 to 48 hours</strong>. You receive live updates via WhatsApp and SMS. You can also visit our <a href="/orders" style="color: var(--gold-light); text-decoration: underline;">Orders &amp; Tracking page</a> anytime and enter your 10-digit mobile number or Order ID (e.g. <strong>#OJ...</strong>) to track dispatch status and view your printable official tax invoice.
+                </div>
+            </details>
+
+            <!-- FAQ 6 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>Can I order directly through WhatsApp, Email, or SMS?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Yes! We offer direct multi-channel ordering. You can click any product's <strong>Order via WhatsApp</strong> button, or message/call our customer care directly at <strong><a href="https://wa.me/917620098478" target="_blank" style="color: #2ecc71; text-decoration: underline;">+91 7620098478</a></strong>. During checkout, you can also click "Confirm via WhatsApp", "Email", or "Send SMS" for instantaneous one-touch confirmation.
+                </div>
+            </details>
+
+            <!-- FAQ 7 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>Do you supply bulk and wholesale spice packs for caterers and restaurants?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Yes! We cater to restaurants, hotels, cloud kitchens, and event caterers with institutional packs (<strong>5kg, 10kg, 25kg, and 50kg</strong>) of Garam Masala, Misal Masala, Biryani Masala, and custom regional blends. Please reach out via our contact form below or WhatsApp us at <strong>+91 7620098478</strong> for commercial wholesale pricing.
+                </div>
+            </details>
+
+            <!-- FAQ 8 -->
+            <details class="faq-item">
+                <summary class="faq-question">
+                    <span>Where is Ojaswi Foods located and can customers visit?</span>
+                    <span class="faq-icon">+</span>
+                </summary>
+                <div class="faq-answer">
+                    Our manufacturing unit and headquarters are located at <strong>Ojaswi Foods, 52/2, Malegaon - 423203, Nashik District, Maharashtra, India</strong>. You can view our verified location on Google Maps in the About section of this website.
+                </div>
+            </details>
+        </div>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     CONTACT SECTION
+========================================================= -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div>
+                <div class="section-label">Get In Touch</div>
+                <h2>Let's Talk</h2>
+                <p class="contact-text">
+                    Interested in Ojaswi Premium spices? Send us your details and enquiry. You can also order directly through WhatsApp, phone, SMS or email.
+                </p>
+
+                <div class="contact-items">
+                    <div class="contact-item">
+                        <div class="contact-icon" style="background: none; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/icon-call.svg" alt="Phone" style="width: 30px; height: 30px;" onerror="this.src='./images/icon-call.svg'">
+                        </div>
+                        <div>
+                            <span>Phone Orders</span>
+                            <strong><a href="tel:+917620098478">+91 7620098478</a></strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" style="background: none; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 30px; height: 30px;" onerror="this.src='./images/icon-whatsapp.svg'">
+                        </div>
+                        <div>
+                            <span>WhatsApp Support</span>
+                            <strong><a href="https://wa.me/917620098478" target="_blank" rel="noopener noreferrer">+91 7620098478</a></strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" style="background: none; display: flex; align-items: center; justify-content: center;">
+                            <img src="images/icon-email.svg" alt="Email" style="width: 30px; height: 30px;" onerror="this.src='./images/icon-email.svg'">
+                        </div>
+                        <div>
+                            <span>Official Email</span>
+                            <strong><a href="mailto:ojaswifoods@gmail.com">ojaswifoods@gmail.com</a></strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon" style="background: none; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                            📍
+                        </div>
+                        <div>
+                            <span>Manufacturing Unit</span>
+                            <strong>Ojaswi Foods, 52/2, Malegaon - 423203</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Powered Enquiry Form -->
+            <form class="contact-form" id="contactForm">
+                <div class="form-row">
+                    <input type="text" id="name" placeholder="Your Name" required>
+                    <input type="tel" id="phone" placeholder="Phone Number (10 digits)" maxlength="16" required>
+                </div>
+                <input type="email" id="email" placeholder="Email Address">
+                <input type="text" id="subject" placeholder="Product / Enquiry">
+                <textarea id="message" placeholder="Tell us what you are looking for..." required></textarea>
+                <button type="submit" class="primary-button">Send Enquiry</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER WITH LEGAL LINKS
+========================================================= -->
+<footer>
+    <div class="container footer-content">
+        <div class="footer-brand">Ojaswi</div>
+        <div class="copyright">
+            © 2026 Ojaswi Premium. All Rights Reserved.<br>
+            <span style="font-size: 11px; color: #777;">Ojaswi Foods, 52/2, Malegaon - 423203 | FSSAI Lic. 3025120612245599988</span>
+        </div>
+        <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+            <a href="#faq">FAQ</a>
+            <a href="/login">Account</a>
+            <a href="/orders">Orders</a>
+            <a href="/contact-us">Contact</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/terms-and-conditions">Terms & Conditions</a>
+            <a href="/refund-policy">Refund Policy</a>
+            <a href="/shipping-policy">Shipping Policy</a>
+            <a href="/cancellation-policy">Cancellation Policy</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Floating WhatsApp Support Button -->
+<a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods,%20I%20would%20like%20to%20order%20spices." target="_blank" class="floating-wa-btn" aria-label="Order on WhatsApp">
+    <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 22px; height: 22px; display: inline-block;" onerror="this.src='./images/icon-whatsapp.svg'">
+    <span>Order on WhatsApp</span>
+</a>
+
+<!-- Mobile Bottom Navigation Dock (App-Like Feel) -->
+<nav class="mobile-bottom-nav" aria-label="Mobile Navigation">
+    <a href="#home" class="nav-tab active" id="tabHome">
+        <span class="tab-icon">🏠</span>
+        <span>Home</span>
+    </a>
+    <a href="#products" class="nav-tab" id="tabSpices">
+        <span class="tab-icon">🌶️</span>
+        <span>Spices</span>
+    </a>
+    <button type="button" class="nav-tab cart-toggle-btn" id="tabCart" aria-label="Open Cart">
+        <span class="tab-icon">🛒</span>
+        <span>Cart</span>
+        <span class="tab-badge cart-count-badge" style="display: none;">0</span>
+    </button>
+    <a href="/orders" onclick="goToOrders(event)" class="nav-tab" id="tabOrders">
+        <span class="tab-icon">📦</span>
+        <span>Orders</span>
+    </a>
+    <a href="/login" onclick="goToAccount(event)" class="nav-tab" id="tabAccount" aria-label="Customer Account or Login">
+        <span class="tab-icon">👤</span>
+        <span id="tabAccountLabel">Login</span>
+    </a>
+</nav>
+
+<!-- Mobile Navigation Drawer Overlay & Panel -->
+<div id="mobileDrawerOverlay" class="mobile-drawer-overlay" style="display: none;" onclick="toggleMobileDrawer()"></div>
+<aside id="mobileDrawer" class="mobile-drawer" style="display: none;" aria-label="Mobile Navigation Drawer">
+    <div class="drawer-header">
+        <div>
+            <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: var(--gold-light); font-weight: 700; line-height: 1;">Ojaswi</div>
+            <div style="font-size: 8px; letter-spacing: 3.5px; color: #888; margin-top: 4px;">PREMIUM SPICES</div>
+        </div>
+        <button type="button" class="drawer-close" onclick="toggleMobileDrawer()" aria-label="Close menu">&times;</button>
+    </div>
+    <nav class="drawer-links">
+        <a href="#home" onclick="toggleMobileDrawer()"><span>🏠</span> Home</a>
+        <a href="#products" onclick="toggleMobileDrawer()"><span>🌶️</span> All 11 Spice Blends</a>
+        <a href="#why" onclick="toggleMobileDrawer()"><span>👑</span> Why Choose Ojaswi</a>
+        <a href="#about" onclick="toggleMobileDrawer()"><span>📖</span> Our Malegaon Story</a>
+        <a href="#faq" onclick="toggleMobileDrawer()"><span>❓</span> FAQ &amp; Delivery Help</a>
+        <a href="#contact" onclick="toggleMobileDrawer()"><span>📍</span> Contact &amp; Unit Address</a>
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 6px 0;">
+        <a href="/orders" onclick="toggleMobileDrawer(); goToOrders(event)"><span>📦</span> Track My Orders</a>
+        <a href="/login" id="drawerLoginLink" onclick="toggleMobileDrawer(); goToAccount(event)"><span>👤</span> Customer Account / Login</a>
+        <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods" target="_blank" style="color: #2ecc71;"><span>💬</span> WhatsApp Direct Order</a>
+        <a href="tel:+917620098478" style="color: var(--gold-light);"><span>📞</span> Call +91 7620098478</a>
+    </nav>
+    <div style="margin-top: auto; padding-top: 24px; font-size: 11px; color: #666; text-align: center; line-height: 1.5;">
+        Ojaswi Foods, 52/2 Malegaon - 423203<br>
+        FSSAI Lic. 3025120612245599988
+    </div>
+</aside>
+
+<!-- Toast Notification System -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- =========================================================
+     JAVASCRIPT: Preserved Functions + ES Module Integrations
+========================================================= -->
+<script>
+const OJASWI_PHONE = "917620098478";
+const OJASWI_DISPLAY_PHONE = "+91 7620098478";
+const OJASWI_EMAIL = "ojaswifoods@gmail.com";
+
+const productPrices = {
+    "Garam Masala": 199,
+    "Kitchen King Masala": 199,
+    "Sabji Masala": 199,
+    "Chaat Masala": 199,
+    "Biryani Masala": 199,
+    "Pav Bhaji Masala": 199,
+    "Misal Masala": 199,
+    "Rajma Masala": 199,
+    "Chole Masala": 199,
+    "Rasam Masala": 199,
+    "Sambar Masala": 199,
+    "Premium Spice 08": 199,
+    "Premium Spice 09": 199,
+    "Premium Spice 10": 199,
+    "Premium Spice 11": 199
+};
+
+const productImages = {
+    "Garam Masala": "images/garam-masala.jpeg",
+    "Kitchen King Masala": "images/kitchen-king.jpeg",
+    "Sabji Masala": "images/sabji-masala.jpeg",
+    "Chaat Masala": "images/chaat-masala.jpeg",
+    "Biryani Masala": "images/biryani-masala.jpeg",
+    "Pav Bhaji Masala": "images/pav-bhaji.jpeg",
+    "Misal Masala": "images/misal-masala.jpeg",
+    "Rajma Masala": "images/rajma-masala.jpeg",
+    "Chole Masala": "images/chole-masala.jpeg",
+    "Rasam Masala": "images/rasam-masala.jpeg",
+    "Sambar Masala": "images/sambar-masala.jpeg",
+    "Premium Spice 08": "images/rajma-masala.jpeg",
+    "Premium Spice 09": "images/chole-masala.jpeg",
+    "Premium Spice 10": "images/rasam-masala.jpeg",
+    "Premium Spice 11": "images/sambar-masala.jpeg"
+};
+
+const menuButton = document.getElementById("menuButton");
+const mainNav = document.getElementById("mainNav");
+
+menuButton.addEventListener("click", function() {
+    mainNav.classList.toggle("active");
+});
+
+document.querySelectorAll("nav a").forEach(function(link) {
+    link.addEventListener("click", function() {
+        mainNav.classList.remove("active");
+    });
+});
+
+const fallbackImageMap = {
+    "garam-masala.jpeg": ["./images/garam-masala.jpeg", "../images/garam-masala.jpeg", "/images/garam-masala.jpeg", "images/WhatsApp Image 2026-09-10 at 10.01.48 PM.jpeg"],
+    "kitchen-king.jpeg": ["./images/kitchen-king.jpeg", "../images/kitchen-king.jpeg", "/images/kitchen-king.jpeg", "images/WhatsApp Image 2026-09-10 at 10.02.02 PM.jpeg"],
+    "sabji-masala.jpeg": ["./images/sabji-masala.jpeg", "../images/sabji-masala.jpeg", "/images/sabji-masala.jpeg", "images/WhatsApp Image 2026-09-10 at 10.04.46 PM.jpeg"],
+    "chaat-masala.jpeg": ["./images/chaat-masala.jpeg", "../images/chaat-masala.jpeg", "/images/chaat-masala.jpeg", "images/WhatsApp Image 2026-09-10 at 10.06.18 PM.jpeg"],
+    "biryani-masala.jpeg": ["./images/biryani-masala.jpeg", "../images/biryani-masala.jpeg", "/images/biryani-masala.jpeg", "images/WhatsApp Image 2026-09-10 at 10.07.44 PM.jpeg"],
+    "pav-bhaji.jpeg": ["./images/pav-bhaji.jpeg", "../images/pav-bhaji.jpeg", "/images/pav-bhaji.jpeg", "images/WhatsApp Image 2026-09-10 at 10.08.50 PM.jpeg"],
+    "misal-masala.jpeg": ["./images/misal-masala.jpeg", "../images/misal-masala.jpeg", "/images/misal-masala.jpeg", "images/WhatsApp Image 2026-09-10 at 10.11.33 PM.jpeg"],
+    "rajma-masala.jpeg": ["./images/rajma-masala.jpeg", "images/spice-08.jpeg", "../images/rajma-masala.jpeg", "/images/rajma-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.33 PM.jpeg"],
+    "chole-masala.jpeg": ["./images/chole-masala.jpeg", "images/spice-09.jpeg", "../images/chole-masala.jpeg", "/images/chole-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.30 PM.jpeg"],
+    "rasam-masala.jpeg": ["./images/rasam-masala.jpeg", "images/spice-10.jpeg", "../images/rasam-masala.jpeg", "/images/rasam-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.31 PM.jpeg"],
+    "sambar-masala.jpeg": ["./images/sambar-masala.jpeg", "images/spice-11.jpeg", "../images/sambar-masala.jpeg", "/images/sambar-masala.jpeg", "images/WhatsApp Image 2026-09-25 at 5.23.32 PM.jpeg"],
+    "spice-08.jpeg": ["images/rajma-masala.jpeg", "./images/spice-08.jpeg", "../images/spice-08.jpeg"],
+    "spice-09.jpeg": ["images/chole-masala.jpeg", "./images/spice-09.jpeg", "../images/spice-09.jpeg"],
+    "spice-10.jpeg": ["images/rasam-masala.jpeg", "./images/spice-10.jpeg", "../images/spice-10.jpeg"],
+    "spice-11.jpeg": ["images/sambar-masala.jpeg", "./images/spice-11.jpeg", "../images/spice-11.jpeg"]
+};
+
+function showImageError(image) {
+    const rawSrc = image.getAttribute("src") || "";
+    const filename = rawSrc.split("/").pop().split("?")[0];
+    let attempt = parseInt(image.dataset.retryAttempt || "0", 10);
+    const fallbacks = fallbackImageMap[filename] || [
+        "./images/" + filename,
+        "../images/" + filename,
+        "/images/" + filename
+    ];
+
+    if (attempt < fallbacks.length) {
+        image.dataset.retryAttempt = (attempt + 1).toString();
+        image.src = fallbacks[attempt];
+        return;
+    }
+
+    // Branded SVG packet fallback so image NEVER disappears or breaks design
+    const altText = image.getAttribute("alt") || "Ojaswi Premium Spice";
+    image.onerror = null;
+    image.src = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="100%" height="100%" fill="%23141414" stroke="%23d9a441" stroke-width="3"/><rect x="20" y="20" width="360" height="360" fill="none" stroke="rgba(217,164,65,0.3)" stroke-width="1"/><circle cx="200" cy="140" r="45" fill="none" stroke="%23d9a441" stroke-width="2"/><text x="200" y="148" fill="%23d9a441" font-size="28" font-family="serif" text-anchor="middle" font-weight="bold">OJ</text><text x="200" y="220" fill="%23d9a441" font-size="18" font-family="serif" text-anchor="middle" font-weight="bold" letter-spacing="2">OJASWI PREMIUM</text><text x="200" y="250" fill="%23ffffff" font-size="16" font-family="sans-serif" text-anchor="middle" font-weight="600">${encodeURIComponent(altText)}</text><text x="200" y="280" fill="%232ecc71" font-size="14" font-family="sans-serif" text-anchor="middle" font-weight="bold">NET WEIGHT 500g • ₹199</text><text x="200" y="340" fill="%23888888" font-size="11" font-family="sans-serif" text-anchor="middle">52/2 Malegaon - 423203 | FSSAI Lic. 3025120612245599988</text></svg>`;
+}
+
+const orderModal = document.getElementById("orderModal");
+
+function openOrderModal(productName = "") {
+    if (!orderModal) return;
+    orderModal.style.display = "flex";
+    orderModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+    const productSelect = document.getElementById("orderProduct");
+    if (productName && productSelect) {
+        productSelect.value = productName;
+    }
+    const qtyInput = document.getElementById("orderQuantity");
+    if (qtyInput) qtyInput.value = 1;
+    updateOrderTotal();
+}
+
+function closeOrderModal() {
+    if (!orderModal) return;
+    orderModal.style.display = "none";
+    orderModal.classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+function toggleMobileDrawer() {
+    const drawer = document.getElementById("mobileDrawer");
+    const overlay = document.getElementById("mobileDrawerOverlay");
+    if (!drawer) return;
+    const isActive = drawer.classList.contains("active");
+    if (isActive) {
+        drawer.classList.remove("active");
+        drawer.style.display = "none";
+        if (overlay) {
+            overlay.classList.remove("active");
+            overlay.style.display = "none";
+        }
+        document.body.style.overflow = "";
+    } else {
+        drawer.style.display = "flex";
+        drawer.classList.add("active");
+        if (overlay) {
+            overlay.style.display = "block";
+            overlay.classList.add("active");
+        }
+        document.body.style.overflow = "hidden";
+    }
+}
+window.toggleMobileDrawer = toggleMobileDrawer;
+
+function goToOrders(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+    const isLocal = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    const target = isLocal ? "orders.html" : "/orders";
+    if (window.safeNavigate) {
+        window.safeNavigate(target, "#orders");
+    } else {
+        try { window.location.href = target; } catch(e) {}
+    }
+}
+window.goToOrders = goToOrders;
+
+function goToAccount(event) {
+    if (event && event.preventDefault) event.preventDefault();
+    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+    const isLocal = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    let isLoggedIn = false;
+    try {
+        const u = window.safeLocalStorage ? window.safeLocalStorage.getItem("ojaswi_user") : localStorage.getItem("ojaswi_user");
+        if (u) isLoggedIn = true;
+    } catch(e) {}
+    const target = isLoggedIn ? (isLocal ? "account.html" : "/account") : (isLocal ? "login.html" : "/login");
+    if (window.safeNavigate) {
+        window.safeNavigate(target, isLoggedIn ? "#account" : "#login");
+    } else {
+        try { window.location.href = target; } catch(e) {}
+    }
+}
+window.goToAccount = goToAccount;
+
+orderModal.addEventListener("click", function(event) {
+    if (event.target === orderModal) {
+        closeOrderModal();
+    }
+});
+
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeOrderModal();
+    }
+});
+
+const modalPhoneInput = document.getElementById("orderPhone");
+const modalPhoneMsg = document.getElementById("orderPhoneValidationMsg");
+if (modalPhoneInput && modalPhoneMsg) {
+    modalPhoneInput.addEventListener("input", function() {
+        let val = modalPhoneInput.value.replace(/[\s\-\(\)\.]/g, "");
+        if (val.startsWith("+91")) val = val.slice(3);
+        else if (val.startsWith("91") && val.length === 12) val = val.slice(2);
+        else if (val.startsWith("0") && val.length === 11) val = val.slice(1);
+        if (!modalPhoneInput.value.trim()) {
+            modalPhoneMsg.textContent = "";
+        } else if (val.length === 10) {
+            modalPhoneMsg.innerHTML = '<span style="color: #2ecc71;">✓ Valid: +91 ' + val.slice(0, 5) + ' ' + val.slice(5) + '</span>';
+        } else {
+            modalPhoneMsg.innerHTML = '<span style="color: #f0c86b;">📱 ' + val.length + '/10 digits</span>';
+        }
+    });
+}
+
+function changeQuantity(change) {
+    const quantityInput = document.getElementById("orderQuantity");
+    let quantity = parseInt(quantityInput.value) || 1;
+    quantity += change;
+    if (quantity < 1) quantity = 1;
+    if (quantity > 50) quantity = 50;
+    quantityInput.value = quantity;
+    updateOrderTotal();
+}
+
+function updateOrderTotal() {
+    const product = document.getElementById("orderProduct").value;
+    const quantity = parseInt(document.getElementById("orderQuantity").value) || 1;
+    const price = productPrices[product] || 199;
+    const total = price * quantity;
+    document.getElementById("orderTotal").textContent = "₹" + total;
+
+    // Dynamically update product preview image, title and unit price in modal
+    const imgEl = document.getElementById("orderProductImg");
+    const titleEl = document.getElementById("orderProductTitle");
+    const unitBadgeEl = document.getElementById("orderProductUnitBadge");
+    if (imgEl && productImages[product]) {
+        imgEl.src = productImages[product];
+        imgEl.alt = product;
+    }
+    if (titleEl) {
+        titleEl.textContent = product;
+    }
+    if (unitBadgeEl) {
+        unitBadgeEl.textContent = `₹${price} / pack`;
+    }
+}
+
+function getOrderData() {
+    const name = document.getElementById("orderName").value.trim();
+    const rawPhone = document.getElementById("orderPhone").value.trim();
+    const address = document.getElementById("orderAddress").value.trim();
+    const product = document.getElementById("orderProduct").value;
+    const quantity = parseInt(document.getElementById("orderQuantity").value) || 1;
+    const price = productPrices[product] || 199;
+    const total = price * quantity;
+
+    let cleanPhone = rawPhone.replace(/[\s\-\(\)\.]/g, "");
+    if (cleanPhone.startsWith("+91")) cleanPhone = cleanPhone.slice(3);
+    else if (cleanPhone.startsWith("91") && cleanPhone.length === 12) cleanPhone = cleanPhone.slice(2);
+    else if (cleanPhone.startsWith("0") && cleanPhone.length === 11) cleanPhone = cleanPhone.slice(1);
+
+    if (!name) { alert("Please enter your full name."); return null; }
+    if (!/^\d{10}$/.test(cleanPhone)) { alert("Please enter a valid 10-digit mobile number."); return null; }
+    if (!address) { alert("Please enter your delivery address."); return null; }
+    if (!product) { alert("Please select a product."); return null; }
+
+    return { name, phone: cleanPhone, address, product, quantity, price, total };
+}
+
+function createOrderMessage(order) {
+    return `Hello Ojaswi Premium,\n\nI would like to place an order.\n\n*Customer Details*\nName: ${order.name}\nPhone: ${order.phone}\n\n*Product Details*\nProduct: ${order.product}\nQuantity: ${order.quantity}\nPrice per pack: ₹${order.price}\nTotal: ₹${order.total}\n\n*Delivery Address*\n${order.address}\n\nPlease confirm my order.\n\nThank you.`;
+}
+
+function orderThroughWhatsApp() {
+    const order = getOrderData();
+    if (!order) return;
+    const message = createOrderMessage(order);
+    const whatsappURL = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(message);
+    window.open(whatsappURL, "_blank");
+}
+
+function orderThroughEmail() {
+    const order = getOrderData();
+    if (!order) return;
+    const subject = "New Ojaswi Order - " + order.product;
+    const body = createOrderMessage(order);
+    const emailURL = "mailto:" + OJASWI_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    try { window.location.href = emailURL; } catch(e) { window.open(emailURL, "_blank"); }
+}
+
+function orderThroughCall() {
+    try { window.location.href = "tel:+" + OJASWI_PHONE; } catch(e) { window.open("tel:+" + OJASWI_PHONE, "_blank"); }
+}
+
+function orderThroughSMS() {
+    const order = getOrderData();
+    if (!order) return;
+    const message = createOrderMessage(order);
+    const smsURL = "sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(message);
+    try { window.location.href = smsURL; } catch(e) { window.open(smsURL, "_blank"); }
+}
+
+function proceedModalToCheckout(selectedMethod) {
+    const order = getOrderData();
+    if (!order) return;
+
+    // Map selected product to product ID
+    const productMapping = {
+        "Garam Masala": 1,
+        "Kitchen King Masala": 2,
+        "Sabji Masala": 3,
+        "Chaat Masala": 4,
+        "Biryani Masala": 5,
+        "Pav Bhaji Masala": 6,
+        "Misal Masala": 7,
+        "Rajma Masala": 8,
+        "Chole Masala": 9,
+        "Rasam Masala": 10,
+        "Sambar Masala": 11,
+        "Premium Spice 08": 8,
+        "Premium Spice 09": 9,
+        "Premium Spice 10": 10,
+        "Premium Spice 11": 11
+    };
+
+    const productId = productMapping[order.product] || 1;
+    if (window.cart) {
+        window.cart.addItem({
+            id: productId,
+            name: order.product,
+            price: order.price,
+            selling_price: order.price,
+            image: productImages[order.product] || "images/garam-masala.jpeg"
+        }, order.quantity);
+    }
+
+    const paymentMethod = selectedMethod || document.querySelector('input[name="modalPaymentMethod"]:checked')?.value || "Cash on Delivery";
+
+    // Save temporary guest checkout details in sessionStorage safely
+    try {
+        const guestData = {
+            name: order.name,
+            phone: order.phone,
+            address: order.address,
+            paymentMethod: paymentMethod
+        };
+        const ss = window.safeSessionStorage || sessionStorage;
+        ss.setItem("ojaswi_guest_checkout", JSON.stringify(guestData));
+    } catch(e) {
+        console.warn("Guest checkout storage error:", e);
+    }
+
+    closeOrderModal();
+    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+    const isLocalFile = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+    const target = isLocalFile ? "checkout.html" : "/checkout";
+    if (window.safeNavigate) {
+        window.safeNavigate(target, "#checkout");
+    } else {
+        try { window.location.href = target; } catch(e) {}
+    }
+}
+
+async function placeOrderFromModal() {
+    const order = getOrderData();
+    if (!order) return;
+
+    const paymentMethod = document.querySelector('input[name="modalPaymentMethod"]:checked')?.value || "Cash on Delivery";
+
+    // If online payment is selected, route immediately to checkout with Online Payment active
+    if (paymentMethod === "Online Payment") {
+        proceedModalToCheckout("Online Payment");
+        return;
+    }
+
+    const btn = document.getElementById("btnModalPlaceOrder");
+    const originalText = btn ? btn.textContent : "";
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = "PLACING ORDER...";
+    }
+
+    const productMapping = {
+        "Garam Masala": 1,
+        "Kitchen King Masala": 2,
+        "Sabji Masala": 3,
+        "Chaat Masala": 4,
+        "Biryani Masala": 5,
+        "Pav Bhaji Masala": 6,
+        "Misal Masala": 7,
+        "Rajma Masala": 8,
+        "Chole Masala": 9,
+        "Rasam Masala": 10,
+        "Sambar Masala": 11,
+        "Premium Spice 08": 8,
+        "Premium Spice 09": 9,
+        "Premium Spice 10": 10,
+        "Premium Spice 11": 11
+    };
+
+    const productId = productMapping[order.product] || 1;
+
+    try {
+        const payload = {
+            customer_name: order.name,
+            customer_phone: order.phone,
+            delivery_address: {
+                flat_house: order.address,
+                area_street: order.address,
+                city: "Malegaon",
+                state: "Maharashtra",
+                pincode: "423203"
+            },
+            items: [{ productId: productId, quantity: order.quantity }],
+            payment_method: "Cash on Delivery"
+        };
+
+        const res = await (window.apiRequest ? window.apiRequest("/api/orders", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        }) : fetch("/api/orders", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        }).then(r => r.json()));
+
+        const orderId = res.orderId || res.id || "#OJ" + Math.random().toString(36).substring(2, 8).toUpperCase();
+
+        // Save order ID to localStorage
+        try {
+            const storage = window.safeLocalStorage || localStorage;
+            const savedOrders = JSON.parse(storage.getItem("ojaswi_customer_orders") || "[]");
+            if (!savedOrders.includes(orderId)) {
+                savedOrders.unshift(orderId);
+                storage.setItem("ojaswi_customer_orders", JSON.stringify(savedOrders));
+            }
+            storage.setItem("ojaswi_customer_phone", order.phone);
+            storage.setItem("ojaswi_customer_name", order.name);
+        } catch (e) {
+            console.warn("Could not save to local storage:", e);
+        }
+
+        if (window.showToast) {
+            window.showToast("Order placed successfully! Opening WhatsApp...", "success");
+        }
+
+        // WhatsApp message to owner
+        const waMsg = `Hello Ojaswi Foods,\n\nI want to confirm my order from the website modal.\n\n*Order ID:* ${orderId}\n*Customer:* ${order.name}\n*Phone:* +91 ${order.phone}\n\n*Ordered Product*:\n1. *${order.product}* x ${order.quantity} = ₹${order.total}\n\n*Total Amount:* ₹${order.total}\n*Payment Method:* Cash on Delivery\n\n*Delivery Address*:\n${order.address}\n\nPlease confirm dispatch from Malegaon. Thank you!`;
+        const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waMsg);
+        try {
+            window.open(waUrl, "_blank");
+        } catch (e) {
+            console.warn("Popup blocked:", e);
+        }
+
+        closeOrderModal();
+        const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+        const isLocalFile = isAbout || window.location.protocol === "file:" || window.location.pathname.endsWith(".html");
+        const confirmUrl = isLocalFile ? `order-confirmation.html?id=${encodeURIComponent(orderId)}` : `/order-confirmation?id=${encodeURIComponent(orderId)}`;
+        if (window.safeNavigate) {
+            window.safeNavigate(confirmUrl, "#orders");
+        } else {
+            try { window.location.href = confirmUrl; } catch(e) {}
+        }
+    } catch (err) {
+        if (window.showToast) {
+            window.showToast(err.message || "Failed to place order. Redirecting to checkout...", "error");
+        } else {
+            alert(err.message || "Order placement failed.");
+        }
+        proceedModalToCheckout("Cash on Delivery");
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    }
+}
+
+updateOrderTotal();
+</script>
+
+<!-- Core Library for Cart, Modals, Auth & Toasts (Universal Script) -->
+<script src="js/ojaswi.js"></script>
+</body>
+</html>

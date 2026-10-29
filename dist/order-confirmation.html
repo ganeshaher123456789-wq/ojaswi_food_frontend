@@ -210,8 +210,7 @@
                     <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Official
                         Order ID</span>
                     <div id="confOrderId"
-                        style="font-size: 22px; font-weight: 700; color: var(--gold-light); font-family: 'Cormorant Garamond', serif;">
-                        #OJ------</div>
+                        style="font-size: 22px; font-weight: 700; color: var(--gold-light); font-family: 'Cormorant Garamond', serif;"></div>
                     <div id="confOrderStatusTag"
                         style="margin-top: 5px; font-size: 12px; color: #2ecc71; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
                         Order Status: Confirmed</div>
@@ -409,7 +408,7 @@
 
             // 1. Order ID
             const rawId = o.id || o.orderId || o.order_id || "";
-            const displayId = rawId ? (rawId.startsWith("#") ? rawId : `#${rawId}`) : "#OJ------";
+            const displayId = rawId ? (rawId.startsWith("#") ? rawId : `#${rawId}`) : "";
             const cleanId = displayId.replace(/^#/, "");
             const orderIdEl = document.getElementById("confOrderId");
             if (orderIdEl) orderIdEl.textContent = displayId;

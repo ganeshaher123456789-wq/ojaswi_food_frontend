@@ -106,7 +106,7 @@
             <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin-top: 5px;">
                 Secure Checkout
             </h1>
-            <p style="color: #888; font-size: 14px;">Direct dispatch from Ojaswi Foods, 52/2 Malegaon - 423203.</p>
+            <p style="color: #888; font-size: 14px;">Direct dispatch from Ojaswi Foods manufacturing facility.</p>
         </div>
 
         <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px;" id="checkoutLayoutGrid">
@@ -286,7 +286,7 @@
 
                     <div style="margin-top: 25px; background: #0a0a0a; border: 1px solid rgba(217,164,65,0.2); border-radius: 6px; padding: 15px; font-size: 11px; color: #777; line-height: 1.6;">
                         🛡️ <strong>100% Authentic Ojaswi Guarantee:</strong><br>
-                        Freshly packed at 52/2 Malegaon 423203.<br>
+                        Freshly packed at Ojaswi facility.<br>
                         FSSAI Lic. 3025120612245599988
                     </div>
                 </div>
@@ -359,9 +359,9 @@
                                 </p>
                             </div>
                         </div>
-                        <a id="btnConfirmWhatsAppOption" href="#" target="_blank" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('whatsapp')" style="background: #25D366; color: #fff; border-color: #25D366; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
+                        <button type="button" id="btnConfirmWhatsAppOption" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('whatsapp')" style="background: #25D366; color: #fff; border: 1px solid #25D366; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.35);">
                             <span>Confirm via WhatsApp</span> <span>💬</span>
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Option 2: Email -->
@@ -380,9 +380,9 @@
                                 </p>
                             </div>
                         </div>
-                        <a id="btnConfirmEmailOption" href="#" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('email')" style="background: #2980b9; color: #fff; border-color: #2980b9; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <button type="button" id="btnConfirmEmailOption" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('email')" style="background: #2980b9; color: #fff; border: 1px solid #2980b9; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                             <span>Confirm via Email</span> <span>✉️</span>
-                        </a>
+                        </button>
                     </div>
 
                     <!-- Option 3: SMS -->
@@ -401,9 +401,9 @@
                                 </p>
                             </div>
                         </div>
-                        <a id="btnConfirmSMSOption" href="#" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('sms')" style="background: #d35400; color: #fff; border-color: #d35400; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                        <button type="button" id="btnConfirmSMSOption" class="primary-button" onclick="event.stopPropagation(); executeOrderConfirmation('sms')" style="background: #d35400; color: #fff; border: 1px solid #d35400; border-radius: 6px; padding: 11px 18px; font-size: 13px; font-weight: 700; white-space: nowrap; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                             <span>Confirm via SMS</span> <span>📱</span>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -420,14 +420,14 @@
                     ✓
                 </div>
                 <div style="font-size: 11px; letter-spacing: 3px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">Order Placed Successfully</div>
-                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;" id="successModalOrderId">#OJ------</h3>
+                <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-light); margin: 6px 0;" id="successModalOrderId"></h3>
                 
                 <div style="margin-bottom: 15px; font-size: 12px; color: #f39c12; font-weight: 600; background: rgba(243,156,18,0.1); border: 1px solid rgba(243,156,18,0.3); padding: 6px 12px; border-radius: 6px; display: inline-block;">
                     Payment Pending — Cash on Delivery
                 </div>
 
                 <p style="font-size: 13px; color: #bbb; margin-bottom: 18px; line-height: 1.5;" id="successModalMsg">
-                    Your spice order has been recorded for dispatch from Malegaon 423203.
+                    Your spice order has been recorded for dispatch.
                 </p>
 
                 <!-- Primary Selected Channel Action Button (Large, high-contrast, one-tap trigger) -->
@@ -536,18 +536,9 @@
                     }
                     if (authRes.user.email) document.getElementById("custEmail").value = authRes.user.email;
 
-                    // Automatically apply saved delivery address from customer profile
-                    if (authRes.user.delivery_address) {
+                    // Apply saved delivery address from customer profile only if genuinely saved
+                    if (authRes.user.delivery_address && (authRes.user.delivery_address.flat_house || authRes.user.delivery_address.area_street)) {
                         applyAddress(authRes.user.delivery_address);
-                    }
-                    if (authRes.user.city && !document.getElementById("addrCity").value) {
-                        document.getElementById("addrCity").value = authRes.user.city;
-                    }
-                    if (authRes.user.state && !document.getElementById("addrState").value) {
-                        document.getElementById("addrState").value = authRes.user.state;
-                    }
-                    if (authRes.user.pincode && !document.getElementById("addrPincode").value) {
-                        document.getElementById("addrPincode").value = authRes.user.pincode;
                     }
 
                     // Fetch saved addresses from Address collection
@@ -571,16 +562,15 @@
                                 selectEl.appendChild(opt);
                             });
 
-                            // Pre-select default address if user delivery_address not already set
-                            const defaultAddr = savedAddresses.find(a => a.is_default) || savedAddresses[0];
-                            if (defaultAddr && (!authRes.user.delivery_address || !authRes.user.delivery_address.area_street)) {
-                                applyAddress(defaultAddr);
-                            }
+                            // Dropdown starts unselected with empty address fields unless customer selects an address
+                            selectEl.selectedIndex = 0;
 
                             selectEl.addEventListener("change", (e) => {
                                 const idx = e.target.value;
                                 if (idx !== "" && savedAddresses[idx]) {
                                     applyAddress(savedAddresses[idx]);
+                                } else {
+                                    applyAddress({ flat_house: "", area_street: "", city: "", state: "", pincode: "" });
                                 }
                             });
                         }
@@ -630,13 +620,22 @@
 
         function applyAddress(addr) {
             if (!addr) return;
-            const house = addr.flat_house || addr.house || addr.address || "";
-            const street = addr.area_street || addr.street || addr.area || addr.landmark || "";
-            if (house) document.getElementById("addrHouse").value = house;
-            if (street) document.getElementById("addrStreet").value = street;
-            document.getElementById("addrCity").value = addr.city || "";
-            document.getElementById("addrState").value = addr.state || "";
-            document.getElementById("addrPincode").value = addr.pincode || "";
+            const house = (addr.flat_house || addr.house || addr.address || "").trim();
+            const street = (addr.area_street || addr.street || addr.area || addr.landmark || "").trim();
+            const rawCity = (addr.city || "").trim();
+            const rawState = (addr.state || "").trim();
+            const rawPin = addr.pincode ? String(addr.pincode).trim() : "";
+
+            // Strictly filter out fake or legacy default addresses
+            if (rawCity === "Malegaon" && rawPin === "423203" && (!house || street === "Direct Delivery")) {
+                return;
+            }
+
+            document.getElementById("addrHouse").value = house;
+            document.getElementById("addrStreet").value = street;
+            document.getElementById("addrCity").value = (rawCity === "Malegaon" && !house) ? "" : rawCity;
+            document.getElementById("addrState").value = rawState;
+            document.getElementById("addrPincode").value = (rawPin === "423203" && !house) ? "" : rawPin;
             if (addr.full_name && !document.getElementById("custName").value) {
                 document.getElementById("custName").value = addr.full_name;
             }
@@ -763,14 +762,19 @@
 
             const delivery_address = {
                 flat_house: houseVal,
-                area_street: streetVal || houseVal || "Direct Delivery",
+                area_street: streetVal || houseVal || "",
                 city: cityVal,
                 district: cityVal,
                 state: stateVal,
                 pincode: pincodeVal
             };
 
-            const fullAddress = `${houseVal ? houseVal + ', ' : ''}${streetVal || houseVal}, ${cityVal}, ${stateVal} - ${pincodeVal}`;
+            const fullAddress = [
+                houseVal,
+                streetVal,
+                [cityVal, stateVal].filter(Boolean).join(", "),
+                pincodeVal ? `PIN: ${pincodeVal}` : ""
+            ].filter(Boolean).join(", ");
 
             return {
                 customer_name,
@@ -810,7 +814,7 @@
                 `).join("");
             }
 
-            // Pre-calculate activeOrderId and all intent URLs so modal links have real hrefs
+            // Pre-calculate activeOrderId and all intent URLs so modal links have real targets
             const activeOrderId = "#OJ" + Math.floor(100000 + Math.random() * 900000);
             window._currentCheckoutOrderId = activeOrderId;
             window._currentCheckoutData = data;
@@ -828,23 +832,17 @@
 
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const waMsg = buildCheckoutOrderMessage(orderSummaryData, activeOrderId);
-            const waUrl = "https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waMsg);
+            const waUrl = "https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waMsg);
 
             const emailSubject = `Order Confirmation ${activeOrderId} - Ojaswi Foods (Rs.${data.total})`;
             const emailBody = buildCheckoutEmailMessage(orderSummaryData, activeOrderId);
             const mailtoUrl = "mailto:" + OJASWI_EMAIL + "?subject=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody);
+            const gmailWebUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=" + OJASWI_EMAIL + "&su=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody);
 
             const smsMsg = buildCheckoutSmsMessage(orderSummaryData, activeOrderId);
             const smsUrl = isIOS ? ("sms:+" + OJASWI_PHONE + "&body=" + encodeURIComponent(smsMsg)) : ("sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(smsMsg));
 
-            window._currentUrls = { waUrl, mailtoUrl, smsUrl, emailSubject, emailBody, smsMsg };
-
-            const btnWA = document.getElementById("btnConfirmWhatsAppOption");
-            if (btnWA) btnWA.href = waUrl;
-            const btnEmail = document.getElementById("btnConfirmEmailOption");
-            if (btnEmail) btnEmail.href = mailtoUrl;
-            const btnSMS = document.getElementById("btnConfirmSMSOption");
-            if (btnSMS) btnSMS.href = smsUrl;
+            window._currentUrls = { waUrl, mailtoUrl, gmailWebUrl, smsUrl, emailSubject, emailBody, smsMsg };
 
             openOrderConfirmationMethodModal();
         }
@@ -911,7 +909,7 @@ Customer Name: ${data.name}
 Mobile Number: +91 ${data.phone}
 ${data.email ? "Email: " + data.email + "\n" : ""}Delivery Address: ${data.address}
 
-Please confirm receipt and dispatch my order from the Malegaon manufacturing facility (PIN: 423203).
+Please confirm receipt and dispatch my order.
 
 Thank you!
 ${data.name}`;
@@ -955,17 +953,15 @@ ${itemsText}
 • *FSSAI License:* 3025120612245599988
 • *Official Care:* +91 7620098478
 
-_Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm dispatch from Malegaon. Thank you!_`;
+_Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm dispatch. Thank you!_`;
         }
 
         async function executeOrderConfirmation(channel = "whatsapp") {
             const data = window._currentCheckoutData || validateCheckoutInputs();
             if (!data) return;
 
-            const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && window.innerWidth <= 800);
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
             const activeOrderId = window._currentCheckoutOrderId || ("#OJ" + Math.floor(100000 + Math.random() * 900000));
+            const cleanId = activeOrderId.startsWith("#") ? activeOrderId.slice(1) : activeOrderId;
             const orderSummaryData = window._currentOrderSummary || {
                 name: data.customer_name,
                 phone: data.customer_phone,
@@ -978,41 +974,43 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
 
             const urls = window._currentUrls || {};
             const waOrderMsg = urls.waMsg || buildCheckoutOrderMessage(orderSummaryData, activeOrderId);
-            const waUrl = urls.waUrl || ("https://wa.me/" + OJASWI_PHONE + "?text=" + encodeURIComponent(waOrderMsg));
+            const waUrl = urls.waUrl || ("https://api.whatsapp.com/send?phone=" + OJASWI_PHONE + "&text=" + encodeURIComponent(waOrderMsg));
 
-            const emailSubject = urls.emailSubject || `Order Confirmation ${activeOrderId} - Ojaswi Foods (Rs.${data.total})`;
+            const emailSubject = urls.emailSubject || `Order Confirmation #${cleanId} - Ojaswi Foods (Rs.${data.total})`;
             const emailBody = urls.emailBody || buildCheckoutEmailMessage(orderSummaryData, activeOrderId);
             const mailtoUrl = urls.mailtoUrl || ("mailto:" + OJASWI_EMAIL + "?subject=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody));
-            const gmailWebUrl = "https://mail.google.com/mail/?view=cm&fs=1&to=" + OJASWI_EMAIL + "&su=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody);
+            const gmailWebUrl = urls.gmailWebUrl || ("https://mail.google.com/mail/?view=cm&fs=1&to=" + OJASWI_EMAIL + "&su=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody));
 
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             const smsMsg = urls.smsMsg || buildCheckoutSmsMessage(orderSummaryData, activeOrderId);
             const smsUrl = urls.smsUrl || (isIOS ? ("sms:+" + OJASWI_PHONE + "&body=" + encodeURIComponent(smsMsg)) : ("sms:+" + OJASWI_PHONE + "?body=" + encodeURIComponent(smsMsg)));
 
             const resolvedUrls = { waUrl, mailtoUrl, gmailWebUrl, smsUrl, emailSubject, emailBody, smsMsg };
 
-            // 1. Immediately trigger the channel application
+            // 1. Immediately trigger the channel application cleanly
             if (channel === "whatsapp") {
-                if (isMobile) {
-                    window.location.href = waUrl;
-                } else {
-                    window.open(waUrl, "_blank");
-                }
                 showToast("Opening WhatsApp with your prefilled order...", "success");
+                window.open(waUrl, "_blank", "noopener,noreferrer");
             } else if (channel === "email") {
-                window.location.href = mailtoUrl;
                 showToast("Opening your Email application...", "success");
+                const mailLink = document.createElement("a");
+                mailLink.href = mailtoUrl;
+                document.body.appendChild(mailLink);
+                mailLink.click();
+                setTimeout(() => { try { mailLink.remove(); } catch (_) { } }, 500);
             } else if (channel === "sms") {
-                if (isMobile) {
-                    window.location.href = smsUrl;
-                    showToast("Opening your Messages app...", "success");
-                } else {
-                    try {
-                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                            navigator.clipboard.writeText(smsMsg);
-                        }
-                    } catch (_) {}
-                    showToast("SMS confirmation is for mobile phones. Text copied to clipboard!", "info");
-                }
+                showToast("Opening your Messages app...", "success");
+                const smsLink = document.createElement("a");
+                smsLink.href = smsUrl;
+                document.body.appendChild(smsLink);
+                smsLink.click();
+                setTimeout(() => { try { smsLink.remove(); } catch (_) { } }, 500);
+
+                try {
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(smsMsg);
+                    }
+                } catch (_) { }
             }
 
             // 2. Persist order locally for instant receipt & persistence

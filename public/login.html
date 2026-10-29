@@ -387,21 +387,21 @@
                     <form id="formRegister" onsubmit="handleRegister(event)">
                         <div class="form-group">
                             <label for="regName">Full Name *</label>
-                            <input type="text" id="regName" class="form-input" placeholder="e.g. Ramesh Patil" required autocomplete="name">
+                            <input type="text" id="regName" class="form-input" placeholder="Enter your full name" required autocomplete="name">
                         </div>
 
                         <div class="form-group">
                             <label for="regPhone">Mobile Number (10 Digits) *</label>
                             <div class="phone-input-row">
                                 <span class="phone-prefix">+91</span>
-                                <input type="tel" id="regPhone" class="form-input" placeholder="10-digit Indian mobile" maxlength="16" required autocomplete="tel">
+                                <input type="tel" id="regPhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="16" required autocomplete="tel">
                             </div>
                             <div id="regPhoneValidationMsg" class="validation-note"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="regEmail">Email Address (Optional)</label>
-                            <input type="email" id="regEmail" class="form-input" placeholder="your.name@example.com" autocomplete="email">
+                            <input type="email" id="regEmail" class="form-input" placeholder="Enter email address (optional)" autocomplete="email">
                         </div>
 
                         <div class="form-group">
@@ -473,14 +473,14 @@
                     You are now securely signed in to your Ojaswi account.
                 </p>
 
-                <!-- Proceed to Account Link -->
-                <a id="btnSuccessProceed" href="account.html" onclick="proceedToAccount(event)" class="btn-submit" style="text-decoration: none; margin-bottom: 10px; cursor: pointer;">
-                    👤 Go to My Account Dashboard →
+                <!-- Enter Store Link (Primary) -->
+                <a id="btnSuccessProceed" href="index.html" onclick="proceedToAccount(event)" class="btn-submit" style="text-decoration: none; margin-bottom: 10px; cursor: pointer;">
+                    🛒 Enter Store &amp; Explore Spices →
                 </a>
 
-                <!-- Return to Store Link -->
-                <a href="index.html" class="btn-secondary-action" style="text-decoration: none; cursor: pointer;">
-                    🛒 Return to Store &amp; Order Spices
+                <!-- Account Dashboard Link (Secondary) -->
+                <a href="account.html" class="btn-secondary-action" style="text-decoration: none; cursor: pointer;">
+                    👤 Go to My Account Dashboard
                 </a>
             </div>
 
@@ -667,6 +667,11 @@
             // Clear any lingering shared guest order IDs
             try { storage.removeItem("ojaswi_customer_orders"); } catch (_) {}
             try { window.localStorage.removeItem("ojaswi_customer_orders"); } catch (_) {}
+
+            // Switch CartManager to authenticated customer profile
+            if (window.cart && typeof window.cart.switchUser === "function") {
+                window.cart.switchUser(data.user);
+            }
         }
 
         // Switch between "Sign In" and "Create Account"
@@ -943,7 +948,7 @@
             }
         }
 
-        // Helper to resolve safe account / redirect URL
+        // Helper to resolve safe redirect URL (defaults to existing homepage/store)
         function getSafeRedirectUrl() {
             const isLocal = window.location.protocol === "file:" ||
                             window.location.protocol === "about:" ||
@@ -953,22 +958,25 @@
                             (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const urlParams = new URLSearchParams(window.location.search);
             let raw = urlParams.get("redirect");
-            if (!raw || raw === "/account" || raw === "account" || raw.includes("login")) {
-                return isLocal ? "account.html" : "/account";
-            }
-            if (isLocal) {
-                if (raw === "/orders" || raw === "orders") return "orders.html";
-                if (raw === "/checkout" || raw === "checkout") return "checkout.html";
-                if (raw === "/" || raw === "") return "index.html";
-                if (raw.startsWith("/")) {
+            
+            // If explicit redirect target was requested (e.g. from checkout or orders):
+            if (raw) {
+                if (raw === "/orders" || raw === "orders") return isLocal ? "orders.html" : "/orders";
+                if (raw === "/checkout" || raw === "checkout") return isLocal ? "checkout.html" : "/checkout";
+                if (raw === "/account" || raw === "account") return isLocal ? "account.html" : "/account";
+                if (raw === "/" || raw === "") return isLocal ? "index.html" : "/";
+                if (isLocal && raw.startsWith("/")) {
                     const clean = raw.replace(/^\//, "");
                     if (!clean.includes(".html") && !clean.includes("#") && !clean.includes("?")) {
                         return clean + ".html";
                     }
                     return clean;
                 }
+                return raw;
             }
-            return raw;
+
+            // Default: After successful Google sign-in or signup, open the existing homepage/store
+            return isLocal ? "index.html" : "/";
         }
         window.getSafeRedirectUrl = getSafeRedirectUrl;
 
@@ -976,7 +984,7 @@
             if (event && event.preventDefault) event.preventDefault();
             const target = getSafeRedirectUrl();
             if (window.safeNavigate) {
-                window.safeNavigate(target, "#account");
+                window.safeNavigate(target, "#store");
             } else {
                 window.location.href = target;
             }
@@ -1004,10 +1012,10 @@
                 window.checkAuthStatus();
             }
 
-            // Automatically navigate to account dashboard
+            // Automatically navigate to store / target after sign-in
             setTimeout(() => {
                 if (window.safeNavigate) {
-                    window.safeNavigate(finalTarget, "#account");
+                    window.safeNavigate(finalTarget, "#store");
                 } else {
                     window.location.href = finalTarget;
                 }
@@ -1176,7 +1184,7 @@
             const btn = document.getElementById("btnGooglePhoneSubmit");
 
             if (!cleanPhone || !window.isValidPhoneNumber(cleanPhone)) {
-                displayAuthError("Please enter a valid 10-digit Indian mobile number (e.g. 7620098478).");
+                displayAuthError("Please enter a valid 10-digit Indian mobile number.");
                 phoneInput?.focus();
                 return;
             }
@@ -1350,17 +1358,17 @@
             <form id="formGoogleManual" onsubmit="handleGoogleManualSubmit(event)">
                 <div class="form-group">
                     <label for="manualGoogleName">Full Name *</label>
-                    <input type="text" id="manualGoogleName" class="form-input" placeholder="e.g. Ramesh Patil" required>
+                    <input type="text" id="manualGoogleName" class="form-input" placeholder="Enter full name" required>
                 </div>
                 <div class="form-group">
                     <label for="manualGoogleEmail">Google Email Address *</label>
-                    <input type="email" id="manualGoogleEmail" class="form-input" placeholder="e.g. ramesh@gmail.com" required>
+                    <input type="email" id="manualGoogleEmail" class="form-input" placeholder="Enter Google email address" required>
                 </div>
                 <div class="form-group">
                     <label for="manualGooglePhone">10-Digit Mobile Number *</label>
                     <div class="phone-input-row">
                         <span class="phone-prefix">+91</span>
-                        <input type="tel" id="manualGooglePhone" class="form-input" placeholder="10-digit mobile" maxlength="16" required>
+                        <input type="tel" id="manualGooglePhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="16" required>
                     </div>
                     <div id="manualGooglePhoneValidationMsg" class="validation-note"></div>
                 </div>

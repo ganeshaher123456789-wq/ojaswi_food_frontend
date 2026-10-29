@@ -387,21 +387,21 @@
                     <form id="formRegister" onsubmit="handleRegister(event)">
                         <div class="form-group">
                             <label for="regName">Full Name *</label>
-                            <input type="text" id="regName" class="form-input" placeholder="e.g. Ramesh Patil" required autocomplete="name">
+                            <input type="text" id="regName" class="form-input" placeholder="Enter your full name" required autocomplete="name">
                         </div>
 
                         <div class="form-group">
                             <label for="regPhone">Mobile Number (10 Digits) *</label>
                             <div class="phone-input-row">
                                 <span class="phone-prefix">+91</span>
-                                <input type="tel" id="regPhone" class="form-input" placeholder="10-digit Indian mobile" maxlength="16" required autocomplete="tel">
+                                <input type="tel" id="regPhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="16" required autocomplete="tel">
                             </div>
                             <div id="regPhoneValidationMsg" class="validation-note"></div>
                         </div>
 
                         <div class="form-group">
                             <label for="regEmail">Email Address (Optional)</label>
-                            <input type="email" id="regEmail" class="form-input" placeholder="your.name@example.com" autocomplete="email">
+                            <input type="email" id="regEmail" class="form-input" placeholder="Enter email address (optional)" autocomplete="email">
                         </div>
 
                         <div class="form-group">
@@ -1184,7 +1184,7 @@
             const btn = document.getElementById("btnGooglePhoneSubmit");
 
             if (!cleanPhone || !window.isValidPhoneNumber(cleanPhone)) {
-                displayAuthError("Please enter a valid 10-digit Indian mobile number (e.g. 7620098478).");
+                displayAuthError("Please enter a valid 10-digit Indian mobile number.");
                 phoneInput?.focus();
                 return;
             }
@@ -1358,17 +1358,17 @@
             <form id="formGoogleManual" onsubmit="handleGoogleManualSubmit(event)">
                 <div class="form-group">
                     <label for="manualGoogleName">Full Name *</label>
-                    <input type="text" id="manualGoogleName" class="form-input" placeholder="e.g. Ramesh Patil" required>
+                    <input type="text" id="manualGoogleName" class="form-input" placeholder="Enter full name" required>
                 </div>
                 <div class="form-group">
                     <label for="manualGoogleEmail">Google Email Address *</label>
-                    <input type="email" id="manualGoogleEmail" class="form-input" placeholder="e.g. ramesh@gmail.com" required>
+                    <input type="email" id="manualGoogleEmail" class="form-input" placeholder="Enter Google email address" required>
                 </div>
                 <div class="form-group">
                     <label for="manualGooglePhone">10-Digit Mobile Number *</label>
                     <div class="phone-input-row">
                         <span class="phone-prefix">+91</span>
-                        <input type="tel" id="manualGooglePhone" class="form-input" placeholder="10-digit mobile" maxlength="16" required>
+                        <input type="tel" id="manualGooglePhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="16" required>
                     </div>
                     <div id="manualGooglePhoneValidationMsg" class="validation-note"></div>
                 </div>

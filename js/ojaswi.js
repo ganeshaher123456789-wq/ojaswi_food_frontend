@@ -1090,7 +1090,7 @@
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
                 <div>
                   <label style="display: block; font-size: 12px; color: #aaa; margin-bottom: 5px;">Your Name *</label>
-                  <input type="text" id="uRevName" placeholder="e.g. Rahul Sharma" required style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: #fff; font-size: 13.5px;">
+                  <input type="text" id="uRevName" placeholder="Enter your full name" required style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: #fff; font-size: 13.5px;">
                 </div>
                 <div>
                   <label style="display: block; font-size: 12px; color: #aaa; margin-bottom: 5px;">Mobile / Phone (Optional)</label>
@@ -1100,7 +1100,7 @@
 
               <div style="margin-bottom: 14px;">
                 <label style="display: block; font-size: 12px; color: #aaa; margin-bottom: 5px;">Order ID (Optional)</label>
-                <input type="text" id="uRevOrderId" placeholder="e.g. #OJ8E8659 (Gives Verified Buyer Badge)" style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: #fff; font-size: 13.5px;">
+                <input type="text" id="uRevOrderId" placeholder="Enter your Order ID (optional)" style="width: 100%; background: #1c1c1c; border: 1px solid rgba(255,255,255,0.15); border-radius: 4px; padding: 10px; color: #fff; font-size: 13.5px;">
               </div>
 
               <div style="margin-bottom: 14px;">

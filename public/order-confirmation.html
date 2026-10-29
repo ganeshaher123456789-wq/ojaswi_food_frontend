@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmed | Ojaswi Premium</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/ecom.css">
     <!-- Universal Storage & Navigation Sandbox Polyfill -->
     <script>
-    (function() {
-        const mem = { local: {}, session: {} };
-        function makeMockStorage(type) {
-            const store = mem[type];
-            return {
-                getItem: function(k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
-                setItem: function(k, v) { store[k] = String(v); },
-                removeItem: function(k) { delete store[k]; },
-                clear: function() { for (let k in store) delete store[k]; },
-                key: function(i) { return Object.keys(store)[i] || null; },
-                get length() { return Object.keys(store).length; }
-            };
-        }
-        let ls, ss;
-        try {
-            window.localStorage.setItem("__test__", "1");
-            window.localStorage.removeItem("__test__");
-            ls = window.localStorage;
-        } catch(e) {
-            ls = makeMockStorage("local");
-            try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch(_) {}
-        }
-        try {
-            window.sessionStorage.setItem("__test__", "1");
-            window.sessionStorage.removeItem("__test__");
-            ss = window.sessionStorage;
-        } catch(e) {
-            ss = makeMockStorage("session");
-            try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch(_) {}
-        }
-        window.safeLocalStorage = ls;
-        window.safeSessionStorage = ss;
-        window.safeNavigate = function(url, fallbackHash) {
-            if (!url || typeof url !== "string" || !url.trim()) {
-                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
-                return;
+        (function () {
+            const mem = { local: {}, session: {} };
+            function makeMockStorage(type) {
+                const store = mem[type];
+                return {
+                    getItem: function (k) { return Object.prototype.hasOwnProperty.call(store, k) ? store[k] : null; },
+                    setItem: function (k, v) { store[k] = String(v); },
+                    removeItem: function (k) { delete store[k]; },
+                    clear: function () { for (let k in store) delete store[k]; },
+                    key: function (i) { return Object.keys(store)[i] || null; },
+                    get length() { return Object.keys(store).length; }
+                };
+            }
+            let ls, ss;
+            try {
+                window.localStorage.setItem("__test__", "1");
+                window.localStorage.removeItem("__test__");
+                ls = window.localStorage;
+            } catch (e) {
+                ls = makeMockStorage("local");
+                try { Object.defineProperty(window, "localStorage", { value: ls, configurable: true, writable: true }); } catch (_) { }
             }
             try {
-                const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
-                if (isAbout) {
-                    if (window.top && window.top !== window) {
-                        try { window.top.location.href = url; return; } catch(_) {}
-                    }
-                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
+                window.sessionStorage.setItem("__test__", "1");
+                window.sessionStorage.removeItem("__test__");
+                ss = window.sessionStorage;
+            } catch (e) {
+                ss = makeMockStorage("session");
+                try { Object.defineProperty(window, "sessionStorage", { value: ss, configurable: true, writable: true }); } catch (_) { }
+            }
+            window.safeLocalStorage = ls;
+            window.safeSessionStorage = ss;
+            window.safeNavigate = function (url, fallbackHash) {
+                if (!url || typeof url !== "string" || !url.trim()) {
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
                     return;
                 }
-                window.location.href = url;
-            } catch(e) {
-                if (fallbackHash) { try { window.location.hash = fallbackHash; } catch(_) {} }
-            }
-        };
-    })();
+                try {
+                    const isAbout = window.location.protocol === "about:" || (window.location.href && window.location.href.startsWith("about:"));
+                    if (isAbout) {
+                        if (window.top && window.top !== window) {
+                            try { window.top.location.href = url; return; } catch (_) { }
+                        }
+                        if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
+                        return;
+                    }
+                    window.location.href = url;
+                } catch (e) {
+                    if (fallbackHash) { try { window.location.hash = fallbackHash; } catch (_) { } }
+                }
+            };
+        })();
     </script>
     <style>
         :root {
@@ -73,17 +76,67 @@
             --white: #ffffff;
             --border: rgba(217, 164, 65, 0.25);
         }
-        body { margin: 0; background: #080808; color: #fff; font-family: 'Inter', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
-        .receipt-card { background: #121212; border: 1px solid rgba(217,164,65,0.25); border-radius: 8px; padding: 28px; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .receipt-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .primary-button { background: linear-gradient(135deg, #d9a441 0%, #b8860b 100%); color: #080808; font-weight: 700; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .secondary-button { background: rgba(255,255,255,0.06); color: #fff; border: 1px solid rgba(255,255,255,0.18); border-radius: 4px; padding: 10px 18px; cursor: pointer; text-decoration: none; display: inline-block; }
+
+        body {
+            margin: 0;
+            background: #080808;
+            color: #fff;
+            font-family: 'Inter', -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .receipt-card {
+            background: #121212;
+            border: 1px solid rgba(217, 164, 65, 0.25);
+            border-radius: 8px;
+            padding: 28px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .receipt-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, #d9a441 0%, #b8860b 100%);
+            color: #080808;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .secondary-button {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 4px;
+            padding: 10px 18px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
         @media (max-width: 600px) {
-            .receipt-details-grid { grid-template-columns: 1fr !important; gap: 14px; }
-            .receipt-card { padding: 18px 14px; }
+            .receipt-details-grid {
+                grid-template-columns: 1fr !important;
+                gap: 14px;
+            }
+
+            .receipt-card {
+                padding: 18px 14px;
+            }
         }
     </style>
 </head>
+
 <body style="background: var(--black); color: var(--white); min-height: 100vh;">
 
     <!-- Top Navigation Header -->
@@ -103,31 +156,46 @@
     <main class="container" style="padding: 50px 0 90px;">
         <div class="receipt-card">
             <!-- Prominent Ojaswi Foods Logo & Header -->
-            <div class="receipt-brand-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 22px; flex-wrap: wrap; gap: 16px;">
+            <div class="receipt-brand-header"
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 18px; margin-bottom: 22px; flex-wrap: wrap; gap: 16px;">
                 <div style="display: flex; align-items: center; gap: 14px;">
-                    <div class="receipt-logo-badge" style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
-                        <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
-                        <span style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
+                    <div class="receipt-logo-badge"
+                        style="width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg, #d9a441 0%, #b88228 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid #f0c86b; flex-shrink: 0; box-shadow: 0 4px 12px rgba(217,164,65,0.3);">
+                        <span
+                            style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px; font-weight: 700; color: #000; line-height: 1;">OJ</span>
+                        <span
+                            style="font-size: 7px; font-weight: 800; letter-spacing: 1px; color: #000; text-transform: uppercase;">FOODS</span>
                     </div>
                     <div>
-                        <div style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">OJASWI FOODS</div>
-                        <div style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">Premium Authentic Spices • Malegaon Factory</div>
-                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203, Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
+                        <div
+                            style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 28px; font-weight: 700; color: var(--gold-light); line-height: 1.1; letter-spacing: 0.5px;">
+                            OJASWI FOODS</div>
+                        <div
+                            style="font-size: 10px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 600; margin-top: 2px;">
+                            Premium Authentic Spices • Malegaon Factory</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 2px;">Plot 52/2, Malegaon - 423203,
+                            Nashik, MH | FSSAI Lic. <strong>3025120612245599988</strong></div>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <span style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official Tax Invoice</span>
+                    <span
+                        style="display: inline-block; background: rgba(217,164,65,0.15); border: 1px solid var(--gold); border-radius: 4px; padding: 4px 12px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold-light); text-transform: uppercase;">Official
+                        Tax Invoice</span>
                     <div id="confReceiptDate" style="color: #888; font-size: 12px; margin-top: 5px;"></div>
                 </div>
             </div>
 
             <!-- Confirmation Hero Badge (Screen only) -->
             <div class="no-print" style="text-align: center; margin-bottom: 25px;">
-                <div style="width: 70px; height: 70px; border-radius: 50%; background: rgba(46, 204, 113, 0.15); border: 2px solid #2ecc71; color: #2ecc71; font-size: 36px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                <div
+                    style="width: 70px; height: 70px; border-radius: 50%; background: rgba(46, 204, 113, 0.15); border: 2px solid #2ecc71; color: #2ecc71; font-size: 36px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
                     ✓
                 </div>
-                <div style="font-size: 12px; letter-spacing: 4px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">Order Confirmed</div>
-                <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin: 6px 0;">
+                <div
+                    style="font-size: 12px; letter-spacing: 4px; color: #2ecc71; text-transform: uppercase; font-weight: 700;">
+                    Order Confirmed</div>
+                <h1
+                    style="font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--gold-light); margin: 6px 0;">
                     Thank You for Your Order
                 </h1>
                 <p style="font-size: 14px; color: #aaa; max-width: 480px; margin: auto;">
@@ -136,37 +204,56 @@
             </div>
 
             <!-- Order Identification & Status -->
-            <div class="receipt-order-bar" style="background: #181818; border-left: 4px solid var(--gold); border-radius: 4px; padding: 18px 22px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div class="receipt-order-bar"
+                style="background: #181818; border-left: 4px solid var(--gold); border-radius: 4px; padding: 18px 22px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
-                    <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Official Order ID</span>
-                    <div id="confOrderId" style="font-size: 22px; font-weight: 700; color: var(--gold-light); font-family: 'Cormorant Garamond', serif;">#OJ------</div>
+                    <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Official
+                        Order ID</span>
+                    <div id="confOrderId"
+                        style="font-size: 22px; font-weight: 700; color: var(--gold-light); font-family: 'Cormorant Garamond', serif;"></div>
+                    <div id="confOrderStatusTag"
+                        style="margin-top: 5px; font-size: 12px; color: #2ecc71; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Order Status: Confirmed</div>
                 </div>
                 <div style="text-align: right;">
-                    <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Payment Information</span>
-                    <div id="confPaymentMethod" style="font-size: 13.5px; font-weight: 600; color: #fff; margin-top: 3px;">--</div>
+                    <span style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Payment
+                        Information</span>
+                    <div id="confPaymentMethod"
+                        style="font-size: 13.5px; font-weight: 600; color: #fff; margin-top: 3px;">--</div>
                 </div>
             </div>
 
             <!-- Direct WhatsApp Order Confirmation Action Banner -->
-            <div class="no-print" style="background: rgba(37,211,102,0.12); border: 1.5px solid #25D366; border-radius: 8px; padding: 18px 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div class="no-print"
+                style="background: rgba(37,211,102,0.12); border: 1.5px solid #25D366; border-radius: 8px; padding: 18px 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
                 <div style="display: flex; align-items: center; gap: 14px;">
-                    <div style="width: 46px; height: 46px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,211,102,0.35);">
-                        <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 26px; height: 26px; filter: brightness(0) invert(1);" onerror="this.src='./images/icon-whatsapp.svg'">
+                    <div
+                        style="width: 46px; height: 46px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(37,211,102,0.35);">
+                        <img src="images/icon-whatsapp.svg" alt="WhatsApp"
+                            style="width: 26px; height: 26px; filter: brightness(0) invert(1);"
+                            onerror="this.src='./images/icon-whatsapp.svg'">
                     </div>
                     <div>
-                        <div style="font-size: 15px; font-weight: 700; color: #2ecc71;">Confirm Order Directly on WhatsApp</div>
-                        <div style="font-size: 12.5px; color: #ccc; margin-top: 2px;">Directly message website owner at <strong>+91 7620098478</strong> to verify and dispatch your spices.</div>
+                        <div style="font-size: 15px; font-weight: 700; color: #2ecc71;">Confirm Order Directly on
+                            WhatsApp</div>
+                        <div style="font-size: 12.5px; color: #ccc; margin-top: 2px;">Directly message website owner at
+                            <strong>+91 7620098478</strong> to verify and dispatch your spices.</div>
                     </div>
                 </div>
-                <a id="btnHeroConfirmWhatsApp" href="#" target="_blank" class="primary-button" style="background: #25D366; color: #fff; font-size: 13.5px; font-weight: 700; padding: 12px 22px; border-radius: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                <a id="btnHeroConfirmWhatsApp" href="#" target="_blank" class="primary-button"
+                    style="background: #25D366; color: #fff; font-size: 13.5px; font-weight: 700; padding: 12px 22px; border-radius: 6px; box-shadow: 0 4px 14px rgba(37,211,102,0.4); text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                     <span>💬 Confirm on WhatsApp Now</span>
                 </a>
             </div>
-            
+
             <!-- Live Tracking Stepper Preview (Hidden on Print: Remove the track the order) -->
-            <div class="no-print" style="background: #141414; border: 1px solid rgba(217,164,65,0.3); border-radius: 6px; padding: 18px 20px; margin-bottom: 25px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
-                    <span style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 700;">📦 Dispatch Tracking Status</span>
+            <div class="no-print"
+                style="background: #141414; border: 1px solid rgba(217,164,65,0.3); border-radius: 6px; padding: 18px 20px; margin-bottom: 25px;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                    <span
+                        style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 700;">📦
+                        Dispatch Tracking Status</span>
                     <span style="font-size: 12px; color: #2ecc71;">Estimated Delivery: 2-4 Days</span>
                 </div>
                 <div class="timeline-tracker" id="confTimelineStepper" style="margin: 15px 0 5px 0;">
@@ -175,16 +262,19 @@
             </div>
 
             <!-- Customer & Delivery Summary -->
-            <div class="receipt-details-grid" style="background: #141414; padding: 22px; border-radius: 6px; margin-bottom: 25px;">
+            <div class="receipt-details-grid"
+                style="background: #141414; padding: 22px; border-radius: 6px; margin-bottom: 25px;">
                 <div>
                     <span style="color: #777; font-size: 11px; text-transform: uppercase;">Customer Details</span>
-                    <div id="confCustName" style="color: #fff; font-weight: 600; font-size: 15px; margin-top: 4px;">--</div>
+                    <div id="confCustName" style="color: #fff; font-weight: 600; font-size: 15px; margin-top: 4px;">--
+                    </div>
                     <div id="confCustPhone" style="color: var(--gold-light); font-size: 13px; margin-top: 2px;">--</div>
                     <div id="confCustEmail" style="color: #999; font-size: 12px; margin-top: 2px;">--</div>
                 </div>
                 <div>
                     <span style="color: #777; font-size: 11px; text-transform: uppercase;">Delivery Address</span>
-                    <div id="confCustAddress" style="color: #ddd; font-size: 13px; line-height: 1.5; margin-top: 4px;">--</div>
+                    <div id="confCustAddress" style="color: #ddd; font-size: 13px; line-height: 1.5; margin-top: 4px;">
+                        --</div>
                 </div>
             </div>
 
@@ -192,7 +282,8 @@
             <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 25px;">
                 <table style="width: 100%; min-width: 320px; border-collapse: collapse; font-size: 13px;">
                     <thead>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gold-light); text-align: left;">
+                        <tr
+                            style="border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--gold-light); text-align: left;">
                             <th style="padding: 10px 0;">Item Details</th>
                             <th style="padding: 10px; text-align: center;">Qty</th>
                             <th style="padding: 10px; text-align: right;">Unit Price</th>
@@ -208,17 +299,23 @@
                             <td style="padding: 10px 0; text-align: right; color: #2ecc71;">FREE</td>
                         </tr>
                         <tr>
-                            <td colspan="3" style="padding: 14px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 16px;">Final Amount:</td>
-                            <td id="confTotal" style="padding: 14px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 20px;">₹0</td>
+                            <td colspan="3"
+                                style="padding: 14px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 16px;">
+                                Final Amount:</td>
+                            <td id="confTotal"
+                                style="padding: 14px 0; text-align: right; font-weight: 700; color: var(--gold-light); font-size: 20px;">
+                                ₹0</td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
 
             <!-- Direct Confirmation Options: WhatsApp, Email, SMS -->
-            <div class="no-print" style="background: #141414; border: 1px solid rgba(217,164,65,0.35); border-radius: 8px; padding: 20px; margin-bottom: 25px;">
+            <div class="no-print"
+                style="background: #141414; border: 1px solid rgba(217,164,65,0.35); border-radius: 8px; padding: 20px; margin-bottom: 25px;">
                 <div style="text-align: center; margin-bottom: 16px;">
-                    <div style="font-size: 11px; letter-spacing: 2.5px; color: var(--gold-light); text-transform: uppercase; font-weight: 700;">
+                    <div
+                        style="font-size: 11px; letter-spacing: 2.5px; color: var(--gold-light); text-transform: uppercase; font-weight: 700;">
                         📲 Confirm Order &amp; Dispatch Updates
                     </div>
                     <p style="font-size: 13px; color: #aaa; margin: 4px 0 0 0;">
@@ -228,37 +325,63 @@
 
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px;">
                     <!-- WhatsApp -->
-                    <a id="btnConfWhatsApp" target="_blank" class="contact-option whatsapp" title="Confirm Order via WhatsApp" style="padding: 14px 10px; border: 1px solid rgba(46,204,113,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
-                        <img src="images/icon-whatsapp.svg" alt="WhatsApp" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-whatsapp.svg'">
+                    <a id="btnConfWhatsApp" target="_blank" class="contact-option whatsapp"
+                        title="Confirm Order via WhatsApp"
+                        style="padding: 14px 10px; border: 1px solid rgba(46,204,113,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <img src="images/icon-whatsapp.svg" alt="WhatsApp"
+                            style="width: 28px; height: 28px; display: block;"
+                            onerror="this.src='./images/icon-whatsapp.svg'">
                         <span style="font-size: 13px; font-weight: 600;">Confirm WhatsApp</span>
                         <span style="font-size: 10px; color: #2ecc71;">Instant Confirmation</span>
                     </a>
 
                     <!-- Email -->
-                    <a id="btnConfEmail" class="contact-option email" title="Confirm Order via Email" style="padding: 14px 10px; border: 1px solid rgba(52,152,219,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
-                        <img src="images/icon-email.svg" alt="Email" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-email.svg'">
+                    <a id="btnConfEmail" class="contact-option email" title="Confirm Order via Email"
+                        style="padding: 14px 10px; border: 1px solid rgba(52,152,219,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <img src="images/icon-email.svg" alt="Email" style="width: 28px; height: 28px; display: block;"
+                            onerror="this.src='./images/icon-email.svg'">
                         <span style="font-size: 13px; font-weight: 600;">Confirm Email</span>
                         <span style="font-size: 10px; color: #3498db;">Official Invoice Copy</span>
                     </a>
 
                     <!-- SMS -->
-                    <a id="btnConfSMS" class="contact-option sms" title="Confirm Order via SMS" style="padding: 14px 10px; border: 1px solid rgba(243,156,18,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
-                        <img src="images/icon-sms.svg" alt="SMS" style="width: 28px; height: 28px; display: block;" onerror="this.src='./images/icon-sms.svg'">
+                    <a id="btnConfSMS" class="contact-option sms" title="Confirm Order via SMS"
+                        style="padding: 14px 10px; border: 1px solid rgba(243,156,18,0.35); background: #1a1a1a; border-radius: 8px; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #fff; transition: all 0.2s;">
+                        <img src="images/icon-sms.svg" alt="SMS" style="width: 28px; height: 28px; display: block;"
+                            onerror="this.src='./images/icon-sms.svg'">
                         <span style="font-size: 13px; font-weight: 600;">Confirm SMS</span>
                         <span style="font-size: 10px; color: #f39c12;">Text Message</span>
                     </a>
                 </div>
             </div>
 
+            <!-- Live Notification Dispatch Status Card -->
+            <div id="confNotificationCard" class="no-print"
+                style="display: none; background: #151515; border: 1px solid rgba(217,164,65,0.25); border-radius: 8px; padding: 18px 20px; margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span
+                        style="font-size: 11px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; font-weight: 700;">📬
+                        Order Notifications</span>
+                    <span style="font-size: 11px; color: #2ecc71; font-weight: 600;">Processed</span>
+                </div>
+                <div id="confNotificationList"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 12px;">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+
             <!-- Action Buttons -->
             <div class="no-print" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px;">
-                <a id="btnTrackOrder" href="orders.html" class="primary-button" style="flex: 1; text-align: center; padding: 13px; font-size: 13px;">
+                <a id="btnTrackOrder" href="orders.html" class="primary-button"
+                    style="flex: 1; text-align: center; padding: 13px; font-size: 13px;">
                     📦 Track in My Orders
                 </a>
-                <a id="btnDownloadReceipt" href="#" target="_blank" class="primary-button" style="padding: 13px 20px; font-size: 13px; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: #fff;">
+                <a id="btnDownloadReceipt" href="#" target="_blank" class="primary-button"
+                    style="padding: 13px 20px; font-size: 13px; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: #fff;">
                     📄 Download Official Receipt
                 </a>
-                <a href="index.html#products" onclick="goToStoreProducts(event)" class="secondary-button" style="padding: 13px 20px; font-size: 13px; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                <a href="index.html#products" onclick="goToStoreProducts(event)" class="secondary-button"
+                    style="padding: 13px 20px; font-size: 13px; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
                     🌶️ Order More Spices
                 </a>
                 <button class="secondary-button" style="padding: 13px 20px; font-size: 13px;" onclick="window.print()">
@@ -267,7 +390,8 @@
             </div>
 
             <!-- Packer Information -->
-            <div class="receipt-footer-pack" style="text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px; font-size: 11px; color: #666; line-height: 1.6;">
+            <div class="receipt-footer-pack"
+                style="text-align: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 25px; font-size: 11px; color: #666; line-height: 1.6;">
                 <strong>Ojaswi Foods</strong> | 52/2, Malegaon - 423203, Nashik, Maharashtra, India<br>
                 FSSAI License: <strong>3025120612245599988</strong> | Support: <strong>+91 7620098478</strong>
             </div>
@@ -284,7 +408,7 @@
 
             // 1. Order ID
             const rawId = o.id || o.orderId || o.order_id || "";
-            const displayId = rawId ? (rawId.startsWith("#") ? rawId : `#${rawId}`) : "#OJ------";
+            const displayId = rawId ? (rawId.startsWith("#") ? rawId : `#${rawId}`) : "";
             const cleanId = displayId.replace(/^#/, "");
             const orderIdEl = document.getElementById("confOrderId");
             if (orderIdEl) orderIdEl.textContent = displayId;
@@ -298,20 +422,20 @@
                 })}`;
             }
 
-            // 3. Customer Info
-            const custName = o.customer_name || o.name || "Valued Customer";
+            // 3. Customer Info (Fetch real information from actual order record; no fake or hardcoded details)
+            const custName = (o.customer_name && o.customer_name.trim()) || (o.name && o.name.trim()) || "";
             const rawPhone = String(o.customer_phone || o.phone || "").replace(/^\+?91/, "").trim();
-            const custPhone = rawPhone || "7620098478";
-            const custEmail = o.customer_email || o.email || "";
+            const custPhone = rawPhone ? `+91 ${rawPhone}` : "";
+            const custEmail = (o.customer_email && o.customer_email.trim()) || (o.email && o.email.trim()) || "";
 
             const nameEl = document.getElementById("confCustName");
-            if (nameEl) nameEl.textContent = custName;
+            if (nameEl) nameEl.textContent = custName || "--";
             const phoneEl = document.getElementById("confCustPhone");
-            if (phoneEl) phoneEl.textContent = `+91 ${custPhone}`;
+            if (phoneEl) phoneEl.textContent = custPhone || "--";
             const emailEl = document.getElementById("confCustEmail");
-            if (emailEl) emailEl.textContent = custEmail || "support@ojaswifoods.com";
+            if (emailEl) emailEl.textContent = custEmail || "--";
 
-            // 4. Delivery Address
+            // 4. Delivery Address (Cleanly format real customer address)
             const addr = o.delivery_address || {};
             let fullAddressStr = "";
             let htmlAddressStr = "";
@@ -321,18 +445,19 @@
             } else {
                 const house = addr.flat_house || addr.address || "";
                 const street = addr.area_street || "";
-                const city = addr.city || "Malegaon";
-                const state = addr.state || "Maharashtra";
-                const pin = addr.pincode || "423203";
-                fullAddressStr = `${house ? house + ', ' : ''}${street ? street + ', ' : ''}${city}, ${state} - ${pin}`.trim();
+                const city = addr.city || "";
+                const state = addr.state || "";
+                const pin = addr.pincode || "";
+                const locParts = [city, state].filter(Boolean).join(", ");
+                fullAddressStr = [house, street, locParts, pin ? `PIN: ${pin}` : ""].filter(Boolean).join(", ");
                 htmlAddressStr = `
                     ${house ? house + '<br>' : ''}
                     ${street ? street + '<br>' : ''}
-                    ${city}, ${state} - <strong>${pin}</strong>
-                `;
+                    ${locParts}${pin ? ' - <strong>' + pin + '</strong>' : ''}
+                `.trim();
             }
             const addrEl = document.getElementById("confCustAddress");
-            if (addrEl) addrEl.innerHTML = htmlAddressStr || "Plot 52/2, Malegaon - 423203, Nashik, Maharashtra";
+            if (addrEl) addrEl.innerHTML = htmlAddressStr || "--";
 
             // 5. Products / Items
             let items = o.items;
@@ -394,19 +519,98 @@
 
             // 7. Payment Method & Status
             const isCOD = !o.payment_method || o.payment_method.toLowerCase().includes("cash") || o.payment_method.toLowerCase().includes("cod");
-            const methodStr = isCOD ? "CASH ON DELIVERY" : o.payment_method.toUpperCase();
-            const statusStr = (o.payment_status && o.payment_status.toLowerCase() === "paid") ? "PAID" : "PENDING";
-            const statusBadge = statusStr === "PAID" 
-                ? `<span style="color: #2ecc71; font-weight: 700;">PAID</span>` 
-                : `<span style="color: #f39c12; font-weight: 700;">PENDING</span> <span style="font-size: 11px; color: #aaa;">(Collect upon doorstep delivery)</span>`;
+            const methodStr = isCOD ? "Cash on Delivery" : (o.payment_method || "Online Payment");
+
+            // Requirement: For Cash on Delivery, ALWAYS show "Payment Pending — Cash on Delivery", never Paid
+            let statusBadge = "";
+            if (isCOD) {
+                statusBadge = `<span style="color: #f39c12; font-weight: 700; background: rgba(243,156,18,0.15); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(243,156,18,0.4); display: inline-block; text-transform: uppercase;">PAYMENT PENDING — CASH ON DELIVERY</span> <span style="font-size: 11px; color: #aaa; margin-left: 4px;">(Collect cash/UPI upon doorstep delivery)</span>`;
+            } else if (o.payment_status && o.payment_status.toLowerCase() === "paid") {
+                statusBadge = `<span style="color: #2ecc71; font-weight: 700; background: rgba(46,204,113,0.15); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(46,204,113,0.4); display: inline-block;">Paid</span>`;
+            } else {
+                statusBadge = `<span style="color: #f39c12; font-weight: 700; background: rgba(243,156,18,0.15); padding: 3px 10px; border-radius: 4px; border: 1px solid rgba(243,156,18,0.4); display: inline-block;">Payment Pending</span>`;
+            }
 
             const payEl = document.getElementById("confPaymentMethod");
             if (payEl) {
                 payEl.innerHTML = `
                     <div>Payment Method: <strong>${methodStr}</strong></div>
-                    <div style="font-size: 12px; margin-top: 3px;">Payment Status: ${statusBadge}</div>
-                    <div style="font-size: 12px; color: var(--gold-light); margin-top: 2px;">Amount Payable: <strong>₹${finalAmount}</strong></div>
+                    <div style="font-size: 12.5px; margin-top: 5px;">Payment Status: ${statusBadge}</div>
+                    <div style="font-size: 12px; color: var(--gold-light); margin-top: 4px;">Total Payable: <strong>₹${finalAmount}</strong></div>
                 `;
+            }
+
+            // Order Status display
+            const orderStatusEl = document.getElementById("confOrderStatusTag");
+            if (orderStatusEl) {
+                const ost = o.order_status || "Confirmed";
+                orderStatusEl.innerHTML = `Order Status: <strong style="color: #2ecc71;">${ost}</strong>`;
+            }
+
+            // Render Notification Delivery Statuses
+            const notifCard = document.getElementById("confNotificationCard");
+            const notifList = document.getElementById("confNotificationList");
+            if (notifList) {
+                const notifs = o.notifications || [];
+                const notifStatuses = o.notificationStatuses || {};
+                const itemsToRender = [];
+
+                if (notifs.length > 0) {
+                    notifs.forEach(n => {
+                        const isSent = n.status === "sent" || n.status === "simulated_console";
+                        const isSkipped = n.status === "skipped";
+                        const icon = isSent ? "✓" : (isSkipped ? "ℹ️" : "⚠️");
+                        const color = isSent ? "#2ecc71" : (isSkipped ? "#aaa" : "#e74c3c");
+                        const channelLabel = n.channel === "sms_customer" ? "Customer SMS" :
+                            n.channel === "email_customer" ? "Customer Email" :
+                                n.channel === "sms_owner" ? "Owner SMS" :
+                                    n.channel === "whatsapp" ? "Owner WhatsApp Alert" :
+                                        n.channel.replace(/_/g, " ").toUpperCase();
+                        const statusLabel = isSent ? (n.status === "simulated_console" ? "Logged (Dev Console)" : "Sent Successfully") :
+                            isSkipped ? "Skipped (Not Provided)" : `Failed: ${n.error_message || 'Dispatch error'}`;
+                        itemsToRender.push(`
+                            <div style="background: #1a1a1a; padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                    <strong style="color: #fff;">${channelLabel}</strong>
+                                    <span style="color: ${color}; font-weight: 700; font-size: 11px;">${icon} ${isSent ? 'Sent' : (isSkipped ? 'Skipped' : 'Failed')}</span>
+                                </div>
+                                <div style="color: #888; font-size: 11px;">${statusLabel}</div>
+                            </div>
+                        `);
+                    });
+                } else if (notifStatuses && Object.keys(notifStatuses).length > 0) {
+                    Object.entries(notifStatuses).forEach(([ch, st]) => {
+                        const isSent = st.status === "sent" || st.status === "simulated_console";
+                        const isSkipped = st.status === "skipped";
+                        const color = isSent ? "#2ecc71" : (isSkipped ? "#aaa" : "#e74c3c");
+                        const icon = isSent ? "✓" : (isSkipped ? "ℹ️" : "⚠️");
+                        const cleanChannel = ch.replace(/_/g, " ").toUpperCase();
+                        itemsToRender.push(`
+                            <div style="background: #1a1a1a; padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                    <strong style="color: #fff;">${cleanChannel}</strong>
+                                    <span style="color: ${color}; font-weight: 700; font-size: 11px;">${icon} ${isSent ? 'Sent' : (isSkipped ? 'Skipped' : 'Failed')}</span>
+                                </div>
+                                <div style="color: #888; font-size: 11px;">${st.error || (isSent ? 'Delivered safely' : 'Processed')}</div>
+                            </div>
+                        `);
+                    });
+                } else {
+                    itemsToRender.push(`
+                        <div style="background: #1a1a1a; padding: 10px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff;">Order Notifications</strong>
+                                <span style="color: #2ecc71; font-weight: 700; font-size: 11px;">✓ Processed</span>
+                            </div>
+                            <div style="color: #888; font-size: 11px;">Order saved and scheduled for Malegaon unit dispatch.</div>
+                        </div>
+                    `);
+                }
+
+                if (itemsToRender.length > 0) {
+                    notifList.innerHTML = itemsToRender.join("");
+                    if (notifCard) notifCard.style.display = "block";
+                }
             }
 
             // 8. Official Receipt Download Link
@@ -455,7 +659,8 @@
 📦 *ORDER INFORMATION*
 • *Order ID:* #${cleanId}
 • *Date & Time:* ${dateStr}, ${timeStr}
-• *Payment Method:* ${isCOD ? 'Cash on Delivery (Pending)' : 'Online Payment'}
+• *Payment Method:* ${isCOD ? 'Cash on Delivery' : 'Online Payment'}
+• *Payment Status:* ${isCOD ? 'Payment Pending — Cash on Delivery' : (o.payment_status || 'Paid')}
 • *Order Status:* Confirmed by Customer
 
 👤 *CUSTOMER INFORMATION*
@@ -550,7 +755,7 @@ _Hello Ojaswi Foods Team, I am confirming my order #${cleanId}. Please confirm d
                     renderOrderDetails(res.order);
                     try {
                         localStorage.setItem("ojaswi_last_order", JSON.stringify(res.order));
-                    } catch (_) {}
+                    } catch (_) { }
                 }
             } catch (err) {
                 console.warn("Remote order lookup note:", err.message);
@@ -564,7 +769,8 @@ _Hello Ojaswi Foods Team, I am confirming my order #${cleanId}. Please confirm d
     </script>
 
     <!-- Floating WhatsApp Support Button -->
-    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20have%20an%20order%20confirmation%20question" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
+    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20have%20an%20order%20confirmation%20question"
+        target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
         <span style="font-size: 16px;">💬</span>
         <span>WhatsApp</span>
     </a>
@@ -593,4 +799,5 @@ _Hello Ojaswi Foods Team, I am confirming my order #${cleanId}. Please confirm d
         </a>
     </nav>
 </body>
+
 </html>
