@@ -423,20 +423,20 @@
                 })}`;
             }
 
-            // 3. Customer Info
-            const custName = o.customer_name || o.name || "Valued Customer";
+            // 3. Customer Info (Fetch real information from actual order record; no fake or hardcoded details)
+            const custName = (o.customer_name && o.customer_name.trim()) || (o.name && o.name.trim()) || "";
             const rawPhone = String(o.customer_phone || o.phone || "").replace(/^\+?91/, "").trim();
-            const custPhone = rawPhone || "7620098478";
-            const custEmail = o.customer_email || o.email || "";
+            const custPhone = rawPhone ? `+91 ${rawPhone}` : "";
+            const custEmail = (o.customer_email && o.customer_email.trim()) || (o.email && o.email.trim()) || "";
 
             const nameEl = document.getElementById("confCustName");
-            if (nameEl) nameEl.textContent = custName;
+            if (nameEl) nameEl.textContent = custName || "--";
             const phoneEl = document.getElementById("confCustPhone");
-            if (phoneEl) phoneEl.textContent = `+91 ${custPhone}`;
+            if (phoneEl) phoneEl.textContent = custPhone || "--";
             const emailEl = document.getElementById("confCustEmail");
-            if (emailEl) emailEl.textContent = custEmail || "support@ojaswifoods.com";
+            if (emailEl) emailEl.textContent = custEmail || "--";
 
-            // 4. Delivery Address
+            // 4. Delivery Address (Cleanly format real customer address)
             const addr = o.delivery_address || {};
             let fullAddressStr = "";
             let htmlAddressStr = "";
@@ -446,18 +446,19 @@
             } else {
                 const house = addr.flat_house || addr.address || "";
                 const street = addr.area_street || "";
-                const city = addr.city || "Malegaon";
-                const state = addr.state || "Maharashtra";
-                const pin = addr.pincode || "423203";
-                fullAddressStr = `${house ? house + ', ' : ''}${street ? street + ', ' : ''}${city}, ${state} - ${pin}`.trim();
+                const city = addr.city || "";
+                const state = addr.state || "";
+                const pin = addr.pincode || "";
+                const locParts = [city, state].filter(Boolean).join(", ");
+                fullAddressStr = [house, street, locParts, pin ? `PIN: ${pin}` : ""].filter(Boolean).join(", ");
                 htmlAddressStr = `
                     ${house ? house + '<br>' : ''}
                     ${street ? street + '<br>' : ''}
-                    ${city}, ${state} - <strong>${pin}</strong>
-                `;
+                    ${locParts}${pin ? ' - <strong>' + pin + '</strong>' : ''}
+                `.trim();
             }
             const addrEl = document.getElementById("confCustAddress");
-            if (addrEl) addrEl.innerHTML = htmlAddressStr || "Plot 52/2, Malegaon - 423203, Nashik, Maharashtra";
+            if (addrEl) addrEl.innerHTML = htmlAddressStr || "--";
 
             // 5. Products / Items
             let items = o.items;

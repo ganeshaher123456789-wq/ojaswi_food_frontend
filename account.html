@@ -277,7 +277,7 @@
                     </div>
                     <div class="order-field">
                         <label>State</label>
-                        <input type="text" id="addrState" value="Maharashtra" required>
+                        <input type="text" id="addrState" placeholder="Enter State (e.g. Maharashtra)" required>
                     </div>
                 </div>
                 <div class="order-field">
@@ -441,7 +441,7 @@
 
             // Immediate local profile rendering if cached user exists
             if (cachedUser) {
-                const fullName = cachedUser.name || (cachedUser.phone ? `Customer (+91 ${cachedUser.phone})` : "Valued Customer");
+                const fullName = (cachedUser.name && cachedUser.name.trim()) || (cachedUser.email ? cachedUser.email.split("@")[0] : (cachedUser.phone ? `+91 ${cachedUser.phone}` : "Customer Profile"));
                 const firstName = fullName.split(" ")[0];
                 document.getElementById("accountHeadingName").textContent = firstName;
                 document.getElementById("cardFullName").textContent = fullName;
@@ -482,7 +482,7 @@
                 } catch (_) {}
 
                 // Safe parsing of name and dates
-                const fullName = res.profile.name || (res.profile.phone ? `Customer (+91 ${res.profile.phone})` : "Valued Customer");
+                const fullName = (res.profile.name && res.profile.name.trim()) || (res.profile.email ? res.profile.email.split("@")[0] : (res.profile.phone ? `+91 ${res.profile.phone}` : "Customer Profile"));
                 const firstName = fullName.split(" ")[0];
                 
                 document.getElementById("accountHeadingName").textContent = firstName;

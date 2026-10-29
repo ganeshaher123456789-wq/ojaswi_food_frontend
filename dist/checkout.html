@@ -165,16 +165,16 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
                             <div class="order-field" style="margin-bottom: 0;">
                                 <label>City *</label>
-                                <input type="text" id="addrCity" placeholder="City" value="Malegaon" required>
+                                <input type="text" id="addrCity" placeholder="Enter City (e.g. Mumbai, Pune, Nashik)" required>
                             </div>
                             <div class="order-field" style="margin-bottom: 0;">
                                 <label>State *</label>
-                                <input type="text" id="addrState" value="Maharashtra" required>
+                                <input type="text" id="addrState" placeholder="Enter State (e.g. Maharashtra)" required>
                             </div>
                         </div>
                         <div class="order-field" style="margin-bottom: 0;">
                             <label>6-Digit PIN Code *</label>
-                            <input type="text" id="addrPincode" placeholder="e.g. 423203" value="423203" pattern="[1-9][0-9]{5}" maxlength="6" required>
+                            <input type="text" id="addrPincode" placeholder="Enter 6-digit PIN code" pattern="[1-9][0-9]{5}" maxlength="6" required>
                         </div>
                     </div>
 
@@ -564,9 +564,10 @@
                             savedAddresses.forEach((addr, i) => {
                                 const opt = document.createElement("option");
                                 opt.value = i;
-                                const cityStr = addr.city || "Malegaon";
-                                const pinStr = addr.pincode || "423203";
-                                opt.textContent = `${addr.full_name || authRes.user.name || 'Saved Address'} (${cityStr}, ${pinStr})${addr.is_default ? " - DEFAULT" : ""}`;
+                                const cityStr = addr.city || "";
+                                const pinStr = addr.pincode ? `PIN: ${addr.pincode}` : "";
+                                const loc = [cityStr, pinStr].filter(Boolean).join(", ");
+                                opt.textContent = `${addr.full_name || authRes.user.name || 'Saved Address'}${loc ? ' (' + loc + ')' : ''}${addr.is_default ? " - DEFAULT" : ""}`;
                                 selectEl.appendChild(opt);
                             });
 
@@ -610,9 +611,9 @@
                         const streetEl = document.getElementById("addrStreet");
                         if (!streetEl.value) streetEl.value = g.address;
                         const cityEl = document.getElementById("addrCity");
-                        if (!cityEl.value) cityEl.value = "Malegaon";
+                        if (!cityEl.value && g.city) cityEl.value = g.city;
                         const pinEl = document.getElementById("addrPincode");
-                        if (!pinEl.value) pinEl.value = "423203";
+                        if (!pinEl.value && g.pincode) pinEl.value = g.pincode;
                     }
                     if (g.paymentMethod) {
                         const radioEl = document.querySelector(`input[name="paymentMethod"][value="${g.paymentMethod}"]`);
@@ -633,9 +634,9 @@
             const street = addr.area_street || addr.street || addr.area || addr.landmark || "";
             if (house) document.getElementById("addrHouse").value = house;
             if (street) document.getElementById("addrStreet").value = street;
-            document.getElementById("addrCity").value = addr.city || "Malegaon";
-            document.getElementById("addrState").value = addr.state || "Maharashtra";
-            document.getElementById("addrPincode").value = addr.pincode || "423203";
+            document.getElementById("addrCity").value = addr.city || "";
+            document.getElementById("addrState").value = addr.state || "";
+            document.getElementById("addrPincode").value = addr.pincode || "";
             if (addr.full_name && !document.getElementById("custName").value) {
                 document.getElementById("custName").value = addr.full_name;
             }
@@ -729,9 +730,9 @@
 
             const houseVal = document.getElementById("addrHouse").value.trim();
             const streetVal = document.getElementById("addrStreet").value.trim();
-            const cityVal = document.getElementById("addrCity").value.trim() || "Malegaon";
-            const stateVal = document.getElementById("addrState").value.trim() || "Maharashtra";
-            const pincodeVal = document.getElementById("addrPincode").value.trim() || "423203";
+            const cityVal = document.getElementById("addrCity").value.trim();
+            const stateVal = document.getElementById("addrState").value.trim();
+            const pincodeVal = document.getElementById("addrPincode").value.trim();
 
             if (!houseVal && !streetVal) {
                 showToast("Please enter your delivery street or house address.", "error");
@@ -739,8 +740,20 @@
                 return null;
             }
 
-            if (!pincodeVal || pincodeVal.length !== 6) {
-                showToast("Please enter a valid 6-digit PIN code.", "error");
+            if (!cityVal) {
+                showToast("Please enter your delivery city.", "error");
+                document.getElementById("addrCity").focus();
+                return null;
+            }
+
+            if (!stateVal) {
+                showToast("Please enter your delivery state.", "error");
+                document.getElementById("addrState").focus();
+                return null;
+            }
+
+            if (!pincodeVal || !/^[1-9][0-9]{5}$/.test(pincodeVal)) {
+                showToast("Please enter a valid 6-digit Indian PIN code.", "error");
                 document.getElementById("addrPincode").focus();
                 return null;
             }

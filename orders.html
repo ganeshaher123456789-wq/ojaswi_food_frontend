@@ -719,15 +719,18 @@
                 renderLiveTrackingTimeline(o);
 
                 // Customer info
-                document.getElementById("receiptCustomerName").textContent = o.customer_name || "Valued Customer";
-                document.getElementById("receiptCustomerPhone").textContent = `+91 ${o.customer_phone || ''}`;
-                document.getElementById("receiptCustomerEmail").textContent = o.customer_email || "Not specified";
+                document.getElementById("receiptCustomerName").textContent = (o.customer_name && o.customer_name.trim()) || "Customer";
+                document.getElementById("receiptCustomerPhone").textContent = o.customer_phone ? `+91 ${String(o.customer_phone).replace(/^\+?91/, '').trim()}` : "--";
+                document.getElementById("receiptCustomerEmail").textContent = o.customer_email || "--";
 
                 const addr = o.delivery_address || {};
-                document.getElementById("receiptAddress").innerHTML = `
-                    ${addr.flat_house || ''}, ${addr.area_street || ''}<br>
-                    ${addr.city || 'Malegaon'}, ${addr.state || 'Maharashtra'} - <strong>${addr.pincode || '423203'}</strong>
-                `;
+                const houseStreet = [addr.flat_house, addr.area_street].filter(Boolean).join(", ");
+                const cityState = [addr.city, addr.state].filter(Boolean).join(", ");
+                const pin = addr.pincode ? `PIN: ${addr.pincode}` : "";
+                document.getElementById("receiptAddress").innerHTML = (`
+                    ${houseStreet ? houseStreet + '<br>' : ''}
+                    ${cityState ? cityState : ''}${pin ? (cityState ? ' - <strong>' + pin + '</strong>' : '<strong>' + pin + '</strong>') : ''}
+                `).trim() || "--";
 
                 currentLoadedOrder = o;
 

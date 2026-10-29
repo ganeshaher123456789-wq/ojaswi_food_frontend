@@ -473,14 +473,14 @@
                     You are now securely signed in to your Ojaswi account.
                 </p>
 
-                <!-- Proceed to Account Link -->
-                <a id="btnSuccessProceed" href="account.html" onclick="proceedToAccount(event)" class="btn-submit" style="text-decoration: none; margin-bottom: 10px; cursor: pointer;">
-                    👤 Go to My Account Dashboard →
+                <!-- Enter Store Link (Primary) -->
+                <a id="btnSuccessProceed" href="index.html" onclick="proceedToAccount(event)" class="btn-submit" style="text-decoration: none; margin-bottom: 10px; cursor: pointer;">
+                    🛒 Enter Store &amp; Explore Spices →
                 </a>
 
-                <!-- Return to Store Link -->
-                <a href="index.html" class="btn-secondary-action" style="text-decoration: none; cursor: pointer;">
-                    🛒 Return to Store &amp; Order Spices
+                <!-- Account Dashboard Link (Secondary) -->
+                <a href="account.html" class="btn-secondary-action" style="text-decoration: none; cursor: pointer;">
+                    👤 Go to My Account Dashboard
                 </a>
             </div>
 
@@ -948,7 +948,7 @@
             }
         }
 
-        // Helper to resolve safe account / redirect URL
+        // Helper to resolve safe redirect URL (defaults to existing homepage/store)
         function getSafeRedirectUrl() {
             const isLocal = window.location.protocol === "file:" ||
                             window.location.protocol === "about:" ||
@@ -958,22 +958,25 @@
                             (window.location.port && window.location.port !== "5000" && window.location.port !== "80" && window.location.port !== "443");
             const urlParams = new URLSearchParams(window.location.search);
             let raw = urlParams.get("redirect");
-            if (!raw || raw === "/account" || raw === "account" || raw.includes("login")) {
-                return isLocal ? "account.html" : "/account";
-            }
-            if (isLocal) {
-                if (raw === "/orders" || raw === "orders") return "orders.html";
-                if (raw === "/checkout" || raw === "checkout") return "checkout.html";
-                if (raw === "/" || raw === "") return "index.html";
-                if (raw.startsWith("/")) {
+            
+            // If explicit redirect target was requested (e.g. from checkout or orders):
+            if (raw) {
+                if (raw === "/orders" || raw === "orders") return isLocal ? "orders.html" : "/orders";
+                if (raw === "/checkout" || raw === "checkout") return isLocal ? "checkout.html" : "/checkout";
+                if (raw === "/account" || raw === "account") return isLocal ? "account.html" : "/account";
+                if (raw === "/" || raw === "") return isLocal ? "index.html" : "/";
+                if (isLocal && raw.startsWith("/")) {
                     const clean = raw.replace(/^\//, "");
                     if (!clean.includes(".html") && !clean.includes("#") && !clean.includes("?")) {
                         return clean + ".html";
                     }
                     return clean;
                 }
+                return raw;
             }
-            return raw;
+
+            // Default: After successful Google sign-in or signup, open the existing homepage/store
+            return isLocal ? "index.html" : "/";
         }
         window.getSafeRedirectUrl = getSafeRedirectUrl;
 
@@ -981,7 +984,7 @@
             if (event && event.preventDefault) event.preventDefault();
             const target = getSafeRedirectUrl();
             if (window.safeNavigate) {
-                window.safeNavigate(target, "#account");
+                window.safeNavigate(target, "#store");
             } else {
                 window.location.href = target;
             }
@@ -1009,10 +1012,10 @@
                 window.checkAuthStatus();
             }
 
-            // Automatically navigate to account dashboard
+            // Automatically navigate to store / target after sign-in
             setTimeout(() => {
                 if (window.safeNavigate) {
-                    window.safeNavigate(finalTarget, "#account");
+                    window.safeNavigate(finalTarget, "#store");
                 } else {
                     window.location.href = finalTarget;
                 }
