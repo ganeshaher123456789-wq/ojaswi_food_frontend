@@ -120,7 +120,7 @@ export function showToast(message, type = "info") {
 
 /**
  * Normalizes any phone input into a standard 10-digit number.
- * Handles formats like +91 76200 98478, 07620098478, 76200-98478.
+ * Handles formats like +91 79724 83489, 07972483489, 79724-83489.
  */
 export function cleanPhoneNumber(input) {
   if (!input) return "";

@@ -7,9 +7,9 @@
     BUSINESS CONTACT DETAILS
 */
 
-const OJASWI_PHONE = "917620098478";
+const OJASWI_PHONE = "917972483489";
 
-const OJASWI_DISPLAY_PHONE = "7620098478";
+const OJASWI_DISPLAY_PHONE = "7972483489";
 
 const OJASWI_EMAIL = "ojaswifoods@gmail.com";
 
@@ -585,9 +585,9 @@ document.addEventListener(
     BUSINESS CONTACT DETAILS
 */
 
-const OJASWI_PHONE = "917620098478";
+const OJASWI_PHONE = "917972483489";
 
-const OJASWI_DISPLAY_PHONE = "7620098478";
+const OJASWI_DISPLAY_PHONE = "7972483489";
 
 const OJASWI_EMAIL = "ojaswifoods@gmail.com";
 

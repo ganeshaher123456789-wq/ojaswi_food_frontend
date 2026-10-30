@@ -355,7 +355,7 @@
                                     <span style="font-size: 10px; background: rgba(37,211,102,0.15); color: #2ecc71; border: 1px solid rgba(37,211,102,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">RECOMMENDED</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Direct to Ojaswi (+91 7620098478). Opens WhatsApp with your prefilled order. Press <em>Send</em> in WhatsApp to confirm.
+                                    Direct to Ojaswi (+91 7972483489). Opens WhatsApp with your prefilled order. Press <em>Send</em> in WhatsApp to confirm.
                                 </p>
                             </div>
                         </div>
@@ -397,7 +397,7 @@
                                     <span style="font-size: 10px; background: rgba(243,156,18,0.15); color: #f39c12; border: 1px solid rgba(243,156,18,0.4); padding: 1px 6px; border-radius: 4px; font-weight: 700;">TEXT ALERT</span>
                                 </div>
                                 <p style="font-size: 12px; color: #aaa; margin: 3px 0 0 0; line-height: 1.4;">
-                                    Opens Messages app with prefilled order text ready to send to +91 7620098478. Review and send to confirm.
+                                    Opens Messages app with prefilled order text ready to send to +91 7972483489. Review and send to confirm.
                                 </p>
                             </div>
                         </div>
@@ -436,7 +436,7 @@
 
                 <div style="background: #181818; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 16px; margin-bottom: 20px; text-align: left; font-size: 13px; line-height: 1.6; color: #ccc;">
                     <div style="margin-bottom: 8px;">
-                        📲 We opened <strong id="awaitingChannelLabel" style="color: #fff;">WhatsApp</strong> for you with your prefilled order details addressed to <strong id="awaitingRecipientLabel" style="color: var(--gold-light);">+91 7620098478</strong>.
+                        📲 We opened <strong id="awaitingChannelLabel" style="color: #fff;">WhatsApp</strong> for you with your prefilled order details addressed to <strong id="awaitingRecipientLabel" style="color: var(--gold-light);">+91 7972483489</strong>.
                     </div>
                     <div style="margin-bottom: 8px; color: #ddd;">
                         👉 Please <strong>review the prefilled order and press Send</strong> in your application to deliver your order details.
@@ -491,7 +491,7 @@
                 <div style="margin-bottom: 16px;">
                     <a id="btnSuccessPrimaryAction" href="#" class="primary-button" style="width: 100%; font-size: 14.5px; font-weight: 700; padding: 14px 16px; border-radius: 6px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
                         <span id="btnSuccessPrimaryIcon" style="font-size: 20px;">💬</span>
-                        <span id="btnSuccessPrimaryText">Open WhatsApp (+91 7620098478)</span>
+                        <span id="btnSuccessPrimaryText">Open WhatsApp (+91 7972483489)</span>
                     </a>
                 </div>
 
@@ -543,7 +543,7 @@
             const count = clean.length;
 
             if (!clean) {
-                phoneValidationMsg.textContent = "Enter 10-digit mobile number (e.g. 7620098478)";
+                phoneValidationMsg.textContent = "Enter 10-digit mobile number (e.g. 7972483489)";
                 phoneValidationMsg.style.color = "#888";
                 phoneBadge.style.display = "none";
                 return;
@@ -912,7 +912,7 @@
             openOrderConfirmationMethodModal();
         }
 
-        const OJASWI_PHONE = "917620098478";
+        const OJASWI_PHONE = "917972483489";
         const OJASWI_EMAIL = "ojaswifoods@gmail.com";
 
         // Detect if user is on a mobile device (Android, iPhone, iPad, etc.)
@@ -998,7 +998,7 @@ ${itemsText}
 🏭 *FACTORY & DISPATCH UNIT*
 • *Manufacturer:* Ojaswi Foods, 52/2, Malegaon - 423203, Nashik
 • *FSSAI License:* 3025120612245599988
-• *Official Care:* +91 7620098478
+• *Official Care:* +91 7972483489
 
 _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm dispatch. Thank you!_`;
         }
@@ -1227,7 +1227,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
 
             if (channel === "whatsapp") {
                 if (channelLabel) channelLabel.textContent = "WhatsApp";
-                if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
+                if (recipientLabel) recipientLabel.textContent = "+91 7972483489";
                 if (reopenChannelName) reopenChannelName.textContent = "WhatsApp";
             } else if (channel === "email") {
                 if (channelLabel) channelLabel.textContent = "Gmail";
@@ -1235,7 +1235,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 if (reopenChannelName) reopenChannelName.textContent = "Gmail";
             } else {
                 if (channelLabel) channelLabel.textContent = "SMS Messages";
-                if (recipientLabel) recipientLabel.textContent = "+91 7620098478";
+                if (recipientLabel) recipientLabel.textContent = "+91 7972483489";
                 if (reopenChannelName) reopenChannelName.textContent = "SMS";
             }
 
@@ -1402,7 +1402,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                     primaryBtn.style.borderColor = "#25D366";
                     primaryBtn.onclick = (e) => { e.preventDefault(); openWhatsAppTask(details, orderId); };
                     if (primaryIcon) primaryIcon.textContent = "💬";
-                    if (primaryText) primaryText.textContent = "Re-open WhatsApp (+91 7620098478)";
+                    if (primaryText) primaryText.textContent = "Re-open WhatsApp (+91 7972483489)";
                 }
                 if (sec1) {
                     sec1.href = mailtoHref;
@@ -1442,7 +1442,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
                 }
             } else {
                 if (msgEl) {
-                    msgEl.innerHTML = `Your order has been recorded! SMS alert dispatched to +91 7620098478.<br><strong style="color: #f39c12; display: block; margin-top: 6px;">Dispatch scheduled from our Malegaon unit.</strong>`;
+                    msgEl.innerHTML = `Your order has been recorded! SMS alert dispatched to +91 7972483489.<br><strong style="color: #f39c12; display: block; margin-top: 6px;">Dispatch scheduled from our Malegaon unit.</strong>`;
                 }
                 if (primaryBtn) {
                     primaryBtn.href = smsHref;
@@ -1537,7 +1537,7 @@ _Hello Ojaswi Foods Team, I am confirming my spice order #${id}. Please confirm 
     </script>
 
     <!-- Floating WhatsApp Support Button -->
-    <a href="https://wa.me/917620098478?text=Hello%20Ojaswi%20Foods%20I%20need%20help%20with%20my%20checkout" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
+    <a href="https://wa.me/917972483489?text=Hello%20Ojaswi%20Foods%20I%20need%20help%20with%20my%20checkout" target="_blank" class="floating-wa-btn" title="Chat on WhatsApp">
         <span style="font-size: 16px;">💬</span>
         <span>WhatsApp</span>
     </a>
